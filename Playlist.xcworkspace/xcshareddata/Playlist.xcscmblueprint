@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "F1FB8D6026801BEF0E95DC6F35547E06961C9694",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "E8CC598E6D4C9389C203E1B9867E2F96BA8CFABC" : 0,
+    "F1FB8D6026801BEF0E95DC6F35547E06961C9694" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "B13C7649-4B01-44F9-8562-D73F0B4756E6",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "E8CC598E6D4C9389C203E1B9867E2F96BA8CFABC" : "Playlist",
+    "F1FB8D6026801BEF0E95DC6F35547E06961C9694" : "Playlist-master\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Playlist",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Playlist.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/logan-pratt\/Playlist.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "E8CC598E6D4C9389C203E1B9867E2F96BA8CFABC"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/logan-pratt\/Playlist",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "F1FB8D6026801BEF0E95DC6F35547E06961C9694"
+    }
+  ]
+}
