@@ -73,8 +73,6 @@
 		02C29A781B6812C90084AFC5 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		02C3C5391B55D9AF000E54BC /* PlaybackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaybackViewController.swift; sourceTree = "<group>"; };
 		02CC53801B692DD4005BB836 /* SweetAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SweetAlert.swift; sourceTree = "<group>"; };
-		02ED88451B56FC0C00E66577 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
-		02ED88461B56FC0C00E66577 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		02ED88491B56FC2200E66577 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		02ED884B1B56FC2700E66577 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		02ED884D1B56FC2F00E66577 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -258,8 +256,6 @@
 				02ED884D1B56FC2F00E66577 /* CoreGraphics.framework */,
 				02ED884B1B56FC2700E66577 /* CFNetwork.framework */,
 				02ED88491B56FC2200E66577 /* AudioToolbox.framework */,
-				02ED88451B56FC0C00E66577 /* Bolts.framework */,
-				02ED88461B56FC0C00E66577 /* Parse.framework */,
 				BB9EEDB4E2E24B440C58433C /* Pods_Playlist.framework */,
 				C84FA68D4B9C522DB0453683 /* Pods_PlaylistTests.framework */,
 			);
