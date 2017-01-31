@@ -10,6 +10,8 @@ import UIKit
 //import Parse
 import Firebase
 import FirebaseDatabase
+import Alamofire
+import SwiftyJSON
 
 class SearchTableViewCell: UITableViewCell {
 
@@ -18,12 +20,15 @@ class SearchTableViewCell: UITableViewCell {
     @IBOutlet weak var songArtistLabel: UILabel!
     @IBOutlet weak var addSongButton: UIButton!
     @IBOutlet weak var addedLabel: UILabel!
+    @IBOutlet weak var durationLabel: UILabel!
+    @IBOutlet weak var titleConstraint: NSLayoutConstraint!
     
     var songId = ""
     var groupCode = ""
     let songs = SongsHelper.sharedInstance
     var ref = FIRDatabase.database().reference()
     var song: Song? = nil
+    let apikey = "AIzaSyCwyQdce6OAUCXH_AEGSlkMIsG60e8BoRc"
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -38,7 +43,17 @@ class SearchTableViewCell: UITableViewCell {
         if let checkedUrl = URL(string: imageUrl) {
             downloadImage(checkedUrl)
         }
-        song = Song(group: code, name: songTitle, artist: songArtist, coverURL: imageUrl, id: songId, key:"")
+        let detailsUrl = "https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=\(songId)&key=\(apikey)"
+        Alamofire.request(detailsUrl).responseJSON { (data) -> Void in
+            if((data.result.value) != nil) {
+                var json = JSON(data.result.value!)
+                //print(json)
+                if let duration = json["items", 0, "contentDetails", "duration"].string {
+                    self.song = Song(group: code, name: songTitle, artist: songArtist, coverURL: imageUrl, id: songId, key:"", duration: duration)
+                            self.durationLabel.text = self.song?.duration
+                }
+            }
+        }
         songTitleLabel.text = songTitle
         songArtistLabel.text = songArtist
         self.songId = songId
@@ -76,6 +91,7 @@ class SearchTableViewCell: UITableViewCell {
     @IBAction func addSong(_ sender: AnyObject) {
         addSongButton.isHidden = !addSongButton.isHidden
         addedLabel.isHidden = !addedLabel.isHidden
+        titleConstraint.constant = 55
 
         let songRef = self.ref.child("songs")
         songRef.childByAutoId().setValue(song?.toAnyObject())

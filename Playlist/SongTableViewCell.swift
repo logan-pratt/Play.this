@@ -21,8 +21,9 @@ class SongTableViewCell: UITableViewCell {
     @IBOutlet weak var songArtistLabel: UILabel!
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var likesLabel: UILabel!
+    @IBOutlet weak var durationLabel: UILabel!
     
-//    let activityIndicatorView = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 100, height: 100), type: .BallTrianglePath)
+    //    let activityIndicatorView = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 100, height: 100), type: .BallTrianglePath)
     
     var songObjId = ""
     var groupCode = ""
@@ -38,7 +39,7 @@ class SongTableViewCell: UITableViewCell {
     
     func setUpCell(song: Song) {
         self.song = song
-        ref = ref.child(song.key)
+        //ref = ref.child(song.key)
         if let checkedUrl = URL(string: song.coverURL) {
             //albumCover.downloadImageWithURL(imageUrl)
             downloadImage(checkedUrl)
@@ -46,16 +47,22 @@ class SongTableViewCell: UITableViewCell {
         
         songTitleLabel.text = song.name
         songArtistLabel.text = song.artist
-        self.songObjId = song.id
-        let songIsLiked = (songs.likedSongs.filter() { $0.key == songObjId }.count > 0)
+        durationLabel.text = song.duration
+        //songObjId = song.id
         
+        likesLabel.text = "\(song.likes)"
+        currentLikes = song.likes
+        //print("\(song.name) has \(song.likes) likes")
+        let songIsLiked = songs.likedSongs.map({$0.key}).contains(song.key)
+        print("isLiked \(songs.likedSongs.map({$0.name}))")
+        //print(songIsLiked)
         if songIsLiked {
             likeButton.isSelected = true
         } else {
             likeButton.isSelected = false
         }
-        
-        updateLikes()
+        //print(song.likes)
+        // updateLikes()
     }
     
     func getDataFromUrl(_ urL:URL, completion: @escaping ((_ data: Data?) -> Void)) {
@@ -73,62 +80,67 @@ class SongTableViewCell: UITableViewCell {
     }
     
     func updateLikes() {
-//        let songsQuery = PFQuery(className: "Song")
-//        songsQuery.whereKey("objectId", equalTo: self.songObjId)
-//        songsQuery.findObjectsInBackground {(songs: [AnyObject]?, error: Error?) -> Void in
-//            if error == nil {
-//                if let songs = songs as? [PFObject] {
-//                    for song in songs {
-//                        let likes = song["likes"] as! Int
-//                        self.likesLabel.text = "\(likes)"
-//                    }
-//                }
-//            } else {
-//                print("Error: \(error!) \(error!._userInfo)")
-//            }
-//        }
+        //        let songsQuery = PFQuery(className: "Song")
+        //        songsQuery.whereKey("objectId", equalTo: self.songObjId)
+        //        songsQuery.findObjectsInBackground {(songs: [AnyObject]?, error: Error?) -> Void in
+        //            if error == nil {
+        //                if let songs = songs as? [PFObject] {
+        //                    for song in songs {
+        //                        let likes = song["likes"] as! Int
+        //                        self.likesLabel.text = "\(likes)"
+        //                    }
+        //                }
+        //            } else {
+        //                print("Error: \(error!) \(error!._userInfo)")
+        //            }
+        //        }
     }
     
     @IBAction func likeSong(_ sender: AnyObject) {
-//        ref.child(song.key).val as! Int
+        //        ref.child(song.key).val as! Int
         //ref.child(song.key).updateChildValues(["likes": "o"])
         
-        ref.observeSingleEvent(of: .value, with: { (snapshot) in
-            self.currentLikes = snapshot.childSnapshot(forPath: "likes").value as! Int
-            
-            if self.likeButton.isSelected {
-                self.currentLikes -= 1
-                self.songs.likedSongs = self.songs.likedSongs.filter() { $0.key != self.songObjId}
-            } else {
-                self.currentLikes += 1
-                self.songs.likedSongs.append(self.song)
-            }
-            self.ref.updateChildValues(["likes": "\(self.currentLikes)"])
-        })
-//        let songsQuery = PFQuery(className: "Song")
-//        songsQuery.whereKey("objectId", equalTo: self.songObjId)
-//        songsQuery.findObjectsInBackground {(songs: [AnyObject]?, error: Error?) -> Void in
-//            if error == nil {
-//                
-//                if let songs = songs as? [PFObject] {
-//                    for song in songs {
-//                        if self.likeButton.isSelected {
-//                            song["likes"] = song["likes"] as! Int - 1
-//                            self.songs.likedSongs = self.songs.likedSongs.filter() { $0 != self.songObjId}
-//                        } else {
-//                            song["likes"] = song["likes"] as! Int + 1
-//                            self.songs.likedSongs.append(self.songObjId)
-//                        }
-//                        self.likeButton.isSelected = !self.likeButton.isSelected
-//                        song.saveInBackground { (success: Bool, error: Error?) -> Void in
-//                            self.updateLikes()
-//                        }
-//                    }
-//                }
-//            } else {
-//                print("Error: \(error!) \(error!._userInfo)")
-//            }
-//        }
+        //        ref.child(song.key).observeSingleEvent(of: .value, with: { (snapshot) in
+        //            print(snapshot)
+        //            self.currentLikes = (snapshot.childSnapshot(forPath: "likes").value as! NSNumber).intValue
+        //
+        if self.likeButton.isSelected {
+            self.song.likes = Int(self.likesLabel.text!)! - 1
+            self.songs.likedSongs = self.songs.likedSongs.filter() { $0.key != self.song.key }
+            print("DESELECT \(self.songs.likedSongs.filter() { $0.key != self.song.key }.map({$0.name}))")
+            self.likeButton.isSelected = false
+        } else {
+            self.song.likes = Int(self.likesLabel.text!)! + 1
+            self.songs.likedSongs.append(self.song)
+            self.likeButton.isSelected = true
+        }
+        self.ref.updateChildValues(["\(song.key)/likes": self.song.likes])
+        print(self.song.likes)
+        //        })
+        //        let songsQuery = PFQuery(className: "Song")
+        //        songsQuery.whereKey("objectId", equalTo: self.songObjId)
+        //        songsQuery.findObjectsInBackground {(songs: [AnyObject]?, error: Error?) -> Void in
+        //            if error == nil {
+        //
+        //                if let songs = songs as? [PFObject] {
+        //                    for song in songs {
+        //                        if self.likeButton.isSelected {
+        //                            song["likes"] = song["likes"] as! Int - 1
+        //                            self.songs.likedSongs = self.songs.likedSongs.filter() { $0 != self.songObjId}
+        //                        } else {
+        //                            song["likes"] = song["likes"] as! Int + 1
+        //                            self.songs.likedSongs.append(self.songObjId)
+        //                        }
+        //                        self.likeButton.isSelected = !self.likeButton.isSelected
+        //                        song.saveInBackground { (success: Bool, error: Error?) -> Void in
+        //                            self.updateLikes()
+        //                        }
+        //                    }
+        //                }
+        //            } else {
+        //                print("Error: \(error!) \(error!._userInfo)")
+        //            }
+        //        }
         
         
     }

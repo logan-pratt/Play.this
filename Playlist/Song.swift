@@ -9,11 +9,12 @@
 import Foundation
 import Firebase
 import FirebaseDatabase
+import RealmSwift
 
-struct Song {
+class Song {
     
     let key: String
-    let likes: Int
+    var likes: Int
     let ref: FIRDatabaseReference?
     let artist: String
     let name: String
@@ -21,8 +22,9 @@ struct Song {
     var cover: UIImage?
     let group: String
     let id: String
+    let duration: String
     
-    init(group: String, name: String, artist: String, coverURL: String, id: String, key: String, likes: Int = 0) {
+    init(group: String, name: String, artist: String, coverURL: String, id: String, key: String, duration: String, likes: Int = 0) {
         self.key = key
         self.likes = likes
         self.artist = artist
@@ -31,13 +33,14 @@ struct Song {
         self.ref = nil
         self.group = group
         self.id = id
+        self.duration = duration.youtubeDuration
         self.cover = downloadImage(URL(string:coverURL)!)
     }
     
     init(snapshot: FIRDataSnapshot) {
         key = snapshot.key
         let snapshotValue = snapshot.value as! [String: AnyObject]
-        likes = snapshotValue["likes"] as! Int
+        likes = (snapshotValue["likes"] as! NSNumber).intValue
         //code = snapshotValue["code"] as! String
         artist = snapshotValue["artist"] as! String
         name = snapshotValue["name"] as! String
@@ -45,6 +48,7 @@ struct Song {
         ref = snapshot.ref
         group = snapshotValue["group"] as! String
         id = snapshotValue["id"] as! String
+        duration = (snapshotValue["duration"] as! String).youtubeDuration
         cover = downloadImage(URL(string:coverURL)!)
     }
     
@@ -54,7 +58,7 @@ struct Song {
             }.resume()
     }
     
-    mutating func downloadImage(_ url:URL) -> UIImage{
+    func downloadImage(_ url:URL) -> UIImage{
         //        println("Started downloading \"\(url.lastPathComponent!.stringByDeletingPathExtension)\".")
         var image = UIImage()
         getDataFromUrl(url) { data in
@@ -73,7 +77,35 @@ struct Song {
             "coverURL": coverURL,
             "group": group,
             "likes": likes,
-            "id": id
+            "id": id,
+            "duration": duration
         ]
+    }
+}
+
+extension String {
+    var youtubeDuration: String {
+        
+        let formattedDuration = self.replacingOccurrences(of: "PT", with: "").replacingOccurrences(of: "H", with:":").replacingOccurrences(of: "M", with: ":").replacingOccurrences(of: "S", with: "")
+        
+        let components = formattedDuration.components(separatedBy: ":")
+        var duration = ""
+        for component in components {
+            duration = duration.characters.count > 0 ? duration + ":" : duration
+            if component.characters.count < 2 {
+                duration += "0" + component
+                continue
+            }
+            duration += component
+        }
+        
+        if duration.components(separatedBy: ":").last?.characters.count == 1 {
+            if(duration.characters.last == "0") {
+                duration += "0"
+            }
+        }
+        //print(duration)
+        
+        return duration
     }
 }

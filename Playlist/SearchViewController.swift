@@ -10,6 +10,7 @@ import UIKit
 import SwiftyJSON
 //import Parse
 import Crashlytics
+import Alamofire
 
 class SearchViewController: UIViewController {
     
@@ -24,6 +25,7 @@ class SearchViewController: UIViewController {
     var songIds: [String] = []
     var groupCode = ""
     var songs: [Song] = []
+    let apikey = "AIzaSyCwyQdce6OAUCXH_AEGSlkMIsG60e8BoRc"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,6 +43,8 @@ class SearchViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    
+    
     func searchSongs(_ song: String) {
         Answers.logSearch(withQuery: song, customAttributes: [:])
         
@@ -49,52 +53,54 @@ class SearchViewController: UIViewController {
         songCovers = []
         songIds = []
         
-        let searchUrl = "https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&q=\(song)&type=video&videoCategoryId=10&videoEmbeddable=true&key=AIzaSyCwyQdce6OAUCXH_AEGSlkMIsG60e8BoRc"
-        //let searchUrl = "https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&q=\(song)&type=video&videoCategoryId=10&videoEmbeddable=true&videoSyndicated=true&key=AIzaSyCwyQdce6OAUCXH_AEGSlkMIsG60e8BoRc"
-        let url = URL(string: searchUrl)
-        let request = URLRequest(url: url!)
-        let data = try? NSURLConnection.sendSynchronousRequest(request, returning: nil)
-        if data != nil {
-            var json = JSON(data: data!)
-            print(json)
-            for i in 0..<20 {
-                
-                //if let songArtist = json["items", i, "snippet", "channelTitle"].string {
-//                    if songArtist.lowercaseString.rangeOfString("vevo") == nil &&
-//                        songArtist.lowercaseString.rangeOfString("records") == nil &&
-//                        songArtist.lowercaseString.rangeOfString("nethermight") == nil {
-//                        if let songDescription = json["items", i, "snippet", "description"].string {
-//                            if songDescription.lowercaseString.rangeOfString("wmg") == nil &&
-//                                songDescription.lowercaseString.rangeOfString("umg") == nil &&
-//                                songDescription.lowercaseString.rangeOfString("sme") == nil {
-                                if let songTitle = json["items", i, "snippet", "title"].string {
-                                    if songTitle.range(of: " - ") != nil {
-                                        self.songTitles.append(songTitle.components(separatedBy: " - ")[1])
-                                        self.songArtists.append(songTitle.components(separatedBy: " - ")[0])
-                                    } else {
-                                        self.songTitles.append(songTitle)
-                                        
-                                        if let songArtist = json["items", 0, "snippet", "channelTitle"].string {
-                                            self.songArtists.append(songArtist)
-                                        }
-                                    }
-                                }
-                                if let songCover = json["items", i, "snippet", "thumbnails", "default", "url"].string {
-                                    songCovers.append(songCover)
-                                }
-                                if let songId = json["items", i, "id", "videoId"].string {
-                                    songIds.append(songId)
-                                }
-                                //songArtists.append(songArtist)
-//                            }
-//                        }
-//                    }
-                //}
-                
-                
+        let searchUrl = "https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&q=\(song)&type=video&videoCategoryId=10&key=\(apikey)"
+        
+        Alamofire.request(searchUrl).responseJSON { (data) -> Void in
+            if((data.result.value) != nil) {
+                var json = JSON(data.result.value!)
+                //print("JSON: \(json)")
+                for i in 0..<20 {
+                    
+                    //if let songArtist = json["items", i, "snippet", "channelTitle"].string {
+                    //                    if songArtist.lowercaseString.rangeOfString("vevo") == nil &&
+                    //                        songArtist.lowercaseString.rangeOfString("records") == nil &&
+                    //                        songArtist.lowercaseString.rangeOfString("nethermight") == nil {
+                    //                        if let songDescription = json["items", i, "snippet", "description"].string {
+                    //                            if songDescription.lowercaseString.rangeOfString("wmg") == nil &&
+                    //                                songDescription.lowercaseString.rangeOfString("umg") == nil &&
+                    //                                songDescription.lowercaseString.rangeOfString("sme") == nil {
+                    if let songTitle = json["items", i, "snippet", "title"].string {
+                        if songTitle.range(of: " - ") != nil {
+                            self.songTitles.append(songTitle.components(separatedBy: " - ")[1])
+                            self.songArtists.append(songTitle.components(separatedBy: " - ")[0])
+                        } else {
+                            self.songTitles.append(songTitle)
+                            
+                            if let songArtist = json["items", 0, "snippet", "channelTitle"].string {
+                                self.songArtists.append(songArtist)
+                            }
+                        }
+                    }
+                    if let songCover = json["items", i, "snippet", "thumbnails", "high", "url"].string ?? json["items", i, "snippet", "thumbnails", "medium", "url"].string ?? json["items", i, "snippet", "thumbnails", "default", "url"].string{
+                        self.songCovers.append(songCover)
+                    }
+                    if let songId = json["items", i, "id", "videoId"].string {
+                        self.songIds.append(songId)
+                        
+                    }
+                    
+                    //songArtists.append(songArtist)
+                    //                            }
+                    //                        }
+                    //                    }
+                    //}
+                    
+                    
+                }
+                self.tableView.reloadData()
             }
-            tableView.reloadData()
         }
+        //let data = try? NSURLConnection.sendSynchronousRequest(request, returning: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -102,14 +108,14 @@ class SearchViewController: UIViewController {
     }
     
     /*
-    // MARK: - Navigation
-    
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    // Get the new view controller using segue.destinationViewController.
-    // Pass the selected object to the new view controller.
-    }
-    */
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
     
 }
 
@@ -118,9 +124,8 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "SearchCell", for: indexPath) as! SearchTableViewCell
-        
         cell.setUpCell(songCovers[(indexPath as NSIndexPath).row], songTitle: songTitles[(indexPath as NSIndexPath).row], songArtist: songArtists[(indexPath as NSIndexPath).row], songId: songIds[(indexPath as NSIndexPath).row], code: groupCode)
-
+        
         return cell
     }
     

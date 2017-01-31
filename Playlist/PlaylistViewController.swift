@@ -14,6 +14,9 @@ import SwiftyJSON
 //import RJImageLoader
 import Firebase
 import FirebaseDatabase
+import Realm
+import RealmSwift
+import DropDownMenuKit
 
 class PlaylistViewController: UIViewController {
     
@@ -25,34 +28,37 @@ class PlaylistViewController: UIViewController {
     @IBOutlet weak var groupCodeLabel: UILabel!
     @IBOutlet weak var copyGroupCodeButton: UIButton!
     var refreshControl = UIRefreshControl()
+    var titleView: DropDownTitleView!
     //    var activityIndicatorView = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40), type: .ballTrianglePath)
     
     let songsInstance = SongsHelper.sharedInstance
     let ref = FIRDatabase.database().reference(withPath: "songs")
-    //var songs: [Song] = []
-    
+    var defaults = UserDefaults.standard
+    let realm = try! Realm()
+    var likedSongs: [String] = []
+    var firstRun = true
     var groupName = ""
     var groupCode = ""
-//    var songIds: [String] = [] {
-//        didSet {
-//            songsInstance.songIds = songIds
-//        }
-//    }
-//    var songTitles: [String] = [] {
-//        didSet {
-//            songsInstance.songTitles = songTitles
-//        }
-//    }
-//    var songCovers: [String] = [] {
-//        didSet {
-//            songsInstance.songCovers = songCovers
-//        }
-//    }
-//    var songArtists: [String] = [] {
-//        didSet {
-//            songsInstance.songArtists = songArtists
-//        }
-//    }
+    //    var songIds: [String] = [] {
+    //        didSet {
+    //            songsInstance.songIds = songIds
+    //        }
+    //    }
+    //    var songTitles: [String] = [] {
+    //        didSet {
+    //            songsInstance.songTitles = songTitles
+    //        }
+    //    }
+    //    var songCovers: [String] = [] {
+    //        didSet {
+    //            songsInstance.songCovers = songCovers
+    //        }
+    //    }
+    //    var songArtists: [String] = [] {
+    //        didSet {
+    //            songsInstance.songArtists = songArtists
+    //        }
+    //    }
     
     var songObjIds: [String] = []
     var tableNum = 0
@@ -76,13 +82,16 @@ class PlaylistViewController: UIViewController {
         
         groupCodeLabel.text = "Group code: \(groupCode)"
         
-        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes:attr)
-        refreshControl.tintColor = UIColor.white
-        refreshControl.addTarget(self, action: #selector(PlaylistViewController.setUpTableView(_:)), for: UIControlEvents.valueChanged)
-        tableView?.addSubview(refreshControl)
+//        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes:attr)
+//        refreshControl.tintColor = UIColor.white
+//        refreshControl.addTarget(self, action: #selector(PlaylistViewController.setUpTableView(_:)), for: UIControlEvents.valueChanged)
+//        tableView?.addSubview(refreshControl)
+        
+        for r in realm.objects(RealmString.self) {
+            likedSongs.append(r.stringValue)
+        }
         
         setUpTableView(true)
-        
         //        let recognizer: UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "swipeDown:")
         //        recognizer.direction = .Down
         //        self.view.addGestureRecognizer(recognizer)
@@ -96,40 +105,54 @@ class PlaylistViewController: UIViewController {
     
     func setUpTableView(_ animated: Bool) {
         //if IJReachability.isConnectedToNetwork() {
-//        songTitles = []
-//        songArtists = []
-//        songCovers = []
-//        songIds = []
-//        songObjIds = []
+        //        songTitles = []
+        //        songArtists = []
+        //        songCovers = []
+        //        songIds = []
+        //        songObjIds = []
         
         copyGroupCodeButton.isEnabled = true
         copyGroupCodeButton.setTitle("Copy", for: UIControlState())
         
         ref.observe(.value, with: { snapshot in
+            self.songsInstance.songs = []
             for item in snapshot.children {
-                self.songsInstance.songs = []
                 let song = Song(snapshot: item as! FIRDataSnapshot)
-                self.songsInstance.songs.append(song)
+                if(song.group == self.groupCode) {
+                    self.songsInstance.songs.append(song)
+                    if self.firstRun {
+                        if self.likedSongs.contains(song.key) {
+                            self.songsInstance.likedSongs.append(song)
+                        }
+                    }
+                }
             }
-            
+            self.firstRun = false
+            // print(self.songsInstance.likedSongs)
+            //FINDS DUPLICATES
+            //            if(Array(Set(self.songsInstance.songs.map({$0.likes}).filter({ (i: Int) in self.songsInstance.songs.filter({ $0.likes == i }).count > 1}))).count > 0) {
+            //
+            //            }
+            self.songsInstance.songs = self.songsInstance.songs.sorted(by: {$0.likes > $1.likes})
+            //            print(self.songsInstance.songs.map({$0.likes}))
             // 5
             //self.items = newItems
-
+            
             self.tableView.reloadData()
         })
         
-//        let query = ref.queryOrdered(byChild: "group").queryEqual(toValue: groupCode)
-//        query.observe(.value, with: { (snapshot) in
-//            for child in snapshot.children {
-//                let child = child as! FIRDataSnapshot
-//                if let childVal = child.value as? [String: AnyObject] {
-//                    self.songs.append(Song(group: self.groupCode, name: childVal["name"] as! String, artist: childVal["artist"] as! String, coverURL: childVal["coverURL"] as! String, id: childVal["id"] as! String, key: child.key))
-//                }
-//                
-//                //print(snapshot.childSnapshot(forPath: "name").value as! String)
-//            }
-////            self.tableView.
-//        })
+        //        let query = ref.queryOrdered(byChild: "group").queryEqual(toValue: groupCode)
+        //        query.observe(.value, with: { (snapshot) in
+        //            for child in snapshot.children {
+        //                let child = child as! FIRDataSnapshot
+        //                if let childVal = child.value as? [String: AnyObject] {
+        //                    self.songs.append(Song(group: self.groupCode, name: childVal["name"] as! String, artist: childVal["artist"] as! String, coverURL: childVal["coverURL"] as! String, id: childVal["id"] as! String, key: child.key))
+        //                }
+        //
+        //                //print(snapshot.childSnapshot(forPath: "name").value as! String)
+        //            }
+        ////            self.tableView.
+        //        })
         
         //            let query = PFQuery(className: "Group")
         //            query.whereKey("groupCode", equalTo: groupCode)
@@ -226,7 +249,6 @@ class PlaylistViewController: UIViewController {
     }
     
     @IBAction func unwindToPlaylist(_ segue:UIStoryboardSegue) {
-        
         setUpTableView(false)
     }
     
@@ -271,7 +293,7 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SongCell", for: indexPath) as! SongTableViewCell
         cell.setUpCell(song: songsInstance.songs[(indexPath as NSIndexPath).row])
-
+        
         return cell
     }
     
@@ -286,11 +308,11 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
             let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
             playbackViewController = storyBoard.instantiateViewController(withIdentifier: "playback") as! PlaybackViewController
             print((indexPath as NSIndexPath).row)
-//            print(songCovers[(indexPath as NSIndexPath).row])
-//            playbackViewController.imageUrl = songs[(indexPath as NSIndexPath).row].coverURL
-//            playbackViewController.songArtist = songs[(indexPath as NSIndexPath).row].artist
-//            playbackViewController.songTitle = songs[(indexPath as NSIndexPath).row].name
-//            playbackViewController.songId = songs[(indexPath as NSIndexPath).row].id
+            //            print(songCovers[(indexPath as NSIndexPath).row])
+            //            playbackViewController.imageUrl = songs[(indexPath as NSIndexPath).row].coverURL
+            //            playbackViewController.songArtist = songs[(indexPath as NSIndexPath).row].artist
+            //            playbackViewController.songTitle = songs[(indexPath as NSIndexPath).row].name
+            //            playbackViewController.songId = songs[(indexPath as NSIndexPath).row].id
             //HERE
             playbackViewController.currentSongIndex = (indexPath as NSIndexPath).row
         } else {
@@ -308,27 +330,27 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
         if editingStyle == .delete {
             let song = self.songsInstance.songs[indexPath.row]
             song.ref?.removeValue()
-//            let songObjId = songObjIds[(indexPath as NSIndexPath).row]
-//            songTitles.remove(at: (indexPath as NSIndexPath).row)
-//            songArtists.remove(at: (indexPath as NSIndexPath).row)
-//            songCovers.remove(at: (indexPath as NSIndexPath).row)
-//            songIds.remove(at: (indexPath as NSIndexPath).row)
-//            songObjIds.remove(at: (indexPath as NSIndexPath).row)
+            //            let songObjId = songObjIds[(indexPath as NSIndexPath).row]
+            //            songTitles.remove(at: (indexPath as NSIndexPath).row)
+            //            songArtists.remove(at: (indexPath as NSIndexPath).row)
+            //            songCovers.remove(at: (indexPath as NSIndexPath).row)
+            //            songIds.remove(at: (indexPath as NSIndexPath).row)
+            //            songObjIds.remove(at: (indexPath as NSIndexPath).row)
             //tableView.reloadData()
-//            DispatchQueue.main.async {
-//                let query = PFQuery(className: "Song")
-//                query.getObjectInBackground(withId: songObjId) {
-//                    (song: PFObject?, error: Error?) -> Void in
-//                    if error == nil {
-//                        song!.deleteInBackground {
-//                            (success: Bool, error: Error?) -> Void in
-//                            //self.setUpTableView(false)
-//                        }
-//                    } else {
-//                        print(error!)
-//                    }
-//                }
-//            }
+            //            DispatchQueue.main.async {
+            //                let query = PFQuery(className: "Song")
+            //                query.getObjectInBackground(withId: songObjId) {
+            //                    (song: PFObject?, error: Error?) -> Void in
+            //                    if error == nil {
+            //                        song!.deleteInBackground {
+            //                            (success: Bool, error: Error?) -> Void in
+            //                            //self.setUpTableView(false)
+            //                        }
+            //                    } else {
+            //                        print(error!)
+            //                    }
+            //                }
+            //            }
         }
     }
     

@@ -9,7 +9,17 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>BTNavigationDropdownMenu.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>CBStoreHouseRefreshControl.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>DropDownMenuKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -34,7 +44,12 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Spring.xcscheme</key>
+		<key>Realm.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>RealmSwift.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -52,7 +67,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>00103D6C821BE85971C563025527BA5D</key>
+		<key>0B329F2F293E50994ADF1C4138E8DC89</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>2004C6B096CBC4718CEB78D2F73E6B24</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>222BD1C85CC6AC18E6D6AA21284BBFB8</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -62,7 +87,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>52D4B2BF09CDB75092FCDAE8575AEC2C</key>
+		<key>4C5CC5B4BF59D50A17E8FA215FCC4B43</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7A4F44514E625A8592F16DAFF176B021</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -72,22 +102,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8B51FEE14324894ABCCA569F96AD087F</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>A0688C9ABAE369793B7C4F07FD1E051A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B5DB539F8EF82098DE2516F0C4AF7A0E</key>
+		<key>A52524E727A97710A55D0EDA55BB7CFE</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F0C6DE700BEF20D051AB3E3679BEBDF9</key>
+		<key>C3B0D4ADAAB95D2754E11D3C6B547D09</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C5B80060FE8C664DF08841000F41D515</key>
 		<dict>
 			<key>primary</key>
 			<true/>

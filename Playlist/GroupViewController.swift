@@ -30,10 +30,36 @@ class GroupViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        joinButton.isEnabled = false
+        //joinButton.isEnabled = false
         textFields = [firstField, secondField, thirdField, fourthField, fifthField, sixthField]
-        ref = FIRDatabase.database().reference(withPath: "groups")
+                ref = FIRDatabase.database().reference(withPath: "groups")
         group = Group()
+        clearTextButton(button: joinButton, title: "Join Group")
+    }
+    
+    func clearTextButton(button: UIButton, title: NSString) {
+        button.titleLabel?.backgroundColor = UIColor.clear
+        button.setTitleColor(UIColor.clear, for: .normal)
+        button.setTitle(title as String, for: [])
+        let buttonSize: CGSize = button.bounds.size
+        let font: UIFont = button.titleLabel!.font
+        let attribs: [String : AnyObject] = [NSFontAttributeName: font]
+        let textSize: CGSize = title.size(attributes: attribs)
+        UIGraphicsBeginImageContextWithOptions(buttonSize, false, UIScreen.main.scale)
+        let ctx: CGContext = UIGraphicsGetCurrentContext()!
+        ctx.setFillColor(UIColor.white.cgColor)
+        let center: CGPoint = CGPoint(x: buttonSize.width / 2 - textSize.width / 2, y: buttonSize.height / 2 - textSize.height / 2)
+        let path: UIBezierPath = UIBezierPath(rect: CGRect(x: 0, y: 0, width: buttonSize.width, height: buttonSize.height))
+        ctx.addPath(path.cgPath)
+        ctx.fillPath()
+        ctx.setBlendMode(.destinationOut)
+        title.draw(at: center, withAttributes: [NSFontAttributeName: font])
+        let viewImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        let maskLayer: CALayer = CALayer()
+        maskLayer.contents = ((viewImage.cgImage) as AnyObject)
+        maskLayer.frame = button.bounds
+        button.layer.mask = maskLayer
     }
     
     override func didReceiveMemoryWarning() {
@@ -79,11 +105,16 @@ class GroupViewController: UIViewController {
     
     @IBAction func joinGroup(_ sender: AnyObject) {
         // if IJReachability.isConnectedToNetwork() {
-        var enteredCode = ""
+        //REALCODEvar enteredCode = ""
 //        var groupCode = ""
 //        var groupName = ""
 //        var groupId = ""
-
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        let playlistViewController = storyBoard.instantiateViewController(withIdentifier: "playlist") as! PlaylistViewController
+        playlistViewController.groupName = "tester"
+        playlistViewController.groupCode = "555555"
+        present(playlistViewController, animated: true, completion: nil)
+        /*REAL CODE
         for textField in textFields {
             enteredCode += textField.text!
         }
@@ -98,13 +129,14 @@ class GroupViewController: UIViewController {
                 playlistViewController.groupCode = self.group.key
                 self.present(playlistViewController, animated: true, completion: nil)
             } else {
-                SweetAlert().showAlert("Incorrect code", subTitle: "Please enter the group code again.", style: AlertStyle.error)
+                _ = SweetAlert().showAlert("Incorrect code", subTitle: "Please enter the group code again.", style: AlertStyle.error)
                 self.clearCode()
             }
         })
-//
+ 
         print(enteredCode)
-    
+        END REAL CODE*/
+ 
 //        let query = PFQuery(className: "Group")
 //        query.whereKey("groupCode", equalTo: enteredCode)
 //        query.findObjectsInBackground { (groups: [PFObject]?, error: Error?) in
