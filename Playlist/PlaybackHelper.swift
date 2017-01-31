@@ -14,6 +14,7 @@ class PlaybackHelper: NSObject {
    
     static let sharedInstance = PlaybackHelper()
     let songs = SongsHelper.sharedInstance
+    var player = AVQueuePlayer()
     
     var songId = ""
     var songTitle = ""

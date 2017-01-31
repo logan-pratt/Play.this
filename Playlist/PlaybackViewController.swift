@@ -30,12 +30,12 @@ class PlaybackViewController: UIViewController {
     @IBOutlet weak var endTimeLabel: UILabel!
     
     //    let ytPlayer = YTPlayerView()
-    var player = AVQueuePlayer()
     
     static let sharedInstance = PlaybackViewController()
     
     let songs = SongsHelper.sharedInstance
-    let playback = PlaybackHelper.sharedInstance
+    let playbackInstance = PlaybackHelper.sharedInstance
+    var player = PlaybackHelper.sharedInstance.player
     
     var song = SongsHelper.sharedInstance.songs[0]
     var songId = ""

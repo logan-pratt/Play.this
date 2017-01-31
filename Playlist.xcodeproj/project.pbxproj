@@ -174,7 +174,6 @@
 				0289B8701B5446D800413EC2 /* AppDelegate.swift */,
 				02C29A761B67CE1A0084AFC5 /* Table View Cells */,
 				02C29A751B67CE060084AFC5 /* View Controllers */,
-				29676F4C1E35799B00CCD8CC /* Structs */,
 				02C29A771B67CE230084AFC5 /* Helpers */,
 				027B64D71B725A7E005B1C2D /* Extensions */,
 				0289B86E1B5446D800413EC2 /* Supporting Files */,
@@ -232,6 +231,8 @@
 		02C29A771B67CE230084AFC5 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				29676F4D1E3579AF00CCD8CC /* Group.swift */,
+				29676F4F1E3589AD00CCD8CC /* Song.swift */,
 				028F2A0D1B6284700026E22E /* PlaybackHelper.swift */,
 				027B64D51B715AE9005B1C2D /* SongsHelper.swift */,
 			);
@@ -260,15 +261,6 @@
 				C84FA68D4B9C522DB0453683 /* Pods_PlaylistTests.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		29676F4C1E35799B00CCD8CC /* Structs */ = {
-			isa = PBXGroup;
-			children = (
-				29676F4D1E3579AF00CCD8CC /* Group.swift */,
-				29676F4F1E3589AD00CCD8CC /* Song.swift */,
-			);
-			name = Structs;
 			sourceTree = "<group>";
 		};
 		39556328E866CC8E2638B435 /* Pods */ = {
