@@ -316,8 +316,8 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
             //HERE
             playbackViewController.currentSongIndex = (indexPath as NSIndexPath).row
         } else {
-            PlaybackViewController.sharedInstance.currentSongIndex = (indexPath as NSIndexPath).row
-            PlaybackViewController.sharedInstance.skipSong()
+            playbackViewController.currentSongIndex = (indexPath as NSIndexPath).row
+            playbackViewController.skipSong()
         }
         self.present(playbackViewController, animated: true, completion: nil)
     }

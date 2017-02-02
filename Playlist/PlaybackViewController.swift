@@ -46,6 +46,7 @@ class PlaybackViewController: UIViewController {
     var currentSongIndex = 0 {
         didSet{
             song = songs.songs[currentSongIndex]
+            PlaybackHelper.sharedInstance.currentSongIndex = self.currentSongIndex
         }
     }
     var loadeditems = 0
@@ -83,6 +84,7 @@ class PlaybackViewController: UIViewController {
     }
     
     func setUpView() {
+        print(playlist.first)
         currentTimeLabel.text = "0:00"
         endTimeLabel.text = "0:00"
         timeSlider.value = 0
@@ -119,7 +121,7 @@ class PlaybackViewController: UIViewController {
     func checkIfPlayerReady() {
         if player.status.rawValue == 1 {
             playerStartedTimer.invalidate()
-            timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(PlaybackViewController.updateProgress), userInfo: nil, repeats: true)
+            timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
         }
     }
     
@@ -155,6 +157,9 @@ class PlaybackViewController: UIViewController {
         self.player.removeAllItems()
         self.loadeditems = 0
         self.timePlayed = 0
+        if let timer = timer {
+            timer.invalidate()
+        }
         
         self.playlist = songs.songs.map({$0.id})
         
@@ -194,18 +199,20 @@ class PlaybackViewController: UIViewController {
     }
     
     func setNowPlaying(_ dura: Float, timePlayed: Float) {
+        let s = songs.songs[playbackInstance.currentSongIndex]
         let albumArt = MPMediaItemArtwork.init(boundsSize: albumCover.size, requestHandler: { (size) -> UIImage in
-            return self.albumCover
+            return s.cover ?? UIImage()//self.albumCover
         })
         //let albumArt = MPMediaItemArtwork(image: albumCover)
         let songInfo: [String: Any]? = [
-            MPMediaItemPropertyTitle: song.name,
-            MPMediaItemPropertyArtist: song.artist,
+            MPMediaItemPropertyTitle: s.name,
+            MPMediaItemPropertyArtist: s.artist,
             MPMediaItemPropertyArtwork: albumArt,
             MPMediaItemPropertyPlaybackDuration: dura,
             MPNowPlayingInfoPropertyElapsedPlaybackTime: timePlayed
         ]
         MPNowPlayingInfoCenter.default().nowPlayingInfo = songInfo
+        print("INFO: \(s.name)")
     }
     
     //Downloads the youtube stream URL based on songID, remember this is different than buffering but needs to be done
