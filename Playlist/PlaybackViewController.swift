@@ -33,19 +33,22 @@ class PlaybackViewController: UIViewController {
     
     static let sharedInstance = PlaybackViewController()
     
-    let songs = SongsHelper.sharedInstance
+    let songs = SongsHelper.sharedInstance.songs
     let playbackInstance = PlaybackHelper.sharedInstance
     var player = PlaybackHelper.sharedInstance.player
-    
+    var playerItems: [AVPlayerItem] = []
     var song = SongsHelper.sharedInstance.songs[0]
     var songId = ""
     var imageUrl = ""
     var songTitle = ""
     var songArtist = ""
     var albumCover = UIImage()
+    var firstIndex = 0
     var currentSongIndex = 0 {
         didSet{
-            song = songs.songs[currentSongIndex]
+            print("CURRENT: \(currentSongIndex)")
+            song = songs[currentSongIndex]
+            print("SONG \(song.name)")
             PlaybackHelper.sharedInstance.currentSongIndex = self.currentSongIndex
         }
     }
@@ -76,7 +79,7 @@ class PlaybackViewController: UIViewController {
         playlist = []
         createPlaylist(song.id)
         self.play()
-        
+        firstIndex=currentSongIndex
         setUpView()
         
         //        loadVideo(songId)
@@ -84,7 +87,6 @@ class PlaybackViewController: UIViewController {
     }
     
     func setUpView() {
-        print(playlist.first)
         currentTimeLabel.text = "0:00"
         endTimeLabel.text = "0:00"
         timeSlider.value = 0
@@ -140,9 +142,9 @@ class PlaybackViewController: UIViewController {
                 
                 if Double(timeLeft) <= 0.5 {
                     currentSongIndex+=1
-                    if currentSongIndex <= playlist.count + 1 {
-                        self.player.advanceToNextItem()
-                    }
+                    /*if currentSongIndex <= playlist.count + 1 {
+                     self.player.advanceToNextItem()
+                     }*/
                     skipSong()
                 }
             }
@@ -161,7 +163,7 @@ class PlaybackViewController: UIViewController {
             timer.invalidate()
         }
         
-        self.playlist = songs.songs.map({$0.id})
+        self.playlist = songs.map({$0.id})
         
         for _ in 0..<currentSongIndex {
             playlist.remove(at: 0)
@@ -199,7 +201,7 @@ class PlaybackViewController: UIViewController {
     }
     
     func setNowPlaying(_ dura: Float, timePlayed: Float) {
-        let s = songs.songs[playbackInstance.currentSongIndex]
+        let s = songs[playbackInstance.currentSongIndex]
         let albumArt = MPMediaItemArtwork.init(boundsSize: albumCover.size, requestHandler: { (size) -> UIImage in
             return s.cover ?? UIImage()//self.albumCover
         })
@@ -212,7 +214,7 @@ class PlaybackViewController: UIViewController {
             MPNowPlayingInfoPropertyElapsedPlaybackTime: timePlayed
         ]
         MPNowPlayingInfoCenter.default().nowPlayingInfo = songInfo
-        print("INFO: \(s.name)")
+        //print("INFO: \(s.name)")
     }
     
     //Downloads the youtube stream URL based on songID, remember this is different than buffering but needs to be done
@@ -345,6 +347,7 @@ class PlaybackViewController: UIViewController {
         //        })
         //Insert the playerItem we created at the end of the AVQueuePlayer (essentially at the end of the playlist)
         self.player.insert(playerItem, after: nil)
+        playerItems.append(playerItem)
         //In case the first song in the playlist was the deleted song (due to youtube error), and the player widget showed the title/artist of the deleted song, we need to update it
         //        if self.loadeditems == 0 && self.titleLabel.text != self.playlist[self.loadeditems].title {
         //            self.setNowPlaying() //Covers case where deleted song happened to be chosen first
@@ -455,25 +458,31 @@ class PlaybackViewController: UIViewController {
         currentSongIndex+=1
         skipSong()
         //if currentSongIndex <= playlist.count {
-        self.player.advanceToNextItem()
+        
+        //self.player.replaceCurrentItem(with: playerItems[currentSongIndex-firstIndex])
         //}
     }
     
-    @IBAction func previousSong(_ sender: AnyObject) {
-        //        currentSongIndex--
-        //        skipSong()
-    }
-    
     func skipSong() {
-        if currentSongIndex < playlist.count && currentSongIndex >= 0 {
-            //            ytPlayer.stopVideo()
-            song = songs.songs[currentSongIndex]
-            //            imageUrl = songs.songs.map({$0.coverURL})[currentSongIndex]//.songCovers[currentSongIndex]
-            //            songArtist = songs.songs.map({$0.artist})[currentSongIndex]//songs.songArtists[currentSongIndex]
-            //            songTitle = songs.songs.map({$0.name})[currentSongIndex]//songs.songTitles[currentSongIndex]
-            //            song.id = songs.songs.map({$0.id})[currentSongIndex]//songs.songIds[currentSongIndex]
+        if currentSongIndex < songs.count && currentSongIndex >= 0 {
+            print("first: \(currentSongIndex-firstIndex)")
+            print(playerItems[1])
+            self.player.advanceToNextItem()
             self.setUpView()
         }
+    }
+    
+    @IBAction func previousSong(_ sender: AnyObject) {
+        previous()
+    }
+    
+    func previous() {
+        currentSongIndex-=1
+        playerItems[currentSongIndex-firstIndex].seek(to: CMTimeMakeWithSeconds(Float64(0), playerItems[currentSongIndex-firstIndex].currentTime().timescale))
+        player.replaceCurrentItem(with: playerItems[currentSongIndex-firstIndex])
+        playerItems[currentSongIndex-firstIndex+1].seek(to: CMTimeMakeWithSeconds(Float64(0), playerItems[currentSongIndex-firstIndex+1].currentTime().timescale))
+        player.insert(playerItems[currentSongIndex-firstIndex+1], after: player.currentItem)
+        setUpView()
     }
     
     override func remoteControlReceived(with event: UIEvent?) {

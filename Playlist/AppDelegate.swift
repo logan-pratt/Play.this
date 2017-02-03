@@ -22,8 +22,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
 //    let playback = PlaybackViewController.sharedInstance
     var window: UIWindow?
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    //func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         //Parse.setApplicationId("ZFcq1SiHvUzDSqgPlhHG7lO5pxe9YWJDLcNZYsdn", clientKey: "7xgtE3mz33ABlEtuCwJLvMt3wdExoG9QHMnDvEYp")
         FIRApp.configure()

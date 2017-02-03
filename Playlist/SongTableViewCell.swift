@@ -54,7 +54,7 @@ class SongTableViewCell: UITableViewCell {
         currentLikes = song.likes
         //print("\(song.name) has \(song.likes) likes")
         let songIsLiked = songs.likedSongs.map({$0.key}).contains(song.key)
-        print("isLiked \(songs.likedSongs.map({$0.name}))")
+        //print("isLiked \(songs.likedSongs.map({$0.name}))")
         //print(songIsLiked)
         if songIsLiked {
             likeButton.isSelected = true
