@@ -14,7 +14,7 @@ struct Group {
     
     let key: String
     let name: String
-    let ref: FIRDatabaseReference?
+    let ref: DatabaseReference?
     var songs: [String]
     //let code: String
     
@@ -33,7 +33,7 @@ struct Group {
         self.songs = []
     }
     
-    init(snapshot: FIRDataSnapshot) {
+    init(snapshot: DataSnapshot) {
         key = snapshot.key
         print(key)
         let snapshotValue = snapshot.value as! [String: AnyObject]

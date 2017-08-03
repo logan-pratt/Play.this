@@ -19,7 +19,7 @@ class CreateGroupViewController: UIViewController {
     @IBOutlet weak var createButtonConstraint: NSLayoutConstraint!
     //@IBOutlet weak var navBar: UINavigationBar!
     
-    var ref = FIRDatabase.database().reference(withPath: "groups")
+    var ref = Database.database().reference(withPath: "groups")
     var groupCode = ""
     //var groupId = ""
     var codeAlreadyExists = false
@@ -36,22 +36,49 @@ class CreateGroupViewController: UIViewController {
         
         groupCode = generateCode()
         groupCodeView.text = groupCode
-        
-//        let recognizer: UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "swipeDown:")
-//        recognizer.direction = .Down
-//        self.view.addGestureRecognizer(recognizer)
+//        
+        let recognizer: UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipeRight))
+        recognizer.direction = .right
+        self.view.addGestureRecognizer(recognizer)
         
         NotificationCenter.default.addObserver(self, selector: #selector(CreateGroupViewController.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(CreateGroupViewController.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
-        ref.observe(.value, with: { snapshot in
-            //print(snapshot.value ?? "")
-        })
+        clearTextButton(button: createGroupButton, title: "Create Group")
+        
+//        ref.observe(.value, with: { snapshot in
+//            //print(snapshot.value ?? "")
+//        })
     }
     
-//    func swipeDown(recognizer: UISwipeGestureRecognizer) {
-//        self.performSegueWithIdentifier("toJoin", sender: self)
-//    }
+    func swipeRight(recognizer: UISwipeGestureRecognizer) {
+        self.performSegue(withIdentifier: "createToJoin", sender: self)
+    }
+    
+    func clearTextButton(button: UIButton, title: NSString) {
+        button.titleLabel?.backgroundColor = UIColor.clear
+        button.setTitleColor(UIColor.clear, for: .normal)
+        button.setTitle(title as String, for: [])
+        let buttonSize: CGSize = button.bounds.size
+        let font: UIFont = button.titleLabel!.font
+        let attribs: [String : AnyObject] = [NSFontAttributeName: font]
+        let textSize: CGSize = title.size(attributes: attribs)
+        UIGraphicsBeginImageContextWithOptions(buttonSize, false, UIScreen.main.scale)
+        let ctx: CGContext = UIGraphicsGetCurrentContext()!
+        ctx.setFillColor(UIColor.white.cgColor)
+        let center: CGPoint = CGPoint(x: buttonSize.width / 2 - textSize.width / 2, y: buttonSize.height / 2 - textSize.height / 2)
+        let path: UIBezierPath = UIBezierPath(rect: CGRect(x: 0, y: 0, width: buttonSize.width, height: buttonSize.height))
+        ctx.addPath(path.cgPath)
+        ctx.fillPath()
+        ctx.setBlendMode(.destinationOut)
+        title.draw(at: center, withAttributes: [NSFontAttributeName: font])
+        let viewImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        let maskLayer: CALayer = CALayer()
+        maskLayer.contents = ((viewImage.cgImage) as AnyObject)
+        maskLayer.frame = button.bounds
+        button.layer.mask = maskLayer
+    }
     
     func randNum(_ num1: Int, to num2: Int) -> String{
         let num = Int(arc4random_uniform(10))
@@ -95,13 +122,16 @@ class CreateGroupViewController: UIViewController {
     
     func keyboardWillShow(_ notification: Notification) {
         if let keyboardFrame = ((notification as NSNotification).userInfo?[UIKeyboardFrameEndUserInfoKey] as AnyObject).cgRectValue {
-            createGroupButton.setTitleColor(UIColor(red:0.11, green:0.58, blue:0.96, alpha:1.0), for: UIControlState())
+//            createGroupButton.setTitleColor(UIColor(red:0.11, green:0.58, blue:0.96, alpha:1.0), for: UIControlState())
+            clearTextButton(button: createGroupButton, title: "Create Group")
             createButtonConstraint.constant = keyboardFrame.height
         }
     }
     
     func keyboardWillHide(_ notification: Notification) {
-        createGroupButton.setTitleColor(UIColor(red:0.09, green:0.33, blue:0.93, alpha:1.0), for: UIControlState())
+//        createGroupButton.setTitleColor(UIColor(red:0.09, green:0.33, blue:0.93, alpha:1.0), for: UIControlState())
+        clearTextButton(button: createGroupButton, title: "Create Group")
+        createButtonConstraint.constant = 0
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

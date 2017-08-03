@@ -26,7 +26,7 @@ class SearchTableViewCell: UITableViewCell {
     var songId = ""
     var groupCode = ""
     let songs = SongsHelper.sharedInstance
-    var ref = FIRDatabase.database().reference()
+    var ref = Database.database().reference()
     var song: Song? = nil
     let apikey = "AIzaSyCwyQdce6OAUCXH_AEGSlkMIsG60e8BoRc"
     

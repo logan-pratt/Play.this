@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0820"
+   LastUpgradeVersion = "0830"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "0B329F2F293E50994ADF1C4138E8DC89"
+               BlueprintIdentifier = "BED01BFF0BC94FB6A44C2285A54E225B"
                BuildableName = "XCDYouTubeKit.framework"
                BlueprintName = "XCDYouTubeKit"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "0B329F2F293E50994ADF1C4138E8DC89"
+            BlueprintIdentifier = "BED01BFF0BC94FB6A44C2285A54E225B"
             BuildableName = "XCDYouTubeKit.framework"
             BlueprintName = "XCDYouTubeKit"
             ReferencedContainer = "container:Pods.xcodeproj">

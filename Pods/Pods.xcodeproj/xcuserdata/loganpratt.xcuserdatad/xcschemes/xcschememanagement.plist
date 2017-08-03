@@ -9,21 +9,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>BTNavigationDropdownMenu.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>CBStoreHouseRefreshControl.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>DropDownMenuKit.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>GoogleToolboxForMac.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -40,6 +25,11 @@
 			<false/>
 		</dict>
 		<key>Pods-PlaylistTests.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Protobuf.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -64,35 +54,25 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>nanopb.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>0B329F2F293E50994ADF1C4138E8DC89</key>
+		<key>27CC3CF50758C29C1C191234DD065858</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2004C6B096CBC4718CEB78D2F73E6B24</key>
+		<key>4C3B7ED4637ADC9ED722DE6DA34215B0</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>222BD1C85CC6AC18E6D6AA21284BBFB8</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>23BC90A28317AB1DAD1EC27C81772131</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>4C5CC5B4BF59D50A17E8FA215FCC4B43</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>7A4F44514E625A8592F16DAFF176B021</key>
+		<key>4C8F5C816BCDD7F393FDA70BB1A8110E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -102,22 +82,32 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>9119C055FCD397AE6CE3CFD9D17C5284</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>A0688C9ABAE369793B7C4F07FD1E051A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A52524E727A97710A55D0EDA55BB7CFE</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>C3B0D4ADAAB95D2754E11D3C6B547D09</key>
+		<key>BED01BFF0BC94FB6A44C2285A54E225B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>C5B80060FE8C664DF08841000F41D515</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D5B86EB63E44447D2B57FD4630281947</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E4DD95323C54A78F879DAB0F1508B8E7</key>
 		<dict>
 			<key>primary</key>
 			<true/>

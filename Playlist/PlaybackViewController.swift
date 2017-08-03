@@ -27,7 +27,13 @@ class PlaybackViewController: UIViewController {
     @IBOutlet weak var navBar: UINavigationBar!
     @IBOutlet weak var timeSlider: UISlider!
     @IBOutlet weak var currentTimeLabel: UILabel!
-    @IBOutlet weak var endTimeLabel: UILabel!
+    @IBOutlet weak var endTimeLabel: UILabel! {
+        didSet{
+            if endTimeLabel.text != "0:00" {
+                timeSlider?.isEnabled = true
+            }
+        }
+    }
     
     //    let ytPlayer = YTPlayerView()
     
@@ -90,6 +96,7 @@ class PlaybackViewController: UIViewController {
         currentTimeLabel.text = "0:00"
         endTimeLabel.text = "0:00"
         timeSlider.value = 0
+        timeSlider.isEnabled = false
         
         songLabel.text = song.name
         songLabel.marqueeType = .MLContinuous
@@ -122,6 +129,7 @@ class PlaybackViewController: UIViewController {
     
     func checkIfPlayerReady() {
         if player.status.rawValue == 1 {
+            //timeSlider.isEnabled = true
             playerStartedTimer.invalidate()
             timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
         }
@@ -139,9 +147,9 @@ class PlaybackViewController: UIViewController {
                 timeLeft -= timePlayed
                 currentTimeLabel.text = secondsToText(timePlayed)
                 endTimeLabel.text = secondsToText(timeLeft)
-                
+                timeSlider.isEnabled = true
                 if Double(timeLeft) <= 0.5 {
-                    currentSongIndex+=1
+                    //currentSongIndex+=1
                     /*if currentSongIndex <= playlist.count + 1 {
                      self.player.advanceToNextItem()
                      }*/
@@ -152,7 +160,7 @@ class PlaybackViewController: UIViewController {
     }
     
     func createPlaylist(_ startingSong:String) {
-        print(currentSongIndex)
+        //print(currentSongIndex)
         
         //Since this is also called when the playlist is finished playing, reset all playlist variables
         self.player.pause()
@@ -167,7 +175,7 @@ class PlaybackViewController: UIViewController {
         
         for _ in 0..<currentSongIndex {
             playlist.remove(at: 0)
-            print(playlist)
+            //print(playlist)
         }
         
         //        if var song = startingSong {
@@ -202,10 +210,10 @@ class PlaybackViewController: UIViewController {
     
     func setNowPlaying(_ dura: Float, timePlayed: Float) {
         let s = songs[playbackInstance.currentSongIndex]
-        let albumArt = MPMediaItemArtwork.init(boundsSize: albumCover.size, requestHandler: { (size) -> UIImage in
-            return s.cover ?? UIImage()//self.albumCover
+        //print(s.cover!.size)
+        let albumArt = MPMediaItemArtwork.init(boundsSize: songImageView.image!.size, requestHandler: { (size) -> UIImage in
+            return self.songImageView.image!// ?? UIImage()//self.albumCover
         })
-        //let albumArt = MPMediaItemArtwork(image: albumCover)
         let songInfo: [String: Any]? = [
             MPMediaItemPropertyTitle: s.name,
             MPMediaItemPropertyArtist: s.artist,
@@ -214,7 +222,19 @@ class PlaybackViewController: UIViewController {
             MPNowPlayingInfoPropertyElapsedPlaybackTime: timePlayed
         ]
         MPNowPlayingInfoCenter.default().nowPlayingInfo = songInfo
+        MPRemoteCommandCenter.shared().nextTrackCommand.isEnabled = nextButton.isEnabled
+        MPRemoteCommandCenter.shared().previousTrackCommand.isEnabled = previousButton.isEnabled
+        MPRemoteCommandCenter.shared().nextTrackCommand.addTarget(self, action: #selector(nothing))
+        //MPRemoteCommandCenter.shared().nextTrackCommand.addTarget(self, action: #selector(skipSong))
+        MPRemoteCommandCenter.shared().previousTrackCommand.addTarget(self, action: #selector(previous))
+        MPRemoteCommandCenter.shared().playCommand.addTarget(self, action: #selector(play))
+        MPRemoteCommandCenter.shared().pauseCommand.addTarget(self, action: #selector(pause))
+        
         //print("INFO: \(s.name)")
+    }
+    
+    func nothing() {
+        
     }
     
     //Downloads the youtube stream URL based on songID, remember this is different than buffering but needs to be done
@@ -352,7 +372,6 @@ class PlaybackViewController: UIViewController {
         //        if self.loadeditems == 0 && self.titleLabel.text != self.playlist[self.loadeditems].title {
         //            self.setNowPlaying() //Covers case where deleted song happened to be chosen first
         //        }
-        
         //Increment loaded items
         self.loadeditems+=1
         //If the song was played but URL hadn't been loaded yet, I disable some of the UI buttons and show "..." in place of the play button. This simply reverts that
@@ -402,9 +421,11 @@ class PlaybackViewController: UIViewController {
     
     
     @IBAction func pauseVideo(_ sender: AnyObject) {
-        pause()
-        togglePausePlayButton()
-        timer.invalidate()
+        if timer.isValid {
+            pause()
+            togglePausePlayButton()
+            timer.invalidate()
+        }
     }
     
     @IBAction func playVideo(_ sender: AnyObject) {
@@ -450,12 +471,14 @@ class PlaybackViewController: UIViewController {
     }
     
     @IBAction func sliderChanged(_ sender: UISlider) {
-        currentTimeLabel.text = secondsToText(sender.value)
-        player.seek(to: CMTimeMakeWithSeconds(Float64(sender.value), player.currentItem!.currentTime().timescale))
+        if timer.isValid {
+            currentTimeLabel.text = secondsToText(sender.value)
+            player.seek(to: CMTimeMakeWithSeconds(Float64(sender.value), player.currentItem!.currentTime().timescale))
+        }
     }
     
     @IBAction func nextSong(_ sender: AnyObject) {
-        currentSongIndex+=1
+        //currentSongIndex+=1
         skipSong()
         //if currentSongIndex <= playlist.count {
         
@@ -464,9 +487,11 @@ class PlaybackViewController: UIViewController {
     }
     
     func skipSong() {
+        currentSongIndex+=1
+        print("SKIP: \(currentSongIndex)")
         if currentSongIndex < songs.count && currentSongIndex >= 0 {
-            print("first: \(currentSongIndex-firstIndex)")
-            print(playerItems[1])
+            //            print("first: \(currentSongIndex-firstIndex)")
+            //            print(playerItems[1])
             self.player.advanceToNextItem()
             self.setUpView()
         }
@@ -489,39 +514,40 @@ class PlaybackViewController: UIViewController {
         let rc = event!.subtype
         
         print("received remote control \(rc.rawValue)") // 101 = pause, 100 = play
-        switch rc.rawValue {
-        case 100:
-            print("play")
-            playButton.isHidden = true
-            pauseButton.isHidden = false
-            play()
-            break
-        case 101:
-            print("pause")
-            playButton.isHidden = false
-            pauseButton.isHidden = true
-            pause()
-            break
-        case 104:
-            print("skip")
-            //            glFinish()
-            //            ytPlayer.removeWebView()
-            currentSongIndex+=1
-            skipSong()
-            //            if currentSongIndex <= playlist.count + 1 {
-            self.player.advanceToNextItem()
-            //            }
-            break
-        case 105:
-            print("previous")
-            //            currentSongIndex--
-            //            self.timeSlider.maximumValue = 1
-            //            skipSong()
-            //            player.pause()
-            //            player.removeAllItems()
-        //            createPlaylist(songId)
-        default:break
-        }
+        //        switch rc.rawValue {
+        //        case 100:
+        //            print("play")
+        //            playButton.isHidden = true
+        //            pauseButton.isHidden = false
+        //            play()
+        //            break
+        //        case 101:
+        //            print("pause")
+        //            playButton.isHidden = false
+        //            pauseButton.isHidden = true
+        //            pause()
+        //            break
+        //        case 104:
+        //            print("skip")
+        //            //            glFinish()
+        //            //            ytPlayer.removeWebView()
+        //            //currentSongIndex+=1
+        //            skipSong()
+        //            //            if currentSongIndex <= playlist.count + 1 {
+        //            //self.player.advanceToNextItem()
+        //            //            }
+        //            break
+        //        case 105:
+        //            print("previous")
+        //            currentSongIndex-=1
+        //            previous()
+        //            //            self.timeSlider.maximumValue = 1
+        //            //            skipSong()
+        //            //            player.pause()
+        //            //            player.removeAllItems()
+        //        //            createPlaylist(songId)
+        //        default:break
+        //        }
     }
     
     func toPlaylist() {

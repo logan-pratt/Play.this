@@ -15,7 +15,7 @@ class Song {
     
     let key: String
     var likes: Int
-    let ref: FIRDatabaseReference?
+    let ref: DatabaseReference?
     let artist: String
     let name: String
     let coverURL: String
@@ -34,10 +34,10 @@ class Song {
         self.group = group
         self.id = id
         self.duration = duration.youtubeDuration
-        self.cover = downloadImage(URL(string:coverURL)!)
+        downloadImage(URL(string:coverURL)!)
     }
     
-    init(snapshot: FIRDataSnapshot) {
+    init(snapshot: DataSnapshot) {
         key = snapshot.key
         let snapshotValue = snapshot.value as! [String: AnyObject]
         likes = (snapshotValue["likes"] as! NSNumber).intValue
@@ -49,7 +49,8 @@ class Song {
         group = snapshotValue["group"] as! String
         id = snapshotValue["id"] as! String
         duration = (snapshotValue["duration"] as! String).youtubeDuration
-        cover = downloadImage(URL(string:coverURL)!)
+        downloadImage(URL(string:coverURL)!)
+        print("done")
     }
     
     func getDataFromUrl(_ urL:URL, completion: @escaping ((_ data: Data?) -> Void)) {
@@ -58,16 +59,19 @@ class Song {
             }.resume()
     }
     
-    func downloadImage(_ url:URL) -> UIImage{
+    func downloadImage(_ url:URL){// -> UIImage{
         //        println("Started downloading \"\(url.lastPathComponent!.stringByDeletingPathExtension)\".")
-        var image = UIImage()
+        //var image = UIImage()
+        print("QWERTY")
         getDataFromUrl(url) { data in
+            //url.lastPathComponent.stringbydele
             DispatchQueue.main.async {
-                //                println("Finished downloading \"\(url.lastPathComponent!.stringByDeletingPathExtension)\".")
-                image = UIImage(data: data!)!
+                                print("Finished downloading \"\(url.lastPathComponent)\".")
+                self.cover = UIImage(data: data!)!
+                print(self.cover!.size)
             }
         }
-        return image
+        //return image
     }
     
     func toAnyObject() -> Any {

@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="0vR-Yl-V2I">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="0vR-Yl-V2I">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -80,7 +80,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MmJ-3O-pe5">
-                                                    <rect key="frame" x="61.5" y="73.5" width="30.5" height="16.5"/>
+                                                    <rect key="frame" x="108" y="18" width="30.5" height="16.5"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
@@ -89,10 +89,10 @@
                                             <constraints>
                                                 <constraint firstItem="Zbv-qp-Xhv" firstAttribute="trailing" secondItem="3PX-ja-wb6" secondAttribute="trailingMargin" id="4s4-nW-49T"/>
                                                 <constraint firstItem="Zbv-qp-Xhv" firstAttribute="trailing" secondItem="g7Y-FZ-yAP" secondAttribute="trailingMargin" constant="-22" id="5kn-XY-SOA"/>
-                                                <constraint firstItem="MmJ-3O-pe5" firstAttribute="trailing" secondItem="Gkr-v8-N2Q" secondAttribute="trailing" constant="-8" id="7fM-p8-vbb"/>
                                                 <constraint firstItem="Zbv-qp-Xhv" firstAttribute="bottom" secondItem="3PX-ja-wb6" secondAttribute="bottomMargin" constant="-15" id="AFb-cS-Inl"/>
+                                                <constraint firstItem="7FA-Wh-QnN" firstAttribute="top" secondItem="MmJ-3O-pe5" secondAttribute="bottom" constant="-7" id="E2o-SR-Zz7"/>
                                                 <constraint firstItem="ggx-TF-Y7c" firstAttribute="trailing" secondItem="3PX-ja-wb6" secondAttribute="trailingMargin" id="E7C-cK-sNG"/>
-                                                <constraint firstItem="MmJ-3O-pe5" firstAttribute="bottom" secondItem="Gkr-v8-N2Q" secondAttribute="bottom" constant="-10" id="K1R-S5-v4t"/>
+                                                <constraint firstItem="MmJ-3O-pe5" firstAttribute="leading" secondItem="Gkr-v8-N2Q" secondAttribute="trailing" constant="8" id="LGh-5s-USz"/>
                                                 <constraint firstItem="Gkr-v8-N2Q" firstAttribute="leading" secondItem="3PX-ja-wb6" secondAttribute="leading" id="Pjm-t0-Qjp"/>
                                                 <constraint firstAttribute="trailing" secondItem="7FA-Wh-QnN" secondAttribute="trailing" constant="3" id="Zkm-uZ-gHh"/>
                                                 <constraint firstItem="Gkr-v8-N2Q" firstAttribute="top" secondItem="3PX-ja-wb6" secondAttribute="top" id="b70-AW-ouD"/>
@@ -465,7 +465,7 @@
         <!--Group-->
         <scene sceneID="F2V-5m-ufb">
             <objects>
-                <viewController title="Group" id="0vR-Yl-V2I" customClass="GroupViewController" customModule="Playlist" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Group" id="0vR-Yl-V2I" customClass="JoinGroupViewController" customModule="Playlist" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Kf7-Yq-owM"/>
                         <viewControllerLayoutGuide type="bottom" id="F26-W8-Nfd"/>
@@ -496,19 +496,6 @@
                                 <color key="textColor" red="0.10980392156862745" green="0.59215686274509804" blue="0.96470588235294119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="85"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="autostart" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="animation" value="zoomIn"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="delay">
-                                        <real key="value" value="0.0"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="duration">
-                                        <real key="value" value="1"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="rotate">
-                                        <real key="value" value="360"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="delegate" destination="0vR-Yl-V2I" id="i3n-9A-ENf"/>
                                 </connections>
@@ -522,19 +509,6 @@
                                 <color key="textColor" red="0.10980392156862745" green="0.53725490196078429" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="85"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="autostart" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="animation" value="zoomIn"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="delay">
-                                        <real key="value" value="0.0"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="duration">
-                                        <real key="value" value="1"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="rotate">
-                                        <real key="value" value="360"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="delegate" destination="0vR-Yl-V2I" id="6PS-Ku-MuH"/>
                                 </connections>
@@ -548,19 +522,6 @@
                                 <color key="textColor" red="0.10980392156862745" green="0.53725490196078429" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="85"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="autostart" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="animation" value="zoomIn"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="delay">
-                                        <real key="value" value="0.0"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="duration">
-                                        <real key="value" value="1"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="rotate">
-                                        <real key="value" value="360"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="delegate" destination="0vR-Yl-V2I" id="JO0-6T-pGv"/>
                                 </connections>
@@ -574,19 +535,6 @@
                                 <color key="textColor" red="0.10980392156862745" green="0.53725490196078429" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="85"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="autostart" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="animation" value="zoomIn"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="delay">
-                                        <real key="value" value="0.0"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="duration">
-                                        <real key="value" value="1"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="rotate">
-                                        <real key="value" value="360"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="delegate" destination="0vR-Yl-V2I" id="WTL-0u-8T8"/>
                                 </connections>
@@ -600,19 +548,6 @@
                                 <color key="textColor" red="0.10980392156862745" green="0.59215686274509804" blue="0.96470588235294119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="85"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="autostart" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="animation" value="zoomIn"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="delay">
-                                        <real key="value" value="0.0"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="duration">
-                                        <real key="value" value="1"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="rotate">
-                                        <real key="value" value="360"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="delegate" destination="0vR-Yl-V2I" id="sCS-06-E62"/>
                                 </connections>
@@ -625,13 +560,6 @@
                                     <color key="titleColor" red="1" green="0.99997437000274658" blue="0.99999129772186279" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="animation" value="zoomIn"/>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="autostart" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="duration">
-                                        <real key="value" value="1"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="clearCode:" destination="0vR-Yl-V2I" eventType="touchUpInside" id="NYd-uy-qRF"/>
                                 </connections>
@@ -647,13 +575,6 @@
                                     <color key="titleColor" red="0.098039215686274508" green="0.40392156862745099" blue="0.94117647058823528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="animation" value="zoomIn"/>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="autostart" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="duration">
-                                        <real key="value" value="1"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="joinGroup:" destination="0vR-Yl-V2I" eventType="touchUpInside" id="ujq-RV-1VL"/>
                                 </connections>
@@ -669,13 +590,6 @@
                                     <color key="titleColor" red="1" green="0.99997437000274658" blue="0.99999129772186279" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="animation" value="zoomIn"/>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="autostart" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="duration">
-                                        <real key="value" value="1"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <segue destination="Map-iD-yzf" kind="show" id="XnF-rJ-aj2"/>
                                 </connections>
@@ -685,13 +599,6 @@
                                 <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="35"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="animation" value="zoomIn"/>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="autostart" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="duration">
-                                        <real key="value" value="1"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" background="WhiteTextField" translatesAutoresizingMaskIntoConstraints="NO" id="Vy6-Ro-Sge">
                                 <rect key="frame" x="29.5" y="210.5" width="100" height="100"/>
@@ -702,19 +609,6 @@
                                 <color key="textColor" red="0.10980392156862745" green="0.59215686274509804" blue="0.96470588235294119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="85"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="autostart" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="animation" value="zoomIn"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="delay">
-                                        <real key="value" value="0.0"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="duration">
-                                        <real key="value" value="1"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="rotate">
-                                        <real key="value" value="360"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="delegate" destination="0vR-Yl-V2I" id="6t4-fj-g0U"/>
                                 </connections>
@@ -938,15 +832,12 @@
                         <outlet property="createGroupButton" destination="hDG-dk-UUm" id="a4e-qm-cLv"/>
                         <outlet property="groupCodeView" destination="k79-a5-ZW9" id="SFP-Na-g92"/>
                         <outlet property="groupNameField" destination="DCV-z3-6SC" id="Vxh-d3-yVp"/>
+                        <segue destination="wsw-8V-YcU" kind="unwind" identifier="createToJoin" unwindAction="unwindToJoin:" id="IKd-Xx-pyr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="h4Q-8v-aw7" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="wsw-8V-YcU" userLabel="Exit" sceneMemberID="exit"/>
-                <swipeGestureRecognizer direction="down" id="d1f-zm-jHW">
-                    <connections>
-                        <segue destination="wsw-8V-YcU" kind="unwind" unwindAction="unwindToJoin:" id="IR3-8r-9mZ"/>
-                    </connections>
-                </swipeGestureRecognizer>
+                <swipeGestureRecognizer direction="right" id="d1f-zm-jHW"/>
             </objects>
             <point key="canvasLocation" x="2397" y="1050"/>
         </scene>

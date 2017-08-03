@@ -16,7 +16,7 @@ import Firebase
 import FirebaseDatabase
 import Realm
 import RealmSwift
-import DropDownMenuKit
+//import DropDownMenuKit
 
 class PlaylistViewController: UIViewController {
     
@@ -28,11 +28,11 @@ class PlaylistViewController: UIViewController {
     @IBOutlet weak var groupCodeLabel: UILabel!
     @IBOutlet weak var copyGroupCodeButton: UIButton!
     var refreshControl = UIRefreshControl()
-    var titleView: DropDownTitleView!
+    //var titleView: DropDownTitleView!
     //    var activityIndicatorView = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40), type: .ballTrianglePath)
     
     let songsInstance = SongsHelper.sharedInstance
-    let ref = FIRDatabase.database().reference(withPath: "songs")
+    let ref = Database.database().reference(withPath: "songs")
     var defaults = UserDefaults.standard
     let realm = try! Realm()
     var likedSongs: [String] = []
@@ -117,7 +117,7 @@ class PlaylistViewController: UIViewController {
         ref.observe(.value, with: { snapshot in
             self.songsInstance.songs = []
             for item in snapshot.children {
-                let song = Song(snapshot: item as! FIRDataSnapshot)
+                let song = Song(snapshot: item as! DataSnapshot)
                 if(song.group == self.groupCode) {
                     self.songsInstance.songs.append(song)
                     if self.firstRun {

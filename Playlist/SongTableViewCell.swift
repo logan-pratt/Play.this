@@ -30,7 +30,7 @@ class SongTableViewCell: UITableViewCell {
     let songs = SongsHelper.sharedInstance
     var song: Song!
     var currentLikes: Int = 0
-    var ref = FIRDatabase.database().reference(withPath: "songs")
+    var ref = Database.database().reference(withPath: "songs")
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -44,7 +44,7 @@ class SongTableViewCell: UITableViewCell {
             //albumCover.downloadImageWithURL(imageUrl)
             downloadImage(checkedUrl)
         }
-        
+
         songTitleLabel.text = song.name
         songArtistLabel.text = song.artist
         durationLabel.text = song.duration

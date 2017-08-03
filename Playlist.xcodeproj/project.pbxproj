@@ -14,7 +14,7 @@
 		0289B87B1B5446D800413EC2 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0289B8791B5446D800413EC2 /* LaunchScreen.xib */; };
 		0289B8871B5446D800413EC2 /* PlaylistTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0289B8861B5446D800413EC2 /* PlaylistTests.swift */; };
 		0289B8911B5448B700413EC2 /* SongTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0289B8901B5448B700413EC2 /* SongTableViewCell.swift */; };
-		0289B8931B545CE100413EC2 /* GroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0289B8921B545CE100413EC2 /* GroupViewController.swift */; };
+		0289B8931B545CE100413EC2 /* JoinGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0289B8921B545CE100413EC2 /* JoinGroupViewController.swift */; };
 		028F2A0E1B6284710026E22E /* PlaybackHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028F2A0D1B6284700026E22E /* PlaybackHelper.swift */; };
 		02AC7CCC1B582EE40081BAEF /* PlaylistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AC7CCB1B582EE40081BAEF /* PlaylistViewController.swift */; };
 		02AECE761B61898F00E60B07 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02AECE751B61898F00E60B07 /* AVFoundation.framework */; };
@@ -66,7 +66,7 @@
 		0289B8851B5446D800413EC2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0289B8861B5446D800413EC2 /* PlaylistTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistTests.swift; sourceTree = "<group>"; };
 		0289B8901B5448B700413EC2 /* SongTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongTableViewCell.swift; sourceTree = "<group>"; };
-		0289B8921B545CE100413EC2 /* GroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupViewController.swift; sourceTree = "<group>"; };
+		0289B8921B545CE100413EC2 /* JoinGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JoinGroupViewController.swift; sourceTree = "<group>"; };
 		028F2A0D1B6284700026E22E /* PlaybackHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaybackHelper.swift; sourceTree = "<group>"; };
 		02AC7CCB1B582EE40081BAEF /* PlaylistViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistViewController.swift; sourceTree = "<group>"; };
 		02AECE751B61898F00E60B07 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -210,7 +210,7 @@
 		02C29A751B67CE060084AFC5 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				0289B8921B545CE100413EC2 /* GroupViewController.swift */,
+				0289B8921B545CE100413EC2 /* JoinGroupViewController.swift */,
 				02ED88611B57F70000E66577 /* CreateGroupViewController.swift */,
 				02C3C5391B55D9AF000E54BC /* PlaybackViewController.swift */,
 				02AC7CCB1B582EE40081BAEF /* PlaylistViewController.swift */,
@@ -327,7 +327,7 @@
 			attributes = {
 				LastSwiftMigration = 0720;
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "Logan Pratt";
 				TargetAttributes = {
 					0289B86A1B5446D800413EC2 = {
@@ -512,7 +512,7 @@
 				02CC53811B692DD4005BB836 /* SweetAlert.swift in Sources */,
 				027B64D61B715AE9005B1C2D /* SongsHelper.swift in Sources */,
 				29676F4E1E3579AF00CCD8CC /* Group.swift in Sources */,
-				0289B8931B545CE100413EC2 /* GroupViewController.swift in Sources */,
+				0289B8931B545CE100413EC2 /* JoinGroupViewController.swift in Sources */,
 				02F405BA1B5977FD00396625 /* SearchViewController.swift in Sources */,
 				02C3C53A1B55D9AF000E54BC /* PlaybackViewController.swift in Sources */,
 				02AC7CCC1B582EE40081BAEF /* PlaylistViewController.swift in Sources */,

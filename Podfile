@@ -9,15 +9,15 @@ target 'Playlist' do
     pod 'Alamofire'#, :git => 'https://github.com/Alamofire/Alamofire.git', :branch => 'swift3'
     pod 'Fabric'
     pod 'Crashlytics'
-    pod 'CBStoreHouseRefreshControl'
+    #pod 'CBStoreHouseRefreshControl'
     pod 'XCDYouTubeKit'
     pod 'Firebase/Core'
     pod 'Firebase/Database'
     pod 'Firebase/Messaging'
     pod 'Firebase/DynamicLinks'
     pod 'RealmSwift'
-    pod 'BTNavigationDropdownMenu', :git => 'https://github.com/PhamBaTho/BTNavigationDropdownMenu.git', :branch => 'swift-3.0'
-    pod "DropDownMenuKit"
+    #pod 'BTNavigationDropdownMenu', :git => 'https://github.com/PhamBaTho/BTNavigationDropdownMenu.git', :branch => 'swift-3.0'
+    #pod "DropDownMenuKit"
 end
 
 target 'PlaylistTests' do

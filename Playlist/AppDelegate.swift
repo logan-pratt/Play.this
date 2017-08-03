@@ -27,7 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     //func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         //Parse.setApplicationId("ZFcq1SiHvUzDSqgPlhHG7lO5pxe9YWJDLcNZYsdn", clientKey: "7xgtE3mz33ABlEtuCwJLvMt3wdExoG9QHMnDvEYp")
-        FIRApp.configure()
+        FirebaseApp.configure()
         Fabric.with([Crashlytics()])
         
         if #available(iOS 10.0, *) {
@@ -39,7 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // For iOS 10 display notification (sent via APNS)
             UNUserNotificationCenter.current().delegate = self
             // For iOS 10 data message (sent via FCM)
-            FIRMessaging.messaging().remoteMessageDelegate = self
+            Messaging.messaging().delegate = self
             
         } else {
             let settings: UIUserNotificationSettings =
@@ -81,7 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-        let dynamicLink = FIRDynamicLinks.dynamicLinks()?.dynamicLink(fromCustomSchemeURL: url)
+        let dynamicLink = DynamicLinks.dynamicLinks()?.dynamicLink(fromCustomSchemeURL: url)
         if let dynamicLink = dynamicLink {
             print("LINK: \(dynamicLink.url?.absoluteString)")
             return true
@@ -92,7 +92,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     @available(iOS 8.0, *)
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
-        guard let dynamicLinks = FIRDynamicLinks.dynamicLinks() else {
+        guard let dynamicLinks = DynamicLinks.dynamicLinks() else {
             return false
         }
         let handled = dynamicLinks.handleUniversalLink(userActivity.webpageURL!) { (dynamiclink, error) in
@@ -145,9 +145,13 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
     
 }
 
-extension AppDelegate : FIRMessagingDelegate {
+extension AppDelegate : MessagingDelegate {
     // Receive data message on iOS 10 devices.
-    func applicationReceivedRemoteMessage(_ remoteMessage: FIRMessagingRemoteMessage) {
+    func application(received remoteMessage: MessagingRemoteMessage) {
         print("%@", remoteMessage.appData)
     }
+    func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
+        
+    }
+
 }
