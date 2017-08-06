@@ -30,7 +30,8 @@ class JoinGroupViewController: UIViewController {
     var ref: DatabaseReference!
     var group: Group!
     let defaults: UserDefaults = UserDefaults.standard
-    var previousCode: String = ""
+    var previousCodes: [String] = []
+    var previousCount = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,10 +41,13 @@ class JoinGroupViewController: UIViewController {
         ref = Database.database().reference(withPath: "groups")
         group = Group()
         clearTextButton(button: joinButton, title: "Join Group")
-        if let previous = defaults.string(forKey: "previous") {
-            previousCode = previous
-            previousButton.isHidden = false
+        if let previousData = UserDefaults.standard.object(forKey: "previousCodes") as? NSData {
+            //if let previousData = previousData {
+                previousCodes = (NSKeyedUnarchiver.unarchiveObject(with: previousData as Data) as? [String])!
+                previousButton.isHidden = false
+            //}
         }
+        
     }
     
     func clearTextButton(button: UIButton, title: NSString) {
@@ -89,10 +93,17 @@ class JoinGroupViewController: UIViewController {
     }
     
     @IBAction func previousCode(_ sender: Any) {
-        for (i, c) in previousCode.characters.enumerated() {
+        for (i, c) in previousCodes[previousCount].characters.enumerated() {
             textFields[i].text = c.description
         }
         joinButton.isEnabled = true
+        print("PC \(previousCount)")
+        print("CC \(previousCodes.count)")
+        if previousCount < previousCodes.count-1 {
+            previousCount += 1
+        } else {
+            previousCount = 0
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -145,7 +156,11 @@ class JoinGroupViewController: UIViewController {
                 let playlistViewController = storyBoard.instantiateViewController(withIdentifier: "playlist") as! PlaylistViewController
                 playlistViewController.groupName = self.group.name
                 playlistViewController.groupCode = self.group.key
-                self.defaults.set(self.group.key, forKey: "previous")
+                SongsHelper.sharedInstance.groupCode = self.group.key
+                self.previousCodes.append(self.group.key)
+                let previousData = NSKeyedArchiver.archivedData(withRootObject: self.previousCodes)
+                self.defaults.set(previousData, forKey: "previousCodes")
+                self.defaults.synchronize()
                 self.previousButton.isHidden = false
                 self.present(playlistViewController, animated: true, completion: nil)
             } else {

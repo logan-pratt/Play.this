@@ -87,8 +87,12 @@ class PlaylistViewController: UIViewController {
 //        refreshControl.addTarget(self, action: #selector(PlaylistViewController.setUpTableView(_:)), for: UIControlEvents.valueChanged)
 //        tableView?.addSubview(refreshControl)
         
-        for r in realm.objects(RealmString.self) {
-            likedSongs.append(r.stringValue)
+//        for r in realm.objects(RealmString.self) {
+//            likedSongs.append(r.stringValue)
+//        }
+        
+        if let likedData = UserDefaults.standard.object(forKey: groupCode) as? NSData {
+            likedSongs = (NSKeyedUnarchiver.unarchiveObject(with: likedData as Data) as? [String])!
         }
         
         setUpTableView(true)
