@@ -276,14 +276,6 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <webView hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FMp-MG-b0U">
-                                <rect key="frame" x="0.0" y="233.5" width="200" height="200"/>
-                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="200" id="2B2-5x-VrZ"/>
-                                    <constraint firstAttribute="height" constant="200" id="Soj-4N-3Xm"/>
-                                </constraints>
-                            </webView>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AQD-91-ADY" userLabel="Play">
                                 <rect key="frame" x="174" y="522" width="27" height="30"/>
                                 <constraints>
@@ -390,6 +382,12 @@
                                     <action selector="previousSong:" destination="TVW-4H-syx" eventType="touchUpInside" id="KdA-yd-o22"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MH9-wY-iFQ" customClass="NVActivityIndicatorView" customModule="NVActivityIndicatorView">
+                                <rect key="frame" x="174" y="522" width="27" height="30"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="typeName" value="ballTrianglePath"/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -399,14 +397,13 @@
                             <constraint firstItem="gHM-7j-br7" firstAttribute="top" secondItem="wVJ-Mm-yBH" secondAttribute="bottom" constant="35" id="4hN-g7-ySn"/>
                             <constraint firstAttribute="centerX" secondItem="wVJ-Mm-yBH" secondAttribute="centerX" id="5xR-gd-nqM"/>
                             <constraint firstAttribute="centerX" secondItem="KP3-NK-fqi" secondAttribute="centerX" id="6MP-aD-uuJ"/>
+                            <constraint firstItem="MH9-wY-iFQ" firstAttribute="top" secondItem="wVJ-Mm-yBH" secondAttribute="bottom" constant="35" id="70s-8Y-NQL"/>
                             <constraint firstItem="Nwk-aR-6Sn" firstAttribute="top" secondItem="wVJ-Mm-yBH" secondAttribute="bottom" constant="8" id="7cQ-dQ-Yv2"/>
                             <constraint firstAttribute="centerX" secondItem="hDG-vR-ZLA" secondAttribute="centerX" id="8W5-wI-j8G"/>
                             <constraint firstItem="Sgv-fR-Bsa" firstAttribute="top" secondItem="wVJ-Mm-yBH" secondAttribute="bottom" constant="37" id="8kV-vV-WO4"/>
                             <constraint firstItem="hDG-vR-ZLA" firstAttribute="leading" secondItem="rR9-ix-VaT" secondAttribute="leadingMargin" id="9Ji-rQ-qy7"/>
                             <constraint firstItem="wVJ-Mm-yBH" firstAttribute="top" secondItem="KP3-NK-fqi" secondAttribute="bottom" constant="35" id="Aie-eA-Y7T"/>
                             <constraint firstItem="nE1-kl-ew7" firstAttribute="top" secondItem="hwF-Kg-rEz" secondAttribute="bottom" id="B2g-V3-aqc"/>
-                            <constraint firstItem="HBb-FL-Dj5" firstAttribute="leading" secondItem="FMp-MG-b0U" secondAttribute="leading" id="FBk-yp-aeJ"/>
-                            <constraint firstAttribute="centerY" secondItem="FMp-MG-b0U" secondAttribute="centerY" id="I30-Ok-0LK"/>
                             <constraint firstAttribute="centerX" secondItem="Blg-Rv-d15" secondAttribute="centerX" id="KIZ-sH-E64"/>
                             <constraint firstItem="hwF-Kg-rEz" firstAttribute="top" secondItem="rR9-ix-VaT" secondAttribute="top" id="LXY-CY-670"/>
                             <constraint firstAttribute="trailingMargin" secondItem="wVJ-Mm-yBH" secondAttribute="trailing" id="MMq-lM-oA8"/>
@@ -416,7 +413,7 @@
                             <constraint firstItem="hwF-Kg-rEz" firstAttribute="trailing" secondItem="Blg-Rv-d15" secondAttribute="trailing" constant="16" id="QGI-6H-SL8"/>
                             <constraint firstItem="qP5-ak-b8W" firstAttribute="top" secondItem="wVJ-Mm-yBH" secondAttribute="bottom" constant="8" id="R29-ac-h8k"/>
                             <constraint firstAttribute="trailing" secondItem="hwF-Kg-rEz" secondAttribute="trailing" id="Rse-xT-Mj8"/>
-                            <constraint firstItem="FMp-MG-b0U" firstAttribute="leading" secondItem="rR9-ix-VaT" secondAttribute="leadingMargin" constant="-16" id="Tuq-5I-yQf"/>
+                            <constraint firstItem="MH9-wY-iFQ" firstAttribute="leading" secondItem="gHM-7j-br7" secondAttribute="leading" id="T3z-hz-RI3"/>
                             <constraint firstItem="1cI-E5-2WA" firstAttribute="leading" secondItem="gHM-7j-br7" secondAttribute="trailing" constant="45" id="VWu-p2-jXU"/>
                             <constraint firstAttribute="centerX" secondItem="AQD-91-ADY" secondAttribute="centerX" id="VgI-ZW-gGA"/>
                             <constraint firstItem="Blg-Rv-d15" firstAttribute="top" secondItem="hDG-vR-ZLA" secondAttribute="bottom" constant="16" id="X1H-cJ-oNk"/>
@@ -424,9 +421,10 @@
                             <constraint firstAttribute="centerX" secondItem="HBb-FL-Dj5" secondAttribute="centerX" id="etP-qT-3JX"/>
                             <constraint firstItem="AQD-91-ADY" firstAttribute="top" secondItem="hDG-vR-ZLA" secondAttribute="bottom" constant="114" id="gGO-z9-xsR"/>
                             <constraint firstItem="HBb-FL-Dj5" firstAttribute="top" secondItem="Z7i-yb-9hX" secondAttribute="bottom" id="gPC-MX-1Uu"/>
+                            <constraint firstItem="1cI-E5-2WA" firstAttribute="leading" secondItem="MH9-wY-iFQ" secondAttribute="trailing" constant="45" id="gn9-Ir-8Sl"/>
                             <constraint firstItem="gHM-7j-br7" firstAttribute="top" secondItem="KP3-NK-fqi" secondAttribute="bottom" constant="100" id="hB2-Td-GOx"/>
-                            <constraint firstAttribute="centerY" secondItem="FMp-MG-b0U" secondAttribute="centerY" constant="-200" id="hfG-OF-3je"/>
                             <constraint firstItem="1cI-E5-2WA" firstAttribute="top" secondItem="wVJ-Mm-yBH" secondAttribute="bottom" constant="37" id="iKJ-QH-D3g"/>
+                            <constraint firstItem="HBb-FL-Dj5" firstAttribute="leading" secondItem="hwF-Kg-rEz" secondAttribute="leading" id="mg2-3T-T2v"/>
                             <constraint firstItem="wVJ-Mm-yBH" firstAttribute="leading" secondItem="rR9-ix-VaT" secondAttribute="leadingMargin" id="pUP-Hv-8Sb"/>
                             <constraint firstAttribute="centerX" secondItem="gHM-7j-br7" secondAttribute="centerX" id="pUj-mD-60B"/>
                             <constraint firstAttribute="centerX" secondItem="AQD-91-ADY" secondAttribute="centerX" id="pgv-yJ-0Ts"/>
@@ -436,23 +434,19 @@
                             <constraint firstItem="hwF-Kg-rEz" firstAttribute="top" secondItem="HBb-FL-Dj5" secondAttribute="bottom" constant="-64" id="rD7-Wy-2Wn"/>
                             <constraint firstItem="gHM-7j-br7" firstAttribute="top" secondItem="hDG-vR-ZLA" secondAttribute="bottom" constant="116" id="sD2-p9-3lD"/>
                             <constraint firstItem="hDG-vR-ZLA" firstAttribute="top" secondItem="HBb-FL-Dj5" secondAttribute="bottom" constant="16" id="sye-zG-lIe"/>
-                            <constraint firstAttribute="centerX" secondItem="FMp-MG-b0U" secondAttribute="centerX" constant="200" id="tGv-y7-fNa"/>
                             <constraint firstItem="Nwk-aR-6Sn" firstAttribute="leading" secondItem="rR9-ix-VaT" secondAttribute="leadingMargin" id="tTB-hA-5d6"/>
-                            <constraint firstItem="nE1-kl-ew7" firstAttribute="top" secondItem="FMp-MG-b0U" secondAttribute="bottom" id="uUb-ik-rJy"/>
                             <constraint firstItem="gHM-7j-br7" firstAttribute="leading" secondItem="Sgv-fR-Bsa" secondAttribute="trailing" constant="45" id="ucP-Rx-pYG"/>
+                            <constraint firstItem="MH9-wY-iFQ" firstAttribute="bottom" secondItem="AQD-91-ADY" secondAttribute="bottom" id="xFz-di-V8s"/>
                             <constraint firstItem="qP5-ak-b8W" firstAttribute="trailing" secondItem="rR9-ix-VaT" secondAttribute="trailingMargin" id="xeU-po-4c3"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="Q41-TT-Eg4"/>
                                 <exclude reference="rD7-Wy-2Wn"/>
-                                <exclude reference="hfG-OF-3je"/>
-                                <exclude reference="tGv-y7-fNa"/>
                                 <exclude reference="qdK-Rw-gSh"/>
                                 <exclude reference="gGO-z9-xsR"/>
                                 <exclude reference="hB2-Td-GOx"/>
                                 <exclude reference="sD2-p9-3lD"/>
-                                <exclude reference="uUb-ik-rJy"/>
                             </mask>
                         </variation>
                     </view>
@@ -460,6 +454,7 @@
                         <outlet property="artistLabel" destination="KP3-NK-fqi" id="Vba-sB-T1Z"/>
                         <outlet property="currentTimeLabel" destination="Nwk-aR-6Sn" id="ynF-Ds-Qrq"/>
                         <outlet property="endTimeLabel" destination="qP5-ak-b8W" id="02H-xY-dbM"/>
+                        <outlet property="loadingView" destination="MH9-wY-iFQ" id="sud-mo-jXb"/>
                         <outlet property="navBar" destination="HBb-FL-Dj5" id="gaf-25-2g8"/>
                         <outlet property="nextButton" destination="1cI-E5-2WA" id="UME-0d-ggK"/>
                         <outlet property="pauseButton" destination="gHM-7j-br7" id="C5G-7z-dC0"/>
@@ -468,13 +463,12 @@
                         <outlet property="songImageView" destination="hDG-vR-ZLA" id="sEG-a2-Ztu"/>
                         <outlet property="songLabel" destination="Blg-Rv-d15" id="TQH-vy-Ypx"/>
                         <outlet property="timeSlider" destination="wVJ-Mm-yBH" id="O4s-QG-MaW"/>
-                        <outlet property="webView" destination="FMp-MG-b0U" id="l39-Ph-uTw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BPn-UG-yJq" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="5oc-ts-Z7T" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="3739" y="357"/>
+            <point key="canvasLocation" x="3738.5" y="356.5"/>
         </scene>
         <!--Group-->
         <scene sceneID="F2V-5m-ufb">

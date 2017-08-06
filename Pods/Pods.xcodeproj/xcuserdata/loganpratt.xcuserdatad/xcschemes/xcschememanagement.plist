@@ -24,6 +24,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>NVActivityIndicatorView.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-Playlist.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -67,7 +72,7 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>0AD071BC9C4BA96E7C712F80317ED9C4</key>
+		<key>22119B267107CFA078D41B0EF0997463</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -77,7 +82,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>681C6AD3255DDA2344C5A4C86736F5C3</key>
+		<key>3EDFE4052B5DE7D509935AC0774CB135</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -87,22 +92,27 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>8DE5F8320A95F7FD1CD50A075F9CE580</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9D3E99E0FFECB38537D4E3565D50621C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9F1EB2162339794A9C3CF93D2D7CAE97</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>A0688C9ABAE369793B7C4F07FD1E051A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B489F5406CC6B8A871277ADBEF40489D</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>B64AA6842EA7140A2BF876C48CD795C3</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>C3FF66367F148AE022B18DE706AD9501</key>
+		<key>A325395CA6DF0711331B9E71C8D17BB6</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -112,12 +122,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>CC68D92942E4BAC09EB3DE084588E7A4</key>
+		<key>E4DD95323C54A78F879DAB0F1508B8E7</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E4DD95323C54A78F879DAB0F1508B8E7</key>
+		<key>EAA1D1638B22864A7885A9316DA4D122</key>
 		<dict>
 			<key>primary</key>
 			<true/>

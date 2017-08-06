@@ -48,6 +48,9 @@ PODS:
     - nanopb/encode (= 0.3.8)
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
+  - NVActivityIndicatorView (3.7.0):
+    - NVActivityIndicatorView/Presenter (= 3.7.0)
+  - NVActivityIndicatorView/Presenter (3.7.0)
   - Protobuf (3.3.0)
   - Realm (2.9.1):
     - Realm/Headers (= 2.9.1)
@@ -67,6 +70,7 @@ DEPENDENCIES:
   - Firebase/Messaging
   - Kingfisher
   - MarqueeLabel
+  - NVActivityIndicatorView
   - RealmSwift
   - SwiftyJSON
   - XCDYouTubeKit
@@ -86,12 +90,13 @@ SPEC CHECKSUMS:
   Kingfisher: dc3a4983e86d2dfa89513664983a82340c11a289
   MarqueeLabel: 17c5148b6f7144498eff5e0d286bd2e7e866f972
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
+  NVActivityIndicatorView: d3738df7e2e476aca0ba6bf32a8c9fbcfc33d64b
   Protobuf: d582fecf68201eac3d79ed61369ef45734394b9c
   Realm: f91fb43bd474c4f731a116ebf7392c75dd015920
   RealmSwift: 207f12a4a36b696c5183c60a1c06d70234a23e56
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
   XCDYouTubeKit: 86f4e7a9c2baa7b7adf6abfc28ac3ab34927be2d
 
-PODFILE CHECKSUM: f3d1110faf36cdd81f3cbb3f481bdb217a804102
+PODFILE CHECKSUM: 3c0feb0af6a1ee26e77b62fe189cc233990a2b76
 
 COCOAPODS: 1.1.1

@@ -13,10 +13,10 @@ import AVFoundation
 import Crashlytics
 import XCDYouTubeKit
 import AVKit
+import NVActivityIndicatorView
 
 class PlaybackViewController: UIViewController {
     
-    @IBOutlet weak var webView: UIWebView!
     @IBOutlet weak var songImageView: UIImageView!
     @IBOutlet weak var songLabel: MarqueeLabel!
     @IBOutlet weak var artistLabel: UILabel!
@@ -34,7 +34,7 @@ class PlaybackViewController: UIViewController {
             }
         }
     }
-    
+    @IBOutlet var loadingView: NVActivityIndicatorView!
     //    let ytPlayer = YTPlayerView()
     
     static let sharedInstance = PlaybackViewController()
@@ -77,8 +77,8 @@ class PlaybackViewController: UIViewController {
         navBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         navBar.shadowImage = UIImage()
         
-        webView.allowsInlineMediaPlayback = true
-        webView.mediaPlaybackRequiresUserAction = false
+//        webView.allowsInlineMediaPlayback = true
+//        webView.mediaPlaybackRequiresUserAction = false
         
         //        ytPlayer.delegate = self
         player.pause()
@@ -520,14 +520,15 @@ class PlaybackViewController: UIViewController {
                         player.advanceToNextItem()
                     }
                     play()
+                    loadingView.stopAnimating()
+                    pauseButton.isHidden = false
                 }
             }
-            //waitTimer = nil
-            print("yes")
         } else {
             pause()
+            pauseButton.isHidden = true
+            loadingView.startAnimating()
             waitTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(PlaybackViewController.checkQueue), userInfo: nil, repeats: false)
-            print("no")
         }
     }
     

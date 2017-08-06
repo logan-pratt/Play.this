@@ -3,13 +3,11 @@ platform :ios, '10.0'
 use_frameworks!
 
 target 'Playlist' do
-    pod 'SwiftyJSON'#, :git => 'https://github.com/BaiduHiDeviOS/SwiftyJSON.git', :branch => 'swift3'
+    pod 'SwiftyJSON'
     pod 'MarqueeLabel'
-    #pod 'Spring'
-    pod 'Alamofire'#, :git => 'https://github.com/Alamofire/Alamofire.git', :branch => 'swift3'
+    pod 'Alamofire'
     pod 'Fabric'
     pod 'Crashlytics'
-    #pod 'CBStoreHouseRefreshControl'
     pod 'XCDYouTubeKit'
     pod 'Firebase/Core'
     pod 'Firebase/Database'
@@ -17,8 +15,7 @@ target 'Playlist' do
     pod 'Firebase/DynamicLinks'
     pod 'RealmSwift'
     pod 'Kingfisher'
-    #pod 'BTNavigationDropdownMenu', :git => 'https://github.com/PhamBaTho/BTNavigationDropdownMenu.git', :branch => 'swift-3.0'
-    #pod "DropDownMenuKit"
+    pod 'NVActivityIndicatorView'
 end
 
 target 'PlaylistTests' do
