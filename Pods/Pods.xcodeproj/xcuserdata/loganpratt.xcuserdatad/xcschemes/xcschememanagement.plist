@@ -14,6 +14,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Kingfisher.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>MarqueeLabel.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -62,17 +67,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>27CC3CF50758C29C1C191234DD065858</key>
+		<key>0AD071BC9C4BA96E7C712F80317ED9C4</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>4C3B7ED4637ADC9ED722DE6DA34215B0</key>
+		<key>2F0C0F810568D3E82219429D9D870F04</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>4C8F5C816BCDD7F393FDA70BB1A8110E</key>
+		<key>681C6AD3255DDA2344C5A4C86736F5C3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -82,17 +87,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9119C055FCD397AE6CE3CFD9D17C5284</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>A0688C9ABAE369793B7C4F07FD1E051A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>BED01BFF0BC94FB6A44C2285A54E225B</key>
+		<key>B489F5406CC6B8A871277ADBEF40489D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B64AA6842EA7140A2BF876C48CD795C3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C3FF66367F148AE022B18DE706AD9501</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -102,7 +112,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D5B86EB63E44447D2B57FD4630281947</key>
+		<key>CC68D92942E4BAC09EB3DE084588E7A4</key>
 		<dict>
 			<key>primary</key>
 			<true/>

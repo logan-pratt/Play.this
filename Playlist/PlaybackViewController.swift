@@ -69,6 +69,7 @@ class PlaybackViewController: UIViewController {
     
     var timer: Timer!
     var playerStartedTimer: Timer!
+    var waitTimer: Timer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -104,9 +105,11 @@ class PlaybackViewController: UIViewController {
         
         playButton.isHidden = true
         pauseButton.isHidden = false
+        pauseButton.isEnabled = false
         
         if let checkedUrl = URL(string: song.coverURL) {
-            downloadImage(checkedUrl)
+//            downloadImage(checkedUrl)
+            songImageView.kf.setImage(with: checkedUrl)
         }
         
         if playlist.first == song.id {
@@ -148,6 +151,7 @@ class PlaybackViewController: UIViewController {
                 currentTimeLabel.text = secondsToText(timePlayed)
                 endTimeLabel.text = secondsToText(timeLeft)
                 timeSlider.isEnabled = true
+                pauseButton.isEnabled = true
                 if Double(timeLeft) <= 0.5 {
                     //currentSongIndex+=1
                     /*if currentSongIndex <= playlist.count + 1 {
@@ -211,8 +215,9 @@ class PlaybackViewController: UIViewController {
     func setNowPlaying(_ dura: Float, timePlayed: Float) {
         let s = songs[playbackInstance.currentSongIndex]
         //print(s.cover!.size)
-        let albumArt = MPMediaItemArtwork.init(boundsSize: songImageView.image!.size, requestHandler: { (size) -> UIImage in
-            return self.songImageView.image!// ?? UIImage()//self.albumCover
+        //print("\nBOUNDS: \(songImageView.image!.size)")
+        let albumArt = MPMediaItemArtwork.init(boundsSize: CGSize(width: 480, height: 360), requestHandler: { (size) -> UIImage in
+            return self.songImageView.image ?? #imageLiteral(resourceName: "WhiteMusic")//self.albumCover
         })
         let songInfo: [String: Any]? = [
             MPMediaItemPropertyTitle: s.name,
@@ -292,6 +297,8 @@ class PlaybackViewController: UIViewController {
                     UserDefaults.standard.set(url.absoluteString, forKey: video!.identifier)
                     UserDefaults.standard.set(Int(video!.duration), forKey: video!.identifier+".duration")
                     if self.playlist[self.loadeditems] == video!.identifier {
+                        print(self.playlist[self.loadeditems])
+                        print(video!.identifier)
                         self.createPlayerItem(url as URL, duration: Int(video!.duration))
                         return //Since every thing else needs to get next streamUrl
                     } else {
@@ -307,7 +314,8 @@ class PlaybackViewController: UIViewController {
         }
         
         //If it wasn't cached, or cache was expired, download the url from XCDYoutubeClient
-        /*UNCOMMENTXCDYouTubeClient.default().getVideoWithIdentifier(yt_id, completionHandler: { video, error in
+        //HERE
+        /*XCDYouTubeClient.default().getVideoWithIdentifier(yt_id, completionHandler: { video, error in
          if self.loadeditems >= self.playlist.count {
          return //If you start creating a new playlist before the first playlist was finished loading the URLs, you run into race conditions, this if helps kill the original playlist loading
          }
@@ -333,24 +341,25 @@ class PlaybackViewController: UIViewController {
          //                        }
          //                    }
          //If the error was something else, I'm currently not handling this properly. It would likely be a network error so it looks like I just stop trying to load songs
-         }
+            }
          } else {
-         //If the url was loaded successfully, grab the streamURL we want (by default an array of streams corresponding to different formats is downloaded
-         //Audio only is video.streamURLs[140] but causes delay in notification
-         print("vid: \(video)")
-         if let url = video?.streamURLs[17]! as NSURL! {
-         UserDefaults.standard.set(url.absoluteString, forKey: video!.identifier)
-         UserDefaults.standard.set(Int(video!.duration), forKey: video!.identifier+".duration")
-         if self.playlist[self.loadeditems] == video!.identifier {
-         self.createPlayerItem(url as URL, duration: Int(video!.duration))
-         return //Since every thing else needs to get next streamUrl
-         } else {
-         //The video identifier may not correspond because we created a new playlist in the middle of loading the first (you probably don't need to worry about this)
-         print("out of sync, likely playlist changed")
-         }
-         }
-         }
-         })*/
+            //If the url was loaded successfully, grab the streamURL we want (by default an array of streams corresponding to different formats is downloaded
+            //Audio only is video.streamURLs[140] but causes delay in notification
+            //print("vid: \(video)")
+            if let url = video?.streamURLs[140] {
+                UserDefaults.standard.set(url.absoluteString, forKey: video!.identifier)
+                UserDefaults.standard.set(Int(video!.duration), forKey: video!.identifier+".duration")
+                if self.playlist[self.loadeditems] == video!.identifier {
+                    self.createPlayerItem(url as URL, duration: Int(video!.duration))
+                    return //Since every thing else needs to get next streamUrl
+                } else {
+                    //The video identifier may not correspond because we created a new playlist in the middle of loading the first (you probably don't need to worry about this)
+                    print("out of sync, likely playlist changed")
+                }
+            }
+            }
+        })//here
+ */
     }
     
     //Create player item creates the AVPlayerItem for each song
@@ -487,13 +496,38 @@ class PlaybackViewController: UIViewController {
     }
     
     func skipSong() {
+        if let waitTimer = waitTimer {
+            waitTimer.invalidate()
+        }
         currentSongIndex+=1
-        print("SKIP: \(currentSongIndex)")
+        //print("\n Playing: \(player.currentItem) \n")
         if currentSongIndex < songs.count && currentSongIndex >= 0 {
             //            print("first: \(currentSongIndex-firstIndex)")
             //            print(playerItems[1])
-            self.player.advanceToNextItem()
-            self.setUpView()
+            
+            //            print("LOADED \(loadeditems)")
+            //            print(playerItems.count)
+            setUpView()
+            checkQueue()
+        }
+    }
+    
+    func checkQueue() {
+        if loadeditems >= currentSongIndex {
+            if let _ = player.currentItem {
+                if let _ = playerItems.index(of: player.currentItem!) {
+                    for _ in 0..<(currentSongIndex - playerItems.index(of: player.currentItem!)!) {
+                        player.advanceToNextItem()
+                    }
+                    play()
+                }
+            }
+            //waitTimer = nil
+            print("yes")
+        } else {
+            pause()
+            waitTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(PlaybackViewController.checkQueue), userInfo: nil, repeats: false)
+            print("no")
         }
     }
     
@@ -582,38 +616,3 @@ extension CMTime {
         }
     }
 }
-//
-//extension PlaybackViewController: YTPlayerViewDelegate {
-//    func playerViewDidBecomeReady(_ playerView: YTPlayerView!) {
-//        print("Ready")
-//        duration = Int(playerView.duration())
-//        //timeSlider.maximumValue = Float(duration-1)
-//    }
-//
-//    func playerView(_ playerView: YTPlayerView!, didChangeTo state: YTPlayerState) {
-//        switch(state) {
-//        case YTPlayerState.ended:
-//            print("Ended")
-//            endTimeLabel.text = "0:00"
-//            currentSongIndex+=1
-//            skipSong()
-//            break
-//        case YTPlayerState.unstarted:
-//            Answers.logCustomEvent(withName: "Unstarted Song",
-//                customAttributes: [
-//                    "Video ID": songId,
-//                    "Video Title": songTitle
-//                ])
-//            //SweetAlert().showAlert("Content blocked", subTitle: "This song is blocked due to copyright issues. Please remove it from the playlist.", style: .Error)
-//            break
-//        default:break
-//        }
-//    }
-//
-////    func playerView(playerView: YTPlayerView!, didPlayTime playTime: Float) {
-////        println(playTime)
-////        timeSlider.value = playTime
-////        currentTimeLabel.text = secondsToText(playTime)
-////        endTimeLabel.text = "-\(secondsToText(Float(duration) - playTime - 1))"
-////    }
-//}

@@ -41,7 +41,8 @@ class SearchTableViewCell: UITableViewCell {
     
     func setUpCell(_ imageUrl: String, songTitle: String, songArtist: String, songId: String, code: String) {
         if let checkedUrl = URL(string: imageUrl) {
-            downloadImage(checkedUrl)
+//            downloadImage(checkedUrl)
+            songCover.kf.setImage(with: checkedUrl)
         }
         let detailsUrl = "https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=\(songId)&key=\(apikey)"
         Alamofire.request(detailsUrl).responseJSON { (data) -> Void in

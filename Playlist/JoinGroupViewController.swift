@@ -12,6 +12,8 @@ import UIKit
 import Crashlytics
 import Firebase
 import FirebaseDatabase
+import Realm
+import RealmSwift
 
 class JoinGroupViewController: UIViewController {
     
@@ -22,19 +24,26 @@ class JoinGroupViewController: UIViewController {
     @IBOutlet weak var fifthField: UITextField!
     @IBOutlet weak var sixthField: UITextField!
     @IBOutlet weak var joinButton: UIButton!
+    @IBOutlet var previousButton: UIButton!
     
     var textFields: Array<UITextField>!
     var ref: DatabaseReference!
     var group: Group!
+    let defaults: UserDefaults = UserDefaults.standard
+    var previousCode: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+//        print(Realm.Configuration.defaultConfiguration.fileURL?.absoluteString)
         joinButton.isEnabled = false
         textFields = [firstField, secondField, thirdField, fourthField, fifthField, sixthField]
-                ref = Database.database().reference(withPath: "groups")
+        ref = Database.database().reference(withPath: "groups")
         group = Group()
         clearTextButton(button: joinButton, title: "Join Group")
+        if let previous = defaults.string(forKey: "previous") {
+            previousCode = previous
+            previousButton.isHidden = false
+        }
     }
     
     func clearTextButton(button: UIButton, title: NSString) {
@@ -77,6 +86,13 @@ class JoinGroupViewController: UIViewController {
         }
         joinButton.isEnabled = false
         firstField.becomeFirstResponder()
+    }
+    
+    @IBAction func previousCode(_ sender: Any) {
+        for (i, c) in previousCode.characters.enumerated() {
+            textFields[i].text = c.description
+        }
+        joinButton.isEnabled = true
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -129,6 +145,8 @@ class JoinGroupViewController: UIViewController {
                 let playlistViewController = storyBoard.instantiateViewController(withIdentifier: "playlist") as! PlaylistViewController
                 playlistViewController.groupName = self.group.name
                 playlistViewController.groupCode = self.group.key
+                self.defaults.set(self.group.key, forKey: "previous")
+                self.previousButton.isHidden = false
                 self.present(playlistViewController, animated: true, completion: nil)
             } else {
                 _ = SweetAlert().showAlert("Incorrect code", subTitle: "Please enter the group code again.", style: AlertStyle.error)

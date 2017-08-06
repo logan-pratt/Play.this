@@ -9,7 +9,7 @@
 import Foundation
 import Firebase
 import FirebaseDatabase
-import RealmSwift
+//import RealmSwift
 
 class Song {
     
@@ -34,7 +34,7 @@ class Song {
         self.group = group
         self.id = id
         self.duration = duration.youtubeDuration
-        downloadImage(URL(string:coverURL)!)
+        //downloadImage(URL(string:coverURL)!)
     }
     
     init(snapshot: DataSnapshot) {
@@ -49,8 +49,8 @@ class Song {
         group = snapshotValue["group"] as! String
         id = snapshotValue["id"] as! String
         duration = (snapshotValue["duration"] as! String).youtubeDuration
-        downloadImage(URL(string:coverURL)!)
-        print("done")
+        //downloadImage(URL(string:coverURL)!)
+       // print("done")
     }
     
     func getDataFromUrl(_ urL:URL, completion: @escaping ((_ data: Data?) -> Void)) {
@@ -66,9 +66,12 @@ class Song {
         getDataFromUrl(url) { data in
             //url.lastPathComponent.stringbydele
             DispatchQueue.main.async {
-                                print("Finished downloading \"\(url.lastPathComponent)\".")
-                self.cover = UIImage(data: data!)!
-                print(self.cover!.size)
+                                //print("Finished downloading \"\(url.lastPathComponent)\".")
+                if let data = data {
+                    self.cover = UIImage(data: data)
+                } else {
+                    self.cover = #imageLiteral(resourceName: "WhiteMusic")
+                }
             }
         }
         //return image

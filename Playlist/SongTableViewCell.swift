@@ -10,6 +10,7 @@ import UIKit
 //import Parse
 import FirebaseDatabase
 import Firebase
+import Kingfisher
 //import Spring
 //import NVActivityIndicatorView
 //import RJImageLoader
@@ -39,10 +40,9 @@ class SongTableViewCell: UITableViewCell {
     
     func setUpCell(song: Song) {
         self.song = song
-        //ref = ref.child(song.key)
         if let checkedUrl = URL(string: song.coverURL) {
-            //albumCover.downloadImageWithURL(imageUrl)
-            downloadImage(checkedUrl)
+            albumCover.kf.setImage(with: checkedUrl)
+            //downloadImage(checkedUrl)
         }
 
         songTitleLabel.text = song.name

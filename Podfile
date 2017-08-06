@@ -16,6 +16,7 @@ target 'Playlist' do
     pod 'Firebase/Messaging'
     pod 'Firebase/DynamicLinks'
     pod 'RealmSwift'
+    pod 'Kingfisher'
     #pod 'BTNavigationDropdownMenu', :git => 'https://github.com/PhamBaTho/BTNavigationDropdownMenu.git', :branch => 'swift-3.0'
     #pod "DropDownMenuKit"
 end
