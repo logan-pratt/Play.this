@@ -229,8 +229,8 @@ class PlaybackViewController: UIViewController {
         MPNowPlayingInfoCenter.default().nowPlayingInfo = songInfo
         MPRemoteCommandCenter.shared().nextTrackCommand.isEnabled = nextButton.isEnabled
         MPRemoteCommandCenter.shared().previousTrackCommand.isEnabled = previousButton.isEnabled
-        MPRemoteCommandCenter.shared().nextTrackCommand.addTarget(self, action: #selector(nothing))
-        //MPRemoteCommandCenter.shared().nextTrackCommand.addTarget(self, action: #selector(skipSong))
+        //MPRemoteCommandCenter.shared().nextTrackCommand.addTarget(self, action: #selector(nothing))
+        MPRemoteCommandCenter.shared().nextTrackCommand.addTarget(self, action: #selector(skipSong))
         MPRemoteCommandCenter.shared().previousTrackCommand.addTarget(self, action: #selector(previous))
         MPRemoteCommandCenter.shared().playCommand.addTarget(self, action: #selector(play))
         MPRemoteCommandCenter.shared().pauseCommand.addTarget(self, action: #selector(pause))

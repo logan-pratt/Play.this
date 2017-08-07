@@ -17,6 +17,7 @@ class CreateGroupViewController: UIViewController {
     @IBOutlet weak var groupCodeView: UITextView!
     @IBOutlet weak var createGroupButton: UIButton!
     @IBOutlet weak var createButtonConstraint: NSLayoutConstraint!
+    @IBOutlet var topLabelConstraint: NSLayoutConstraint!
     //@IBOutlet weak var navBar: UINavigationBar!
     
     var ref = Database.database().reference(withPath: "groups")
@@ -125,6 +126,7 @@ class CreateGroupViewController: UIViewController {
 //            createGroupButton.setTitleColor(UIColor(red:0.11, green:0.58, blue:0.96, alpha:1.0), for: UIControlState())
             clearTextButton(button: createGroupButton, title: "Create Group")
             createButtonConstraint.constant = keyboardFrame.height
+            topLabelConstraint.constant = 0
         }
     }
     
@@ -132,11 +134,13 @@ class CreateGroupViewController: UIViewController {
 //        createGroupButton.setTitleColor(UIColor(red:0.09, green:0.33, blue:0.93, alpha:1.0), for: UIControlState())
         clearTextButton(button: createGroupButton, title: "Create Group")
         createButtonConstraint.constant = 0
+        topLabelConstraint.constant = 44
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         createButtonConstraint.constant = 0.0
+        topLabelConstraint.constant = 44
         return false
     }
 

@@ -847,6 +847,7 @@
                         <outlet property="createGroupButton" destination="hDG-dk-UUm" id="a4e-qm-cLv"/>
                         <outlet property="groupCodeView" destination="k79-a5-ZW9" id="SFP-Na-g92"/>
                         <outlet property="groupNameField" destination="DCV-z3-6SC" id="Vxh-d3-yVp"/>
+                        <outlet property="topLabelConstraint" destination="zfd-Hy-vX6" id="owi-k5-ILS"/>
                         <segue destination="wsw-8V-YcU" kind="unwind" identifier="createToJoin" unwindAction="unwindToJoin:" id="IKd-Xx-pyr"/>
                     </connections>
                 </viewController>
