@@ -35,16 +35,18 @@ class JoinGroupViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        print(Realm.Configuration.defaultConfiguration.fileURL?.absoluteString)
+        //        print(Realm.Configuration.defaultConfiguration.fileURL?.absoluteString)
         joinButton.isEnabled = false
+        
         textFields = [firstField, secondField, thirdField, fourthField, fifthField, sixthField]
         ref = Database.database().reference(withPath: "groups")
         group = Group()
         clearTextButton(button: joinButton, title: "Join Group")
         if let previousData = UserDefaults.standard.object(forKey: "previousCodes") as? NSData {
             //if let previousData = previousData {
-                previousCodes = (NSKeyedUnarchiver.unarchiveObject(with: previousData as Data) as? [String])!
-                previousButton.isHidden = false
+            previousCodes = (NSKeyedUnarchiver.unarchiveObject(with: previousData as Data) as? [String])!
+            previousCount = previousCodes.count-1
+            previousButton.isHidden = false
             //}
         }
         
@@ -99,10 +101,10 @@ class JoinGroupViewController: UIViewController {
         joinButton.isEnabled = true
         print("PC \(previousCount)")
         print("CC \(previousCodes.count)")
-        if previousCount < previousCodes.count-1 {
-            previousCount += 1
+        if previousCount > 0 {
+            previousCount -= 1
         } else {
-            previousCount = 0
+            previousCount = previousCodes.count-1
         }
     }
     
@@ -133,21 +135,21 @@ class JoinGroupViewController: UIViewController {
     @IBAction func joinGroup(_ sender: AnyObject) {
         // if IJReachability.isConnectedToNetwork() {
         var enteredCode = ""
-//        var groupCode = ""
-//        var groupName = ""
-//        var groupId = ""
+        //        var groupCode = ""
+        //        var groupName = ""
+        //        var groupId = ""
         /*Testing code
-        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-        let playlistViewController = storyBoard.instantiateViewController(withIdentifier: "playlist") as! PlaylistViewController
-        playlistViewController.groupName = "Tester"
-        playlistViewController.groupCode = "555555"
-        present(playlistViewController, animated: true, completion: nil)
-        */
+         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+         let playlistViewController = storyBoard.instantiateViewController(withIdentifier: "playlist") as! PlaylistViewController
+         playlistViewController.groupName = "Tester"
+         playlistViewController.groupCode = "555555"
+         present(playlistViewController, animated: true, completion: nil)
+         */
         ///*REAL CODE
         for textField in textFields {
             enteredCode += textField.text!
         }
-
+        
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
             
             if snapshot.hasChild(enteredCode) {
@@ -157,49 +159,60 @@ class JoinGroupViewController: UIViewController {
                 playlistViewController.groupName = self.group.name
                 playlistViewController.groupCode = self.group.key
                 SongsHelper.sharedInstance.groupCode = self.group.key
+                
+                if let dupeIndex = self.previousCodes.index(of: self.group.key) {
+                    self.previousCodes.remove(at: dupeIndex)
+                }
                 self.previousCodes.append(self.group.key)
                 let previousData = NSKeyedArchiver.archivedData(withRootObject: self.previousCodes)
                 self.defaults.set(previousData, forKey: "previousCodes")
                 self.defaults.synchronize()
                 self.previousButton.isHidden = false
+                
+                Answers.logCustomEvent(withName: "Join Group",
+                                               customAttributes: [
+                                                "Group Name": self.group.name,
+                                                "Group Key": self.group.key
+                    ])
+                
                 self.present(playlistViewController, animated: true, completion: nil)
             } else {
                 _ = SweetAlert().showAlert("Incorrect code", subTitle: "Please enter the group code again.", style: AlertStyle.error)
                 self.clearCode()
             }
         })
- 
+        
         print(enteredCode)
         //END REAL CODE*/
- 
-//        let query = PFQuery(className: "Group")
-//        query.whereKey("groupCode", equalTo: enteredCode)
-//        query.findObjectsInBackground { (groups: [PFObject]?, error: Error?) in
-//            if error == nil {
-//                if let groups = groups as? [PFObject] {
-//                    for group in groups {
-//                        groupCode = group["groupCode"] as! String
-//                        groupName = group["groupName"] as! String
-//                        groupId = group.objectId!
-//                    }
-//                }
-//            } else {
-//                // Log details of the failure
-//                print("Error: \(error!) \(error!.userInfo)")
-//            }
-//            
-//            if groupCode != "" {
-//                let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-//                let playlistViewController = storyBoard.instantiateViewController(withIdentifier: "playlist") as! PlaylistViewController
-//                playlistViewController.groupName = groupName
-//                playlistViewController.groupCode = groupCode
-//                self.present(playlistViewController, animated: true, completion: nil)
-//            } else {
-//                SweetAlert().showAlert("Incorrect code", subTitle: "Please enter the group code again.", style: AlertStyle.error)
-//                self.clearCode()
-//            }
-//        }HERE
-                //        } else {
+        
+        //        let query = PFQuery(className: "Group")
+        //        query.whereKey("groupCode", equalTo: enteredCode)
+        //        query.findObjectsInBackground { (groups: [PFObject]?, error: Error?) in
+        //            if error == nil {
+        //                if let groups = groups as? [PFObject] {
+        //                    for group in groups {
+        //                        groupCode = group["groupCode"] as! String
+        //                        groupName = group["groupName"] as! String
+        //                        groupId = group.objectId!
+        //                    }
+        //                }
+        //            } else {
+        //                // Log details of the failure
+        //                print("Error: \(error!) \(error!.userInfo)")
+        //            }
+        //
+        //            if groupCode != "" {
+        //                let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        //                let playlistViewController = storyBoard.instantiateViewController(withIdentifier: "playlist") as! PlaylistViewController
+        //                playlistViewController.groupName = groupName
+        //                playlistViewController.groupCode = groupCode
+        //                self.present(playlistViewController, animated: true, completion: nil)
+        //            } else {
+        //                SweetAlert().showAlert("Incorrect code", subTitle: "Please enter the group code again.", style: AlertStyle.error)
+        //                self.clearCode()
+        //            }
+        //        }HERE
+        //        } else {
         //            SweetAlert().showAlert("No connection", subTitle: "Please check your internet connection and try again.", style: AlertStyle.Error)
         //        }
         
@@ -207,14 +220,14 @@ class JoinGroupViewController: UIViewController {
     }
     
     /*
-    // MARK: - Navigation////////////////
-    
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    // Get the new view controller using segue.destinationViewController.
-    // Pass the selected object to the new view controller.
-    }
-    */
+     // MARK: - Navigation////////////////
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
     
 }
 extension JoinGroupViewController: UITextFieldDelegate {
@@ -241,7 +254,7 @@ extension JoinGroupViewController: UITextFieldDelegate {
                 if insertStringLength > 0 {
                     newString = (textField.text! as NSString).replacingCharacters(in: range, with: string)
                 } else {
-//                    newString?.deleteCharactersInRange(range)
+                    //                    newString?.deleteCharactersInRange(range)
                     newString = ""
                 }
             }
