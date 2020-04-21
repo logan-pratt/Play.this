@@ -84,12 +84,12 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-Playlist.xcscheme</key>
+		<key>Pods-PlayThis.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-PlaylistTests.xcscheme</key>
+		<key>Pods-PlayThisTests.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

@@ -2,7 +2,7 @@
 platform :ios, '10.0'
 use_frameworks!
 
-target 'Playlist' do
+target 'PlayThis' do
     pod 'SwiftyJSON'
     pod 'MarqueeLabel'
     pod 'Alamofire'
@@ -18,6 +18,6 @@ target 'Playlist' do
     pod 'NVActivityIndicatorView'
 end
 
-target 'PlaylistTests' do
+target 'PlayThisTests' do
 
 end
