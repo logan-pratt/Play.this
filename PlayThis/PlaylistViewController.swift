@@ -58,9 +58,6 @@ class PlaylistViewController: UIViewController {
         playlistNavBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         playlistNavBar.shadowImage = UIImage()
         playlistNavBarItem.title = groupName
-        if #available(iOS 13.0, *) {
-            isModalInPresentation = false
-        }
         
         nothingHereLabel.isHidden = true
         //        activityIndicatorView.center = view.center
