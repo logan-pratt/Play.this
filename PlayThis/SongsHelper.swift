@@ -30,16 +30,24 @@ class SongsHelper: NSObject {
     var songs: [Song] = []
     var likedSongs: [Song] = []{
         didSet {
+            self.likedSongs = self.likedSongs.removingDuplicates()
             let likedData = NSKeyedArchiver.archivedData(withRootObject: likedSongs.map({$0.id}))
             defaults.set(likedData, forKey: groupCode)
             defaults.synchronize()
-            
-//            try! realm.write {
-//                realm.deleteAll()
-//                for key in likedSongs.map({RealmString(value: [$0.key])}) {
-//                    realm.add(key)
-//                }
-//            }
         }
+    }
+}
+
+extension Array where Element: Hashable {
+    func removingDuplicates() -> [Element] {
+        var addedDict = [Element: Bool]()
+
+        return filter {
+            addedDict.updateValue(true, forKey: $0) == nil
+        }
+    }
+
+    mutating func removeDuplicates() {
+        self = self.removingDuplicates()
     }
 }

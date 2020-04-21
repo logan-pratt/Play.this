@@ -12,7 +12,7 @@ import FirebaseDatabase
 //import RealmSwift
 
 class Song {
-    
+
     let key: String
     var likes: Int
     let ref: DatabaseReference?
@@ -89,6 +89,16 @@ class Song {
         ]
     }
  
+}
+
+extension Song: Hashable {
+    static func == (lhs: Song, rhs: Song) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }
 
 extension String {

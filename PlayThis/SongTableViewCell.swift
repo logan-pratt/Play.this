@@ -112,6 +112,7 @@ class SongTableViewCell: UITableViewCell {
         //            print(snapshot)
         //            self.currentLikes = (snapshot.childSnapshot(forPath: "likes").value as! NSNumber).intValue
         //
+        print("before \(self.songs.likedSongs)")
         if self.likeButton.isSelected {
             self.song.likes = Int(self.likesLabel.text!)! - 1
             self.songs.likedSongs = self.songs.likedSongs.filter() { $0.key != self.song.key }
@@ -119,38 +120,13 @@ class SongTableViewCell: UITableViewCell {
             self.likeButton.isSelected = false
         } else {
             self.song.likes = Int(self.likesLabel.text!)! + 1
+            
             self.songs.likedSongs.append(self.song)
             self.likeButton.isSelected = true
         }
+        print("after \(self.songs.likedSongs)")
         self.ref.updateChildValues(["\(song.key)/likes": self.song.likes])
         print(self.song.likes)
-        //        })
-        //        let songsQuery = PFQuery(className: "Song")
-        //        songsQuery.whereKey("objectId", equalTo: self.songObjId)
-        //        songsQuery.findObjectsInBackground {(songs: [AnyObject]?, error: Error?) -> Void in
-        //            if error == nil {
-        //
-        //                if let songs = songs as? [PFObject] {
-        //                    for song in songs {
-        //                        if self.likeButton.isSelected {
-        //                            song["likes"] = song["likes"] as! Int - 1
-        //                            self.songs.likedSongs = self.songs.likedSongs.filter() { $0 != self.songObjId}
-        //                        } else {
-        //                            song["likes"] = song["likes"] as! Int + 1
-        //                            self.songs.likedSongs.append(self.songObjId)
-        //                        }
-        //                        self.likeButton.isSelected = !self.likeButton.isSelected
-        //                        song.saveInBackground { (success: Bool, error: Error?) -> Void in
-        //                            self.updateLikes()
-        //                        }
-        //                    }
-        //                }
-        //            } else {
-        //                print("Error: \(error!) \(error!._userInfo)")
-        //            }
-        //        }
-        
-        
     }
  
     

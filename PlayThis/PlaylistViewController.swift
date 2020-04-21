@@ -77,10 +77,11 @@ class PlaylistViewController: UIViewController {
 //            likedSongs.append(r.stringValue)
 //        }
         
-        
+        print("get liked")
         
         if let likedData = UserDefaults.standard.object(forKey: groupCode) as? NSData {
             likedSongs = (NSKeyedUnarchiver.unarchiveObject(with: likedData as Data) as? [String])!
+            print(likedSongs)
         }
         
         setUpTableView(true)
@@ -117,7 +118,7 @@ class PlaylistViewController: UIViewController {
                 if(song.group == self.groupCode) {
                     self.songsInstance.songs.append(song)
                     if self.firstRun {
-                        if self.likedSongs.contains(song.key) {
+                        if self.likedSongs.contains(song.id) {
                             self.songsInstance.likedSongs.append(song)
                         }
                     }
