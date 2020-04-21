@@ -12,22 +12,22 @@ import AVFoundation
 
 class PlaybackHelper: NSObject {
    
-    static let sharedInstance = PlaybackHelper()
-    let songs = SongsHelper.sharedInstance
-    var player = AVQueuePlayer()
+    @objc static let sharedInstance = PlaybackHelper()
+    @objc let songs = SongsHelper.sharedInstance
+    @objc var player = AVQueuePlayer()
     
-    var songId = ""
-    var songTitle = ""
-    var songArtist = ""
-    var albumCover = UIImage()
-    var currentSongIndex = 0
-    var loadeditems = 0
-    var isPlaying = true
+    @objc var songId = ""
+    @objc var songTitle = ""
+    @objc var songArtist = ""
+    @objc var albumCover = UIImage()
+    @objc var currentSongIndex = 0
+    @objc var loadeditems = 0
+    @objc var isPlaying = true
     var duration: Float!
-    var playlist: [String]!
+    @objc var playlist: [String]!
     
-    var timer: Timer!
-    var playerStartedTimer: Timer!
+    @objc var timer: Timer!
+    @objc var playerStartedTimer: Timer!
     
     override init() {
         super.init()

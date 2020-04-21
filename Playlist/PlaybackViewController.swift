@@ -7,13 +7,14 @@
 //
 
 import UIKit
-import MarqueeLabel
-import MediaPlayer
 import AVFoundation
-import Crashlytics
-import XCDYouTubeKit
 import AVKit
+import AVKit
+import MediaPlayer
+//import Crashlytics
+import XCDYouTubeKit
 import NVActivityIndicatorView
+import MarqueeLabel
 
 class PlaybackViewController: UIViewController {
     
@@ -37,7 +38,7 @@ class PlaybackViewController: UIViewController {
     @IBOutlet var loadingView: NVActivityIndicatorView!
     //    let ytPlayer = YTPlayerView()
     
-    static let sharedInstance = PlaybackViewController()
+    @objc static let sharedInstance = PlaybackViewController()
     
     let songs = SongsHelper.sharedInstance.songs
     let playbackInstance = PlaybackHelper.sharedInstance
@@ -70,7 +71,7 @@ class PlaybackViewController: UIViewController {
     var timer: Timer!
     var playerStartedTimer: Timer!
     var waitTimer: Timer!
-    
+ 
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -93,7 +94,7 @@ class PlaybackViewController: UIViewController {
         //        self.createPlaylist(PlaylistSong(yt_id: yt_id, title: title, artist: artist, item: nil))
     }
     
-    func setUpView() {
+    @objc func setUpView() {
         currentTimeLabel.text = "0:00"
         endTimeLabel.text = "0:00"
         timeSlider.value = 0
@@ -111,7 +112,7 @@ class PlaybackViewController: UIViewController {
 //            downloadImage(checkedUrl)
             songImageView.kf.setImage(with: checkedUrl)
         }
-        
+ 
         if playlist.first == song.id {
             previousButton.isEnabled = false
         } else {
@@ -122,7 +123,6 @@ class PlaybackViewController: UIViewController {
         } else {
             nextButton.isEnabled = true
         }
-        
         //        periodicTimeObserver = player.addPeriodicTimeObserverForInterval(CMTimeMake(1, 1), queue: dispatch_get_main_queue()) { cmTime in
         //            self.timeObserverFired(cmTime)
         //        }
@@ -130,7 +130,7 @@ class PlaybackViewController: UIViewController {
         playerStartedTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(PlaybackViewController.checkIfPlayerReady), userInfo: nil, repeats: true)
     }
     
-    func checkIfPlayerReady() {
+    @objc func checkIfPlayerReady() {
         if player.status.rawValue == 1 {
             //timeSlider.isEnabled = true
             playerStartedTimer.invalidate()
@@ -138,7 +138,7 @@ class PlaybackViewController: UIViewController {
         }
     }
     
-    func updateProgress() {
+    @objc func updateProgress() {
         if player.currentItem != nil {
             //print("Current item: \(player.currentItem?.duration)")
             let timePlayed = Float(self.player.currentTime().value) / Float(self.player.currentTime().timescale)
@@ -162,7 +162,8 @@ class PlaybackViewController: UIViewController {
             }
         }
     }
-    
+ 
+ 
     func createPlaylist(_ startingSong:String) {
         //print(currentSongIndex)
         
@@ -241,6 +242,7 @@ class PlaybackViewController: UIViewController {
     func nothing() {
         
     }
+    
     
     //Downloads the youtube stream URL based on songID, remember this is different than buffering but needs to be done
     func getStreamUrl(_ yt_id: String) {
@@ -361,7 +363,7 @@ class PlaybackViewController: UIViewController {
         })//here
  */
     }
-    
+ 
     //Create player item creates the AVPlayerItem for each song
     func createPlayerItem(_ url: URL, duration: Int) {
         //Create the AVPlayerItem
@@ -422,7 +424,6 @@ class PlaybackViewController: UIViewController {
         }
     }
     
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -449,24 +450,24 @@ class PlaybackViewController: UIViewController {
         playButton.isHidden = !playButton.isHidden
     }
     
-    func play() {
+    @objc func play() {
         isPlaying = true
         //        ytPlayer.playVideo()
         self.player.play()
     }
     
-    func pause() {
+    @objc func pause() {
         isPlaying = false
         //        ytPlayer.pauseVideo()
         self.player.pause()
         
     }
     
-    func seekTo(_ seconds: Float, seekAhead: Bool) {
+    @objc func seekTo(_ seconds: Float, seekAhead: Bool) {
         //        ytPlayer.seekToSeconds(seconds, allowSeekAhead: seekAhead)
     }
     
-    func secondsToText(_ seconds: Float) -> String {
+    @objc func secondsToText(_ seconds: Float) -> String {
         let minutes = floor(seconds/60)
         //        let minutes = seconds / 60
         let seconds = round(seconds - minutes * 60)
@@ -482,9 +483,10 @@ class PlaybackViewController: UIViewController {
     @IBAction func sliderChanged(_ sender: UISlider) {
         if timer.isValid {
             currentTimeLabel.text = secondsToText(sender.value)
-            player.seek(to: CMTimeMakeWithSeconds(Float64(sender.value), player.currentItem!.currentTime().timescale))
+            player.seek(to: CMTimeMakeWithSeconds(Float64(sender.value), preferredTimescale: player.currentItem!.currentTime().timescale))
         }
     }
+ 
     
     @IBAction func nextSong(_ sender: AnyObject) {
         //currentSongIndex+=1
@@ -495,7 +497,7 @@ class PlaybackViewController: UIViewController {
         //}
     }
     
-    func skipSong() {
+    @objc func skipSong() {
         if let waitTimer = waitTimer {
             waitTimer.invalidate()
         }
@@ -512,7 +514,8 @@ class PlaybackViewController: UIViewController {
         }
     }
     
-    func checkQueue() {
+    
+    @objc func checkQueue() {
         if loadeditems >= currentSongIndex {
             if let _ = player.currentItem {
                 if let _ = playerItems.index(of: player.currentItem!) {
@@ -536,11 +539,11 @@ class PlaybackViewController: UIViewController {
         previous()
     }
     
-    func previous() {
+    @objc func previous() {
         currentSongIndex-=1
-        playerItems[currentSongIndex-firstIndex].seek(to: CMTimeMakeWithSeconds(Float64(0), playerItems[currentSongIndex-firstIndex].currentTime().timescale))
+        playerItems[currentSongIndex-firstIndex].seek(to: CMTimeMakeWithSeconds(Float64(0), preferredTimescale: playerItems[currentSongIndex-firstIndex].currentTime().timescale))
         player.replaceCurrentItem(with: playerItems[currentSongIndex-firstIndex])
-        playerItems[currentSongIndex-firstIndex+1].seek(to: CMTimeMakeWithSeconds(Float64(0), playerItems[currentSongIndex-firstIndex+1].currentTime().timescale))
+        playerItems[currentSongIndex-firstIndex+1].seek(to: CMTimeMakeWithSeconds(Float64(0), preferredTimescale: playerItems[currentSongIndex-firstIndex+1].currentTime().timescale))
         player.insert(playerItems[currentSongIndex-firstIndex+1], after: player.currentItem)
         setUpView()
     }
@@ -585,7 +588,7 @@ class PlaybackViewController: UIViewController {
         //        }
     }
     
-    func toPlaylist() {
+    @objc func toPlaylist() {
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         let playlistViewController = storyBoard.instantiateViewController(withIdentifier: "playlist") as! PlaylistViewController
         self.present(playlistViewController, animated: true, completion: nil)

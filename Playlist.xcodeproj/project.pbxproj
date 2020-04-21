@@ -38,9 +38,9 @@
 		29676F4B1E356EF200CCD8CC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 29676F4A1E356EF200CCD8CC /* GoogleService-Info.plist */; };
 		29676F4E1E3579AF00CCD8CC /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29676F4D1E3579AF00CCD8CC /* Group.swift */; };
 		29676F501E3589AD00CCD8CC /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29676F4F1E3589AD00CCD8CC /* Song.swift */; };
-		29676F521E36C91800CCD8CC /* XCDYouTubeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29676F511E36C91800CCD8CC /* XCDYouTubeKit.framework */; };
 		29CB813D1E3C719C000AD559 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29CB813C1E3C719C000AD559 /* AdSupport.framework */; };
 		676D461CC22DF7A4DE25ACE7 /* Pods_PlaylistTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C84FA68D4B9C522DB0453683 /* Pods_PlaylistTests.framework */; };
+		84F6DD4A244E7EB700C0E000 /* XCDYouTubeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F6DD49244E7EB700C0E000 /* XCDYouTubeKit.framework */; };
 		B0E7DD8EAC0A7D875D31A308 /* Pods_Playlist.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB9EEDB4E2E24B440C58433C /* Pods_Playlist.framework */; };
 /* End PBXBuildFile section */
 
@@ -96,6 +96,7 @@
 		33F39C83D339A77F1EA7E484 /* Pods-PlaylistTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlaylistTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PlaylistTests/Pods-PlaylistTests.debug.xcconfig"; sourceTree = "<group>"; };
 		54B5ABED6A8B208D7CBFBAD2 /* Pods-Playlist.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Playlist.release.xcconfig"; path = "Pods/Target Support Files/Pods-Playlist/Pods-Playlist.release.xcconfig"; sourceTree = "<group>"; };
 		5A7B9004AFBCCB07384C2D22 /* Pods-PlaylistTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlaylistTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PlaylistTests/Pods-PlaylistTests.release.xcconfig"; sourceTree = "<group>"; };
+		84F6DD49244E7EB700C0E000 /* XCDYouTubeKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = XCDYouTubeKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A52A5FA6F5F4BF05AA73470 /* Pods-Playlist.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Playlist.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Playlist/Pods-Playlist.debug.xcconfig"; sourceTree = "<group>"; };
 		BB9EEDB4E2E24B440C58433C /* Pods_Playlist.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Playlist.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C84FA68D4B9C522DB0453683 /* Pods_PlaylistTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PlaylistTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -106,8 +107,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84F6DD4A244E7EB700C0E000 /* XCDYouTubeKit.framework in Frameworks */,
 				29CB813D1E3C719C000AD559 /* AdSupport.framework in Frameworks */,
-				29676F521E36C91800CCD8CC /* XCDYouTubeKit.framework in Frameworks */,
 				02C29A791B6812C90084AFC5 /* MediaPlayer.framework in Frameworks */,
 				02AECE761B61898F00E60B07 /* AVFoundation.framework in Frameworks */,
 				02ED88601B56FC8200E66577 /* Social.framework in Frameworks */,
@@ -242,6 +243,7 @@
 		28D56A430C37AAAD77DAFFB7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				84F6DD49244E7EB700C0E000 /* XCDYouTubeKit.framework */,
 				29CB813C1E3C719C000AD559 /* AdSupport.framework */,
 				29676F511E36C91800CCD8CC /* XCDYouTubeKit.framework */,
 				02C29A781B6812C90084AFC5 /* MediaPlayer.framework */,
@@ -287,7 +289,6 @@
 				0289B8691B5446D800413EC2 /* Resources */,
 				02A72F881B7B852300A56156 /* ShellScript */,
 				A1F6299FAF1284C206F2798F /* [CP] Embed Pods Frameworks */,
-				8ABB5B22FBB9A21A2BC74F69 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -306,8 +307,6 @@
 				0289B87C1B5446D800413EC2 /* Sources */,
 				0289B87D1B5446D800413EC2 /* Frameworks */,
 				0289B87E1B5446D800413EC2 /* Resources */,
-				6B9ADC8FF69667026AB4AF26 /* [CP] Embed Pods Frameworks */,
-				9E012FD50A502A560BDB684F /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -327,13 +326,13 @@
 			attributes = {
 				LastSwiftMigration = 0720;
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = "Logan Pratt";
 				TargetAttributes = {
 					0289B86A1B5446D800413EC2 = {
 						CreatedOnToolsVersion = 6.3.2;
 						DevelopmentTeam = P9W2AS6U24;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 1010;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -352,7 +351,7 @@
 					};
 					0289B87F1B5446D800413EC2 = {
 						CreatedOnToolsVersion = 6.3.2;
-						LastSwiftMigration = 0820;
+						LastSwiftMigration = 1010;
 						TestTargetID = 0289B86A1B5446D800413EC2;
 					};
 				};
@@ -409,7 +408,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Fabric/run\" b8db88c32e9ef40a383cc7338b822aba346b2ed8 39d127a8ab177ba13dd0135b5c654de347b6e24a6ffb2356117c6f4bb89819df";
+			shellScript = "\n";
 		};
 		426FC25428C5753D3C7460CC /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -417,58 +416,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PlaylistTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		6B9ADC8FF69667026AB4AF26 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PlaylistTests/Pods-PlaylistTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		8ABB5B22FBB9A21A2BC74F69 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Playlist/Pods-Playlist-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		9E012FD50A502A560BDB684F /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PlaylistTests/Pods-PlaylistTests-resources.sh\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A1F6299FAF1284C206F2798F /* [CP] Embed Pods Frameworks */ = {
@@ -477,13 +434,38 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Playlist/Pods-Playlist-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
+				"${BUILT_PRODUCTS_DIR}/MarqueeLabel/MarqueeLabel.framework",
+				"${BUILT_PRODUCTS_DIR}/NVActivityIndicatorView/NVActivityIndicatorView.framework",
+				"${BUILT_PRODUCTS_DIR}/PromisesObjC/FBLPromises.framework",
+				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
+				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/XCDYouTubeKit/XCDYouTubeKit.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MarqueeLabel.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NVActivityIndicatorView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBLPromises.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XCDYouTubeKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Playlist/Pods-Playlist-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Playlist/Pods-Playlist-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		B4B5A228CD1C26114F1672B7 /* [CP] Check Pods Manifest.lock */ = {
@@ -492,13 +474,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Playlist-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -566,12 +551,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -595,12 +588,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -625,6 +626,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = Playlist/Playlist.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -639,6 +641,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -649,6 +652,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = Playlist/Playlist.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -663,6 +667,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
@@ -671,6 +676,7 @@
 			baseConfigurationReference = 33F39C83D339A77F1EA7E484 /* Pods-PlaylistTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -684,7 +690,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Logan-Pratt.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Playlist.app/Playlist";
 			};
 			name = Debug;
@@ -694,6 +700,7 @@
 			baseConfigurationReference = 5A7B9004AFBCCB07384C2D22 /* Pods-PlaylistTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -704,7 +711,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Playlist.app/Playlist";
 			};
 			name = Release;

@@ -8,6 +8,7 @@
 
 import UIKit
 //import Parse
+
 import Firebase
 import FirebaseDatabase
 import Alamofire
@@ -23,6 +24,7 @@ class SearchTableViewCell: UITableViewCell {
     @IBOutlet weak var durationLabel: UILabel!
     @IBOutlet weak var titleConstraint: NSLayoutConstraint!
     
+    
     var songId = ""
     var groupCode = ""
     let songs = SongsHelper.sharedInstance
@@ -34,14 +36,13 @@ class SearchTableViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
     }
-
+   
     func setCode(_ code: String) {
         groupCode = code
     }
     
-    func setUpCell(_ imageUrl: String, songTitle: String, songArtist: String, songId: String, code: String) {
+    @objc func setUpCell(_ imageUrl: String, songTitle: String, songArtist: String, songId: String, code: String) {
         if let checkedUrl = URL(string: imageUrl) {
-//            downloadImage(checkedUrl)
             songCover.kf.setImage(with: checkedUrl)
         }
         let detailsUrl = "https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=\(songId)&key=\(apikey)"
@@ -71,23 +72,26 @@ class SearchTableViewCell: UITableViewCell {
             addSongButton.isHidden = false
         }
     }
-    
-    func getDataFromUrl(_ urL:URL, completion: @escaping ((_ data: Data?) -> Void)) {
+ 
+    @objc func getDataFromUrl(_ urL:URL, completion: @escaping ((_ data: Data?) -> Void)) {
         URLSession.shared.dataTask(with: urL) { (data, response, error) in
             completion(data)
             }.resume()
     }
     
-    func downloadImage(_ url:URL){
+ 
+    @objc func downloadImage(_ url:URL){
 //        println("Started downloading \"\(url.lastPathComponent!.stringByDeletingPathExtension)\".")
         getDataFromUrl(url) { data in
             DispatchQueue.main.async {
 //                println("Finished downloading \"\(url.lastPathComponent!.stringByDeletingPathExtension)\".")
                 self.songCover.image = UIImage(data: data!)
             }
+        
         }
     }
-
+    
+    
     
     @IBAction func addSong(_ sender: AnyObject) {
         addSongButton.isHidden = !addSongButton.isHidden
@@ -123,6 +127,8 @@ class SearchTableViewCell: UITableViewCell {
 //                print("Error: \(error!) \(error!._userInfo)")
 //            }
 //        }HERE
+ 
+ 
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {

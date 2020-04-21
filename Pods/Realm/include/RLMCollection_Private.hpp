@@ -35,7 +35,6 @@ class RLMClassInfo;
 @property (nonatomic, readonly) RLMClassInfo *objectInfo;
 @property (nonatomic, readonly) NSUInteger count;
 
-- (NSUInteger)indexInSource:(NSUInteger)index;
 - (realm::TableView)tableView;
 - (RLMFastEnumerator *)fastEnumerator;
 @end
@@ -46,11 +45,9 @@ class RLMClassInfo;
 @interface RLMFastEnumerator : NSObject
 - (instancetype)initWithList:(realm::List&)list
                   collection:(id)collection
-                       realm:(RLMRealm *)realm
                    classInfo:(RLMClassInfo&)info;
 - (instancetype)initWithResults:(realm::Results&)results
                      collection:(id)collection
-                          realm:(RLMRealm *)realm
                       classInfo:(RLMClassInfo&)info;
 
 // Detach this enumerator from the source collection. Must be called before the
@@ -80,5 +77,8 @@ RLMNotificationToken *RLMAddNotificationBlock(id objcCollection,
                                               Collection& collection,
                                               void (^block)(id, RLMCollectionChange *, NSError *),
                                               bool suppressInitialChange=false);
+
+template<typename Collection>
+NSArray *RLMCollectionValueForKey(Collection& collection, NSString *key, RLMClassInfo& info);
 
 std::vector<std::pair<std::string, bool>> RLMSortDescriptorsToKeypathArray(NSArray<RLMSortDescriptor *> *properties);

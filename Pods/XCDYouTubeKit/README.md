@@ -1,10 +1,11 @@
 ## About
 
-[![Build Status](https://img.shields.io/circleci/project/0xced/XCDYouTubeKit/master.svg?style=flat)](https://circleci.com/gh/0xced/XCDYouTubeKit)
-[![Coverage Status](https://img.shields.io/codecov/c/github/0xced/XCDYouTubeKit/master.svg?style=flat)](https://codecov.io/gh/0xced/XCDYouTubeKit/branch.master)
+[![Build Status](https://img.shields.io/circleci/project/0xced/XCDYouTubeKit/develop.svg?style=flat)](https://circleci.com/gh/0xced/XCDYouTubeKit)
+[![Coverage Status](https://img.shields.io/codecov/c/github/0xced/XCDYouTubeKit/develop.svg?style=flat)](https://codecov.io/gh/0xced/XCDYouTubeKit/branch/develop)
 [![Platform](https://img.shields.io/cocoapods/p/XCDYouTubeKit.svg?style=flat)](http://cocoadocs.org/docsets/XCDYouTubeKit/)
 [![Pod Version](https://img.shields.io/cocoapods/v/XCDYouTubeKit.svg?style=flat)](https://cocoapods.org/pods/XCDYouTubeKit)
 [![Carthage Compatibility](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage/)
+[![Swift Package Manager Compatibility](https://img.shields.io/badge/Swift%20Package%20Manager-compatible-brightgreen)](ttps://swift.org/package-manager/)
 [![License](https://img.shields.io/cocoapods/l/XCDYouTubeKit.svg?style=flat)](LICENSE)
 
 **XCDYouTubeKit** is a YouTube video player for iOS, tvOS and macOS.
@@ -27,18 +28,28 @@ XCDYouTubeKit is against the YouTube [Terms of Service](https://www.youtube.com/
 
 ## Installation
 
-XCDYouTubeKit is available through CocoaPods and Carthage.
+XCDYouTubeKit is available through [CocoaPods](https://cocoapods.org/), [Carthage](https://github.com/Carthage/Carthage) and [Swift Package Manager](https://swift.org/package-manager/).
 
 CocoaPods:
 
 ```ruby
-pod "XCDYouTubeKit", "~> 2.5"
+pod "XCDYouTubeKit", "~> 2.12"
 ```
 
 Carthage:
 
 ```objc
-github "0xced/XCDYouTubeKit" ~> 2.5
+github "0xced/XCDYouTubeKit" ~> 2.12
+```
+
+Swift Package Manager:
+
+Add `XCDYouTubeKit` to the dependencies value of your `Package.swift`
+
+```swift
+dependencies: [
+	.package(url: "https://github.com/0xced/XCDYouTubeKit.git", from: "2.12.0")
+]
 ```
 
 Alternatively, you can manually use the provided static library or dynamic framework. In order to use the static library, you must:
@@ -54,7 +65,45 @@ These steps will ensure that `#import <XCDYouTubeKit/XCDYouTubeKit.h>` will work
 
 XCDYouTubeKit is [fully documented](http://cocoadocs.org/docsets/XCDYouTubeKit/).
 
-### iOS only
+### iOS 8.0+ & tvOS (AVPlayerViewController)
+
+```objc 
+AVPlayerViewController *playerViewController = [AVPlayerViewController new];
+[self presentViewController:playerViewController animated:YES completion:nil];
+
+__weak AVPlayerViewController *weakPlayerViewController = playerViewController;
+[[XCDYouTubeClient defaultClient] getVideoWithIdentifier:videoIdentifier completionHandler:^(XCDYouTubeVideo * _Nullable video, NSError * _Nullable error) {
+    if (video)
+    {
+        NSDictionary *streamURLs = video.streamURLs;
+        NSURL *streamURL = streamURLs[XCDYouTubeVideoQualityHTTPLiveStreaming] ?: streamURLs[@(XCDYouTubeVideoQualityHD720)] ?: streamURLs[@(XCDYouTubeVideoQualityMedium360)] ?: streamURLs[@(XCDYouTubeVideoQualitySmall240)];
+        weakPlayerViewController.player = [AVPlayer playerWithURL:streamURL];
+        [weakPlayerViewController.player play];
+    }
+    else
+    {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+}];
+```
+
+### iOS, tvOS and macOS
+
+```objc
+NSString *videoIdentifier = @"9bZkp7q19f0"; // A 11 characters YouTube video identifier
+[[XCDYouTubeClient defaultClient] getVideoWithIdentifier:videoIdentifier completionHandler:^(XCDYouTubeVideo *video, NSError *error) {
+	if (video)
+	{
+		// Do something with the `video` object
+	}
+	else
+	{
+		// Handle error
+	}
+}];
+```
+
+### iOS 8.0
 
 On iOS, you can use the class `XCDYouTubeVideoPlayerViewController` the same way you use a `MPMoviePlayerViewController`, except you initialize it with a YouTube video identifier instead of a content URL.
 
@@ -87,22 +136,6 @@ On iOS, you can use the class `XCDYouTubeVideoPlayerViewController` the same way
 XCDYouTubeVideoPlayerViewController *videoPlayerViewController = [[XCDYouTubeVideoPlayerViewController alloc] initWithVideoIdentifier:@"9bZkp7q19f0"];
 [videoPlayerViewController presentInView:self.videoContainerView];
 [videoPlayerViewController.moviePlayer play];
-```
-
-### iOS, tvOS and macOS
-
-```objc
-NSString *videoIdentifier = @"9bZkp7q19f0"; // A 11 characters YouTube video identifier
-[[XCDYouTubeClient defaultClient] getVideoWithIdentifier:videoIdentifier completionHandler:^(XCDYouTubeVideo *video, NSError *error) {
-	if (video)
-	{
-		// Do something with the `video` object
-	}
-	else
-	{
-		// Handle error
-	}
-}];
 ```
 
 See the demo project for more sample code.

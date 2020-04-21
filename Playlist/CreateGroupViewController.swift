@@ -8,8 +8,10 @@
 
 import UIKit
 //import Parse
+
 import Firebase
 import FirebaseDatabase
+
 
 class CreateGroupViewController: UIViewController {
 
@@ -19,19 +21,20 @@ class CreateGroupViewController: UIViewController {
     @IBOutlet weak var createButtonConstraint: NSLayoutConstraint!
     @IBOutlet var topLabelConstraint: NSLayoutConstraint!
     //@IBOutlet weak var navBar: UINavigationBar!
-    
+
     var ref = Database.database().reference(withPath: "groups")
     var groupCode = ""
     //var groupId = ""
     var codeAlreadyExists = false
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
 //        navBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
 //        navBar.shadowImage = UIImage()
-        
+
+
         groupNameField.text = ""
         groupNameField.becomeFirstResponder()
         
@@ -42,8 +45,8 @@ class CreateGroupViewController: UIViewController {
         recognizer.direction = .right
         self.view.addGestureRecognizer(recognizer)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(CreateGroupViewController.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(CreateGroupViewController.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(CreateGroupViewController.keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(CreateGroupViewController.keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         clearTextButton(button: createGroupButton, title: "Create Group")
         
@@ -52,18 +55,19 @@ class CreateGroupViewController: UIViewController {
 //        })
     }
     
-    func swipeRight(recognizer: UISwipeGestureRecognizer) {
+    
+    @objc func swipeRight(recognizer: UISwipeGestureRecognizer) {
         self.performSegue(withIdentifier: "createToJoin", sender: self)
     }
     
-    func clearTextButton(button: UIButton, title: NSString) {
+    @objc func clearTextButton(button: UIButton, title: NSString) {
         button.titleLabel?.backgroundColor = UIColor.clear
         button.setTitleColor(UIColor.clear, for: .normal)
         button.setTitle(title as String, for: [])
         let buttonSize: CGSize = button.bounds.size
         let font: UIFont = button.titleLabel!.font
-        let attribs: [String : AnyObject] = [NSFontAttributeName: font]
-        let textSize: CGSize = title.size(attributes: attribs)
+        let attribs: [String : AnyObject] = [convertFromNSAttributedStringKey(NSAttributedString.Key.font): font]
+        let textSize: CGSize = title.size(withAttributes: convertToOptionalNSAttributedStringKeyDictionary(attribs))
         UIGraphicsBeginImageContextWithOptions(buttonSize, false, UIScreen.main.scale)
         let ctx: CGContext = UIGraphicsGetCurrentContext()!
         ctx.setFillColor(UIColor.white.cgColor)
@@ -72,7 +76,7 @@ class CreateGroupViewController: UIViewController {
         ctx.addPath(path.cgPath)
         ctx.fillPath()
         ctx.setBlendMode(.destinationOut)
-        title.draw(at: center, withAttributes: [NSFontAttributeName: font])
+        title.draw(at: center, withAttributes: convertToOptionalNSAttributedStringKeyDictionary([convertFromNSAttributedStringKey(NSAttributedString.Key.font): font]))
         let viewImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         let maskLayer: CALayer = CALayer()
@@ -81,12 +85,13 @@ class CreateGroupViewController: UIViewController {
         button.layer.mask = maskLayer
     }
     
-    func randNum(_ num1: Int, to num2: Int) -> String{
+    @objc func randNum(_ num1: Int, to num2: Int) -> String{
         let num = Int(arc4random_uniform(10))
         return "\(num)"
     }
     
-    func generateCode() -> String {
+    
+    @objc func generateCode() -> String {
         var randCode = ""
         for _ in 1...6 {
             randCode += randNum(0, to: 9)
@@ -119,10 +124,12 @@ class CreateGroupViewController: UIViewController {
 //            }
 //        }HERE
 //        return randCode
+ 
     }
     
-    func keyboardWillShow(_ notification: Notification) {
-        if let keyboardFrame = ((notification as NSNotification).userInfo?[UIKeyboardFrameEndUserInfoKey] as AnyObject).cgRectValue {
+    
+    @objc func keyboardWillShow(_ notification: Notification) {
+        if let keyboardFrame = ((notification as NSNotification).userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as AnyObject).cgRectValue {
 //            createGroupButton.setTitleColor(UIColor(red:0.11, green:0.58, blue:0.96, alpha:1.0), for: UIControlState())
             clearTextButton(button: createGroupButton, title: "Create Group")
             createButtonConstraint.constant = keyboardFrame.height
@@ -130,7 +137,7 @@ class CreateGroupViewController: UIViewController {
         }
     }
     
-    func keyboardWillHide(_ notification: Notification) {
+    @objc func keyboardWillHide(_ notification: Notification) {
 //        createGroupButton.setTitleColor(UIColor(red:0.09, green:0.33, blue:0.93, alpha:1.0), for: UIControlState())
         clearTextButton(button: createGroupButton, title: "Create Group")
         createButtonConstraint.constant = 0
@@ -143,7 +150,9 @@ class CreateGroupViewController: UIViewController {
         topLabelConstraint.constant = 44
         return false
     }
-
+     
+    
+    
     @IBAction func createGroup(_ sender: AnyObject) {
         let group = Group(name: groupNameField.text!, key: groupCode)
         let groupRef = self.ref.child(groupCode)
@@ -166,8 +175,6 @@ class CreateGroupViewController: UIViewController {
 //            playlistViewController.groupCode = self.groupCode
 //            self.present(playlistViewController, animated: true, completion: nil)
 //        }
-        
-        
     }
     
     override func didReceiveMemoryWarning() {
@@ -177,8 +184,8 @@ class CreateGroupViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
         groupNameField.resignFirstResponder()
     }
     
@@ -192,4 +199,15 @@ class CreateGroupViewController: UIViewController {
     }
     */
 
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromNSAttributedStringKey(_ input: NSAttributedString.Key) -> String {
+	return input.rawValue
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [String: Any]?) -> [NSAttributedString.Key: Any]? {
+	guard let input = input else { return nil }
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
 }

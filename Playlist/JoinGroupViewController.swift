@@ -9,11 +9,12 @@
 import UIKit
 //import Parse
 //import IJReachability
-import Crashlytics
+//import Crashlytics
 import Firebase
 import FirebaseDatabase
 import Realm
 import RealmSwift
+
 
 class JoinGroupViewController: UIViewController {
     
@@ -26,6 +27,7 @@ class JoinGroupViewController: UIViewController {
     @IBOutlet weak var joinButton: UIButton!
     @IBOutlet var previousButton: UIButton!
     
+    
     var textFields: Array<UITextField>!
     var ref: DatabaseReference!
     var group: Group!
@@ -34,6 +36,7 @@ class JoinGroupViewController: UIViewController {
     var previousCount = 0
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         //        print(Realm.Configuration.defaultConfiguration.fileURL?.absoluteString)
         joinButton.isEnabled = false
@@ -52,14 +55,14 @@ class JoinGroupViewController: UIViewController {
         
     }
     
-    func clearTextButton(button: UIButton, title: NSString) {
+    @objc func clearTextButton(button: UIButton, title: NSString) {
         button.titleLabel?.backgroundColor = UIColor.clear
         button.setTitleColor(UIColor.clear, for: .normal)
         button.setTitle(title as String, for: [])
         let buttonSize: CGSize = button.bounds.size
         let font: UIFont = button.titleLabel!.font
-        let attribs: [String : AnyObject] = [NSFontAttributeName: font]
-        let textSize: CGSize = title.size(attributes: attribs)
+        let attribs: [String : AnyObject] = [convertFromNSAttributedStringKey(NSAttributedString.Key.font): font]
+        let textSize: CGSize = title.size(withAttributes: convertToOptionalNSAttributedStringKeyDictionary(attribs))
         UIGraphicsBeginImageContextWithOptions(buttonSize, false, UIScreen.main.scale)
         let ctx: CGContext = UIGraphicsGetCurrentContext()!
         ctx.setFillColor(UIColor.white.cgColor)
@@ -68,7 +71,7 @@ class JoinGroupViewController: UIViewController {
         ctx.addPath(path.cgPath)
         ctx.fillPath()
         ctx.setBlendMode(.destinationOut)
-        title.draw(at: center, withAttributes: [NSFontAttributeName: font])
+        title.draw(at: center, withAttributes: convertToOptionalNSAttributedStringKeyDictionary([convertFromNSAttributedStringKey(NSAttributedString.Key.font): font]))
         let viewImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         let maskLayer: CALayer = CALayer()
@@ -86,7 +89,7 @@ class JoinGroupViewController: UIViewController {
         clearCode()
     }
     
-    func clearCode() {
+    @objc func clearCode() {
         for textField in textFields {
             textField.text = ""
         }
@@ -169,11 +172,12 @@ class JoinGroupViewController: UIViewController {
                 self.defaults.synchronize()
                 self.previousButton.isHidden = false
                 
-                Answers.logCustomEvent(withName: "Join Group",
+                //Crashlytics
+                /*Answers.logCustomEvent(withName: "Join Group",
                                                customAttributes: [
                                                 "Group Name": self.group.name,
                                                 "Group Key": self.group.key
-                    ])
+                    ])*/
                 
                 self.present(playlistViewController, animated: true, completion: nil)
             } else {
@@ -216,7 +220,6 @@ class JoinGroupViewController: UIViewController {
         //            SweetAlert().showAlert("No connection", subTitle: "Please check your internet connection and try again.", style: AlertStyle.Error)
         //        }
         
-        
     }
     
     /*
@@ -230,6 +233,7 @@ class JoinGroupViewController: UIViewController {
      */
     
 }
+
 extension JoinGroupViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         var shouldProcess = false
@@ -284,7 +288,13 @@ extension JoinGroupViewController: UITextFieldDelegate {
 //    }
 //}
 
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromNSAttributedStringKey(_ input: NSAttributedString.Key) -> String {
+	return input.rawValue
+}
 
-
-
-
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [String: Any]?) -> [NSAttributedString.Key: Any]? {
+	guard let input = input else { return nil }
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
+}

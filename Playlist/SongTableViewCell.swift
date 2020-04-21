@@ -8,11 +8,13 @@
 
 import UIKit
 //import Parse
+
 import FirebaseDatabase
 import Firebase
 import Kingfisher
+ 
 //import Spring
-//import NVActivityIndicatorView
+import NVActivityIndicatorView
 //import RJImageLoader
 
 class SongTableViewCell: UITableViewCell {
@@ -26,12 +28,14 @@ class SongTableViewCell: UITableViewCell {
     
     //    let activityIndicatorView = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 100, height: 100), type: .BallTrianglePath)
     
+    
     var songObjId = ""
     var groupCode = ""
     let songs = SongsHelper.sharedInstance
     var song: Song!
     var currentLikes: Int = 0
     var ref = Database.database().reference(withPath: "songs")
+ 
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -39,6 +43,7 @@ class SongTableViewCell: UITableViewCell {
     }
     
     func setUpCell(song: Song) {
+       
         self.song = song
         if let checkedUrl = URL(string: song.coverURL) {
             albumCover.kf.setImage(with: checkedUrl)
@@ -63,7 +68,9 @@ class SongTableViewCell: UITableViewCell {
         }
         //print(song.likes)
         // updateLikes()
+        
     }
+    
     
     func getDataFromUrl(_ urL:URL, completion: @escaping ((_ data: Data?) -> Void)) {
         URLSession.shared.dataTask(with: urL) { (data, response, error) in
@@ -78,6 +85,7 @@ class SongTableViewCell: UITableViewCell {
             }
         }
     }
+ 
     
     func updateLikes() {
         //        let songsQuery = PFQuery(className: "Song")
@@ -144,6 +152,7 @@ class SongTableViewCell: UITableViewCell {
         
         
     }
+ 
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

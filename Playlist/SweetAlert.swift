@@ -16,30 +16,30 @@ public enum AlertStyle {
 }
 
 open class SweetAlert: UIViewController {
-    let kBakcgroundTansperancy: CGFloat = 0.7
-    let kHeightMargin: CGFloat = 10.0
-    let KTopMargin: CGFloat = 20.0
-    let kWidthMargin: CGFloat = 10.0
-    let kAnimatedViewHeight: CGFloat = 70.0
-    let kMaxHeight: CGFloat = 300.0
-    var kContentWidth: CGFloat = 300.0
-    let kButtonHeight: CGFloat = 35.0
-    var textViewHeight: CGFloat = 90.0
-    let kTitleHeight:CGFloat = 30.0
-    var strongSelf:SweetAlert?
-    var contentView = UIView()
-    var titleLabel: UILabel = UILabel()
-    var buttons: [UIButton] = []
-    var animatedView: AnimatableView?
-    var imageView:UIImageView?
-    var subTitleTextView = UITextView()
-    var userAction:((_ isOtherButton: Bool) -> Void)? = nil
-    let kFont = "Helvetica"
+    @objc let kBakcgroundTansperancy: CGFloat = 0.7
+    @objc let kHeightMargin: CGFloat = 10.0
+    @objc let KTopMargin: CGFloat = 20.0
+    @objc let kWidthMargin: CGFloat = 10.0
+    @objc let kAnimatedViewHeight: CGFloat = 70.0
+    @objc let kMaxHeight: CGFloat = 300.0
+    @objc var kContentWidth: CGFloat = 300.0
+    @objc let kButtonHeight: CGFloat = 35.0
+    @objc var textViewHeight: CGFloat = 90.0
+    @objc let kTitleHeight:CGFloat = 30.0
+    @objc var strongSelf:SweetAlert?
+    @objc var contentView = UIView()
+    @objc var titleLabel: UILabel = UILabel()
+    @objc var buttons: [UIButton] = []
+    @objc var animatedView: AnimatableView?
+    @objc var imageView:UIImageView?
+    @objc var subTitleTextView = UITextView()
+    @objc var userAction:((_ isOtherButton: Bool) -> Void)? = nil
+    @objc let kFont = "Helvetica"
 
     init() {
         super.init(nibName: nil, bundle: nil)
         self.view.frame = UIScreen.main.bounds
-        self.view.autoresizingMask = [UIViewAutoresizing.flexibleHeight, UIViewAutoresizing.flexibleWidth]
+        self.view.autoresizingMask = [UIView.AutoresizingMask.flexibleHeight, UIView.AutoresizingMask.flexibleWidth]
         self.view.backgroundColor = UIColor(red:0, green:0, blue:0, alpha:kBakcgroundTansperancy)
         self.view.addSubview(contentView)
         
@@ -108,7 +108,7 @@ open class SweetAlert: UIViewController {
         // Subtitle
         if self.subTitleTextView.text.isEmpty == false {
             let subtitleString = subTitleTextView.text! as NSString
-            let rect = subtitleString.boundingRect(with: CGSize(width: width, height: 0.0), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSFontAttributeName:subTitleTextView.font!], context: nil)
+            let rect = subtitleString.boundingRect(with: CGSize(width: width, height: 0.0), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: convertToOptionalNSAttributedStringKeyDictionary([convertFromNSAttributedStringKey(NSAttributedString.Key.font):subTitleTextView.font!]), context: nil)
             textViewHeight = ceil(rect.size.height) + 10.0
             subTitleTextView.frame = CGRect(x: x, y: y, width: width, height: textViewHeight)
             contentView.addSubview(subTitleTextView)
@@ -117,8 +117,8 @@ open class SweetAlert: UIViewController {
         
         var buttonRect:[CGRect] = []
         for button in buttons {
-            let string = button.title(for: UIControlState())! as NSString
-            buttonRect.append(string.boundingRect(with: CGSize(width: width, height:0.0), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes:[NSFontAttributeName:button.titleLabel!.font], context:nil))
+            let string = button.title(for: UIControl.State())! as NSString
+            buttonRect.append(string.boundingRect(with: CGSize(width: width, height:0.0), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes:convertToOptionalNSAttributedStringKeyDictionary([convertFromNSAttributedStringKey(NSAttributedString.Key.font):button.titleLabel!.font]), context:nil))
         }
         
         var totalWidth: CGFloat = 0.0
@@ -136,7 +136,7 @@ open class SweetAlert: UIViewController {
                 buttonX = buttons[i].frame.origin.x + kWidthMargin + buttonRect[i].size.width + 20.0
                 buttons[i].layer.cornerRadius = 5.0
                 self.contentView.addSubview(buttons[i])
-                buttons[i].addTarget(self, action: #selector(SweetAlert.pressed(_:)), for: UIControlEvents.touchUpInside)
+                buttons[i].addTarget(self, action: #selector(SweetAlert.pressed(_:)), for: UIControl.Event.touchUpInside)
 
         }
         y += kHeightMargin + buttonRect[0].size.height + 10.0
@@ -157,7 +157,7 @@ open class SweetAlert: UIViewController {
         contentView.clipsToBounds = true
     }
     
-    open func pressed(_ sender: UIButton!) {
+    @objc open func pressed(_ sender: UIButton!) {
         self.closeAlert(sender.tag)
     }
 
@@ -168,7 +168,7 @@ open class SweetAlert: UIViewController {
         let ver = sver.floatValue
         if ver < 8.0 {
             // iOS versions before 7.0 did not switch the width and height on device roration
-            if UIInterfaceOrientationIsLandscape(UIApplication.shared.statusBarOrientation) {
+            if UIApplication.shared.statusBarOrientation.isLandscape {
                 let ssz = sz
                 sz = CGSize(width:ssz.height, height:ssz.width)
             }
@@ -176,7 +176,7 @@ open class SweetAlert: UIViewController {
         self.resizeAndRelayout()
     }
 
-    func closeAlert(_ buttonIndex:Int){
+    @objc func closeAlert(_ buttonIndex:Int){
         if userAction !=  nil {
             let isOtherButton = buttonIndex == 0 ? true: false
             SweetAlertContext.shouldNotAnimate = true
@@ -184,7 +184,7 @@ open class SweetAlert: UIViewController {
             SweetAlertContext.shouldNotAnimate = false
         }
 
-        UIView.animate(withDuration: 0.5, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: { () -> Void in
+        UIView.animate(withDuration: 0.5, delay: 0.0, options: UIView.AnimationOptions.curveEaseOut, animations: { () -> Void in
             self.view.alpha = 0.0
         }) { (Bool) -> Void in
             self.view.removeFromSuperview()
@@ -195,7 +195,7 @@ open class SweetAlert: UIViewController {
         }
     }
 
-    func cleanUpAlert() {
+    @objc func cleanUpAlert() {
     
         if self.animatedView != nil {
             self.animatedView!.removeFromSuperview()
@@ -205,7 +205,7 @@ open class SweetAlert: UIViewController {
         self.contentView = UIView()
     }
     
-    open func showAlert(_ title: String) -> SweetAlert {
+    @objc open func showAlert(_ title: String) -> SweetAlert {
         _ =  showAlert(title, subTitle: nil, style: .none)
         return self
     }
@@ -242,7 +242,7 @@ open class SweetAlert: UIViewController {
             userAction = action
             let window: UIWindow = UIApplication.shared.keyWindow! 
             window.addSubview(view)
-            window.bringSubview(toFront: view)
+            window.bringSubviewToFront(view)
             view.frame = window.bounds
             self.setupContentView()
             self.setupTitleLabel()
@@ -272,8 +272,8 @@ open class SweetAlert: UIViewController {
             }
             buttons = []
             if buttonTitle.isEmpty == false {
-                let button: UIButton = UIButton(type: UIButtonType.custom)
-                button.setTitle(buttonTitle, for: UIControlState())
+                let button: UIButton = UIButton(type: UIButton.ButtonType.custom)
+                button.setTitle(buttonTitle, for: UIControl.State())
                 button.backgroundColor = buttonColor
                 button.isUserInteractionEnabled = true
                 button.tag = 0
@@ -281,10 +281,10 @@ open class SweetAlert: UIViewController {
             }
             
             if otherButtonTitle != nil && otherButtonTitle!.isEmpty == false {
-                let button: UIButton = UIButton(type: UIButtonType.custom)
-                button.setTitle(otherButtonTitle, for: UIControlState())
+                let button: UIButton = UIButton(type: UIButton.ButtonType.custom)
+                button.setTitle(otherButtonTitle, for: UIControl.State())
                 button.backgroundColor = otherButtonColor
-                button.addTarget(self, action: #selector(SweetAlert.pressed(_:)), for: UIControlEvents.touchUpInside)
+                button.addTarget(self, action: #selector(SweetAlert.pressed(_:)), for: UIControl.Event.touchUpInside)
                 button.tag = 1
                 buttons.append(button)
             }
@@ -301,7 +301,7 @@ open class SweetAlert: UIViewController {
             }
     }
 
-    func animateAlert() {
+    @objc func animateAlert() {
 
         view.alpha = 0;
         UIView.animate(withDuration: 0.1, animations: { () -> Void in
@@ -340,15 +340,15 @@ open class SweetAlert: UIViewController {
 // MARK: Animatable Views
 
 class AnimatableView: UIView {
-    func animate(){
+    @objc func animate(){
         print("Should overide by subclasss", terminator: "")
     }
 }
 
 class CancelAnimatedView: AnimatableView {
     
-    var circleLayer = CAShapeLayer()
-    var crossPathLayer = CAShapeLayer()
+    @objc var circleLayer = CAShapeLayer()
+    @objc var crossPathLayer = CAShapeLayer()
 
     override required init(frame: CGRect) {
         super.init(frame: frame)
@@ -392,7 +392,7 @@ class CancelAnimatedView: AnimatableView {
         circleLayer.path = outlineCircle
         circleLayer.fillColor = UIColor.clear.cgColor;
         circleLayer.strokeColor = UIColor.colorFromRGB(0xF27474).cgColor;
-        circleLayer.lineCap = kCALineCapRound
+        circleLayer.lineCap = CAShapeLayerLineCap.round
         circleLayer.lineWidth = 4;
         circleLayer.frame = CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.height)
         circleLayer.position = CGPoint(x: self.frame.size.width/2.0, y: self.frame.size.height/2.0)
@@ -401,7 +401,7 @@ class CancelAnimatedView: AnimatableView {
         crossPathLayer.path = crossPath
         crossPathLayer.fillColor = UIColor.clear.cgColor;
         crossPathLayer.strokeColor = UIColor.colorFromRGB(0xF27474).cgColor;
-        crossPathLayer.lineCap = kCALineCapRound
+        crossPathLayer.lineCap = CAShapeLayerLineCap.round
         crossPathLayer.lineWidth = 4;
         crossPathLayer.frame = CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.height)
         crossPathLayer.position = CGPoint(x: self.frame.size.width/2.0, y: self.frame.size.height/2.0)
@@ -424,7 +424,7 @@ class CancelAnimatedView: AnimatableView {
         animation.fromValue = NSValue(caTransform3D: t)
         animation.toValue = NSValue(caTransform3D:t2)
         animation.isRemovedOnCompletion = false
-        animation.fillMode = kCAFillModeForwards
+        animation.fillMode = CAMediaTimingFillMode.forwards
         self.circleLayer.add(animation, forKey: "transform")
         
         
@@ -446,7 +446,7 @@ class CancelAnimatedView: AnimatableView {
         fadeInAnimation.fromValue = 0.3
         fadeInAnimation.toValue = 1.0
         fadeInAnimation.isRemovedOnCompletion = false
-        fadeInAnimation.fillMode = kCAFillModeForwards
+        fadeInAnimation.fillMode = CAMediaTimingFillMode.forwards
         self.crossPathLayer.add(fadeInAnimation, forKey: "opacity")
     }
     
@@ -454,8 +454,8 @@ class CancelAnimatedView: AnimatableView {
 
 class InfoAnimatedView: AnimatableView {
     
-    var circleLayer = CAShapeLayer()
-    var crossPathLayer = CAShapeLayer()
+    @objc var circleLayer = CAShapeLayer()
+    @objc var crossPathLayer = CAShapeLayer()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -470,7 +470,7 @@ class InfoAnimatedView: AnimatableView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    var outlineCircle: CGPath  {
+    @objc var outlineCircle: CGPath  {
         let path = UIBezierPath()
         let startAngle: CGFloat = CGFloat((0) / 180.0 * Double.pi)  //0
         let endAngle: CGFloat = CGFloat((360) / 180.0 * Double.pi)   //360
@@ -485,11 +485,11 @@ class InfoAnimatedView: AnimatableView {
         return path.cgPath
     }
     
-    func setupLayers() {
+    @objc func setupLayers() {
         circleLayer.path = outlineCircle
         circleLayer.fillColor = UIColor.clear.cgColor;
         circleLayer.strokeColor = UIColor.colorFromRGB(0xF8D486).cgColor;
-        circleLayer.lineCap = kCALineCapRound
+        circleLayer.lineCap = CAShapeLayerLineCap.round
         circleLayer.lineWidth = 4;
         circleLayer.frame = CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.height)
         circleLayer.position = CGPoint(x: self.frame.size.width/2.0, y: self.frame.size.height/2.0)
@@ -501,7 +501,7 @@ class InfoAnimatedView: AnimatableView {
         let colorAnimation = CABasicAnimation(keyPath:"strokeColor")
         colorAnimation.duration = 1.0;
         colorAnimation.repeatCount = HUGE
-        colorAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        colorAnimation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         colorAnimation.autoreverses = true
         colorAnimation.fromValue = UIColor.colorFromRGB(0xF7D58B).cgColor
         colorAnimation.toValue = UIColor.colorFromRGB(0xF2A665).cgColor
@@ -512,8 +512,8 @@ class InfoAnimatedView: AnimatableView {
 
 class SuccessAnimatedView: AnimatableView {
     
-    var circleLayer = CAShapeLayer()
-    var outlineLayer = CAShapeLayer()
+    @objc var circleLayer = CAShapeLayer()
+    @objc var outlineLayer = CAShapeLayer()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -531,7 +531,7 @@ class SuccessAnimatedView: AnimatableView {
     }
 
     
-    var outlineCircle: CGPath {
+    @objc var outlineCircle: CGPath {
         let path = UIBezierPath()
         let startAngle: CGFloat = CGFloat((0) / 180.0 * Double.pi)  //0
         let endAngle: CGFloat = CGFloat((360) / 180.0 * Double.pi)   //360
@@ -539,7 +539,7 @@ class SuccessAnimatedView: AnimatableView {
         return path.cgPath
     }
     
-    var path: CGPath {
+    @objc var path: CGPath {
         let path = UIBezierPath()
         let startAngle:CGFloat = CGFloat((60) / 180.0 * Double.pi) //60
         let endAngle:CGFloat = CGFloat((200) / 180.0 * Double.pi)  //190
@@ -550,14 +550,14 @@ class SuccessAnimatedView: AnimatableView {
     }
     
     
-    func setupLayers() {
+    @objc func setupLayers() {
         
         outlineLayer.position = CGPoint(x: 0,
             y: 0);
         outlineLayer.path = outlineCircle
         outlineLayer.fillColor = UIColor.clear.cgColor;
         outlineLayer.strokeColor = UIColor(red: 150.0/255.0, green: 216.0/255.0, blue: 115.0/255.0, alpha: 1.0).cgColor;
-        outlineLayer.lineCap = kCALineCapRound
+        outlineLayer.lineCap = CAShapeLayerLineCap.round
         outlineLayer.lineWidth = 4;
         outlineLayer.opacity = 0.1
         self.layer.addSublayer(outlineLayer)
@@ -567,7 +567,7 @@ class SuccessAnimatedView: AnimatableView {
         circleLayer.path = path
         circleLayer.fillColor = UIColor.clear.cgColor;
         circleLayer.strokeColor = UIColor(red: 150.0/255.0, green: 216.0/255.0, blue: 115.0/255.0, alpha: 1.0).cgColor;
-        circleLayer.lineCap = kCALineCapRound
+        circleLayer.lineCap = CAShapeLayerLineCap.round
         circleLayer.lineWidth = 4;
         circleLayer.actions = [
             "strokeStart": NSNull(),
@@ -591,7 +591,7 @@ class SuccessAnimatedView: AnimatableView {
         strokeStart.toValue = 0.68
         strokeStart.duration =  7.0*factor
         strokeStart.beginTime =  CACurrentMediaTime() + 3.0*factor
-        strokeStart.fillMode = kCAFillModeBackwards
+        strokeStart.fillMode = CAMediaTimingFillMode.backwards
         strokeStart.timingFunction = timing
         circleLayer.strokeStart = 0.68
         circleLayer.strokeEnd = 0.93
@@ -602,7 +602,7 @@ class SuccessAnimatedView: AnimatableView {
 }
 
 extension UIColor {
-    class func colorFromRGB(_ rgbValue: UInt) -> UIColor {
+    @objc class func colorFromRGB(_ rgbValue: UInt) -> UIColor {
         return UIColor(
             red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
             green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
@@ -612,3 +612,14 @@ extension UIColor {
     }
 }
 
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [String: Any]?) -> [NSAttributedString.Key: Any]? {
+	guard let input = input else { return nil }
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromNSAttributedStringKey(_ input: NSAttributedString.Key) -> String {
+	return input.rawValue
+}
