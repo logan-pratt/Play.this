@@ -7,20 +7,22 @@
 //
 
 import UIKit
+
 import Firebase
 import FirebaseDatabase
 import RealmSwift
 import Realm
 
 class RealmString: Object {
-    dynamic var stringValue = ""
+    @objc dynamic var stringValue = ""
 }
 
 class SongsHelper: NSObject {
     
-    static let sharedInstance = SongsHelper()
+    @objc static let sharedInstance = SongsHelper()
     
-    let defaults = UserDefaults.standard
+    @objc let defaults = UserDefaults.standard
+    
     let realm = try! Realm()
     
     var groupCode: String = ""

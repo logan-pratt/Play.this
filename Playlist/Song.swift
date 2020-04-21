@@ -88,6 +88,7 @@ class Song {
             "duration": duration
         ]
     }
+ 
 }
 
 extension String {

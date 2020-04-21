@@ -12,10 +12,12 @@ import SwiftyJSON
 //import Spring
 //import IJReachability
 //import RJImageLoader
+
 import Firebase
 import FirebaseDatabase
 import Realm
 import RealmSwift
+
 //import DropDownMenuKit
 
 class PlaylistViewController: UIViewController {
@@ -27,9 +29,10 @@ class PlaylistViewController: UIViewController {
     @IBOutlet weak var nothingHereLabel: UILabel!
     @IBOutlet weak var groupCodeLabel: UILabel!
     @IBOutlet weak var copyGroupCodeButton: UIButton!
-    var refreshControl = UIRefreshControl()
+    @objc var refreshControl = UIRefreshControl()
     //var titleView: DropDownTitleView!
     //    var activityIndicatorView = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40), type: .ballTrianglePath)
+    
     
     let songsInstance = SongsHelper.sharedInstance
     let ref = Database.database().reference(withPath: "songs")
@@ -64,14 +67,19 @@ class PlaylistViewController: UIViewController {
     var tableNum = 0
     var playbackViewController: PlaybackViewController!
     
-    var attr: [String : AnyObject]? = [NSForegroundColorAttributeName:UIColor.white, NSFontAttributeName:UIFont(name: "Avenir-Light", size: 12.0)!]
+    var attr: [String : AnyObject]? = [NSAttributedString.Key.foregroundColor.rawValue:UIColor.white, NSAttributedString.Key.font.rawValue:UIFont(name: "Avenir-Light", size: 12.0)!]
+ 
+   
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         tableView.dataSource = self
         tableView.delegate = self
         playlistNavBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         playlistNavBar.shadowImage = UIImage()
+        
+        
         playlistNavBarItem.title = groupName
         
         nothingHereLabel.isHidden = true
@@ -81,6 +89,7 @@ class PlaylistViewController: UIViewController {
         //        activityIndicatorView.startAnimation()
         
         groupCodeLabel.text = "Group code: \(groupCode)"
+ 
         
 //        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes:attr)
 //        refreshControl.tintColor = UIColor.white
@@ -91,6 +100,8 @@ class PlaylistViewController: UIViewController {
 //            likedSongs.append(r.stringValue)
 //        }
         
+        
+        
         if let likedData = UserDefaults.standard.object(forKey: groupCode) as? NSData {
             likedSongs = (NSKeyedUnarchiver.unarchiveObject(with: likedData as Data) as? [String])!
         }
@@ -99,15 +110,17 @@ class PlaylistViewController: UIViewController {
         //        let recognizer: UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "swipeDown:")
         //        recognizer.direction = .Down
         //        self.view.addGestureRecognizer(recognizer)
+ 
+   
     }
     
     @IBAction func copyGroupCode(_ sender: AnyObject) {
         UIPasteboard.general.string = groupCode
         copyGroupCodeButton.isEnabled = false
-        copyGroupCodeButton.setTitle("Copied", for: UIControlState())
+        copyGroupCodeButton.setTitle("Copied", for: UIControl.State())
     }
     
-    func setUpTableView(_ animated: Bool) {
+    @objc func setUpTableView(_ animated: Bool) {
         //if IJReachability.isConnectedToNetwork() {
         //        songTitles = []
         //        songArtists = []
@@ -116,7 +129,7 @@ class PlaylistViewController: UIViewController {
         //        songObjIds = []
         
         copyGroupCodeButton.isEnabled = true
-        copyGroupCodeButton.setTitle("Copy", for: UIControlState())
+        copyGroupCodeButton.setTitle("Copy", for: UIControl.State())
         
         ref.observe(.value, with: { snapshot in
             self.songsInstance.songs = []
@@ -242,7 +255,7 @@ class PlaylistViewController: UIViewController {
         //            refreshControl.attributedTitle = NSAttributedString(string: "No Internet Connection", attributes:attr)
         //            refreshControl.endRefreshing()
         //        }
-        
+ 
     }
     
     @IBAction func toSearch(_ sender: AnyObject) {
@@ -257,6 +270,7 @@ class PlaylistViewController: UIViewController {
     }
     
     @IBAction func showNowPlaying(_ sender: AnyObject) {
+        
         self.present(playbackViewController, animated: true, completion: nil)
     }
     
@@ -265,7 +279,7 @@ class PlaylistViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func animateTable() { // tableView cool animation
+    @objc func animateTable() { // tableView cool animation
         tableView.reloadData()
         
         nothingHereLabel.isHidden = true
@@ -330,7 +344,7 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
         return true
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    private func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let song = self.songsInstance.songs[indexPath.row]
             song.ref?.removeValue()

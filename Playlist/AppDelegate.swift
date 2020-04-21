@@ -7,28 +7,28 @@
 //
 
 import UIKit
-//import Parse
-//import Bolts
 import AVFoundation
-import Fabric
-import Crashlytics
+//import Fabric
+//import Crashlytics
 import MediaPlayer
 import Firebase
-import FirebaseMessaging
-import UserNotifications
+//import FirebaseMessaging
+//import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
 //    let playback = PlaybackViewController.sharedInstance
     var window: UIWindow?
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
     
     //func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         //Parse.setApplicationId("ZFcq1SiHvUzDSqgPlhHG7lO5pxe9YWJDLcNZYsdn", clientKey: "7xgtE3mz33ABlEtuCwJLvMt3wdExoG9QHMnDvEYp")
         FirebaseApp.configure()
-        Fabric.with([Crashlytics()])
+        /*2020
+//
+//        Fabric.with([Crashlytics()])
         
         if #available(iOS 10.0, *) {
             let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
@@ -73,25 +73,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        rcc.nextTrackCommand.addTargetWithHandler { (event: MPRemoteCommandEvent!) -> MPRemoteCommandHandlerStatus in
 //            return MPRemoteCommandHandlerStatus.Success
 //        }
+ 
+        2020*/
         return true
     }
     
-    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool {
         return application(app, open: url, sourceApplication: nil, annotation: [:])
     }
     
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+        /*2020
         let dynamicLink = DynamicLinks.dynamicLinks()?.dynamicLink(fromCustomSchemeURL: url)
         if let dynamicLink = dynamicLink {
             print("LINK: \(dynamicLink.url?.absoluteString)")
             return true
         }
-        
+        */
         return false
     }
-    
+    /*2020
     @available(iOS 8.0, *)
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+        
+        
         guard let dynamicLinks = DynamicLinks.dynamicLinks() else {
             return false
         }
@@ -99,10 +104,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // ...
             print("ACTIVITY: \(userActivity.activityType)")
         }
-        
         return handled
     }
-    
+    */
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
@@ -128,7 +132,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
 }
 
+/*2020
 @available(iOS 10, *)
+
+
 extension AppDelegate : UNUserNotificationCenterDelegate {
     
     // Receive displayed notifications for iOS 10 devices.
@@ -155,3 +162,4 @@ extension AppDelegate : MessagingDelegate {
     }
 
 }
+*/

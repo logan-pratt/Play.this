@@ -9,7 +9,7 @@
 import UIKit
 import SwiftyJSON
 //import Parse
-import Crashlytics
+/*import Crashlytics*/
 import Alamofire
 
 class SearchViewController: UIViewController {
@@ -18,14 +18,14 @@ class SearchViewController: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     
-    var songSearch = ""
-    var songTitles: [String] = []
-    var songArtists: [String] = []
-    var songCovers: [String] = []
-    var songIds: [String] = []
-    var groupCode = ""
+    @objc var songSearch = ""
+    @objc var songTitles: [String] = []
+    @objc var songArtists: [String] = []
+    @objc var songCovers: [String] = []
+    @objc var songIds: [String] = []
+    @objc var groupCode = ""
     var songs: [Song] = []
-    let apikey = "AIzaSyCwyQdce6OAUCXH_AEGSlkMIsG60e8BoRc"
+    @objc let apikey = "AIzaSyCwyQdce6OAUCXH_AEGSlkMIsG60e8BoRc"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,10 +43,9 @@ class SearchViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    
-    
     func searchSongs(_ song: String) {
-        Answers.logSearch(withQuery: song, customAttributes: [:])
+        //I think from crashlytics
+        //Answers.logSearch(withQuery: song, customAttributes: [:])
         
         songTitles = []
         songArtists = []
@@ -101,6 +100,7 @@ class SearchViewController: UIViewController {
             }
         }
         //let data = try? NSURLConnection.sendSynchronousRequest(request, returning: nil)
+ 
     }
     
     override func viewWillDisappear(_ animated: Bool) {

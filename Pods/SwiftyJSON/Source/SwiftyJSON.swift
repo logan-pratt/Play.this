@@ -567,7 +567,7 @@ extension JSON: Swift.ExpressibleByDictionaryLiteral {
 
     public init(dictionaryLiteral elements: [(String, Any)]) {
         let jsonFromDictionaryLiteral: ([String : Any]) -> JSON = { dictionary in
-            let initializeElement = Array(dictionary.keys).flatMap { key -> (String, Any)? in
+            let initializeElement = Array(dictionary.keys).compactMap { key -> (String, Any)? in
                 if let value = dictionary[key] {
                     return (key, value)
                 }
@@ -1402,7 +1402,7 @@ private let falseObjCType = String(cString: falseNumber.objCType)
 // MARK: - NSNumber: Comparable
 
 extension NSNumber {
-    var isBool:Bool {
+    @objc var isBool:Bool {
         get {
             let objCType = String(cString: self.objCType)
             if (self.compare(trueNumber) == .orderedSame && objCType == trueObjCType) || (self.compare(falseNumber) == .orderedSame && objCType == falseObjCType){

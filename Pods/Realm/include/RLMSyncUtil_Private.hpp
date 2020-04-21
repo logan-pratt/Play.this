@@ -19,16 +19,26 @@
 #import "RLMSyncUtil_Private.h"
 
 #import "RLMSyncConfiguration_Private.h"
+#import "RLMSyncPermission.h"
 
 #import "sync/sync_manager.hpp"
 #import "realm/util/optional.hpp"
 
 @class RLMSyncErrorResponseModel;
+class CocoaSyncUserContext;
+
+namespace realm {
+enum class AccessLevel;
+}
 
 realm::SyncSessionStopPolicy translateStopPolicy(RLMSyncStopPolicy stopPolicy);
 RLMSyncStopPolicy translateStopPolicy(realm::SyncSessionStopPolicy stop_policy);
 
 std::shared_ptr<realm::SyncSession> sync_session_for_realm(RLMRealm *realm);
+
+#pragma mark - Get user context
+
+CocoaSyncUserContext& context_for(const std::shared_ptr<realm::SyncUser>& user);
 
 #pragma mark - Error construction
 
@@ -36,9 +46,6 @@ NSError *make_auth_error_bad_response(NSDictionary *json=nil);
 NSError *make_auth_error_http_status(NSInteger status);
 NSError *make_auth_error_client_issue();
 NSError *make_auth_error(RLMSyncErrorResponseModel *responseModel);
-
-NSError *make_permission_error_get(NSString *description, realm::util::Optional<NSInteger> code=none);
-NSError *make_permission_error_change(NSString *description, realm::util::Optional<NSInteger> code=none);
 
 // Set 'code' to NSNotFound to not actually have an error code.
 NSError *make_sync_error(RLMSyncSystemErrorKind kind, NSString *description, NSInteger code, NSDictionary *custom);
