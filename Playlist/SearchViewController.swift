@@ -25,7 +25,7 @@ class SearchViewController: UIViewController {
     @objc var songIds: [String] = []
     @objc var groupCode = ""
     var songs: [Song] = []
-    @objc let apikey = "AIzaSyCwyQdce6OAUCXH_AEGSlkMIsG60e8BoRc"
+    @objc let apikey = "AIzaSyD1-VaGgcjv_AcIcuXTTgNRvzvQ02jWLXU"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,7 +46,7 @@ class SearchViewController: UIViewController {
     func searchSongs(_ song: String) {
         //I think from crashlytics
         //Answers.logSearch(withQuery: song, customAttributes: [:])
-        
+        print("search \(song)")
         songTitles = []
         songArtists = []
         songCovers = []
@@ -58,7 +58,7 @@ class SearchViewController: UIViewController {
             switch data.result {
             case .success(let value):
                 var json = JSON(value)
-                //print("JSON: \(json)")
+                print("JSON: \(json)")
                 for i in 0..<20 {
                 
                     if let songTitle = json["items", i, "snippet", "title"].string {
