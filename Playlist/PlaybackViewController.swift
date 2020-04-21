@@ -101,7 +101,7 @@ class PlaybackViewController: UIViewController {
         timeSlider.isEnabled = false
         
         songLabel.text = song.name
-        songLabel.marqueeType = .MLContinuous
+        //songLabel.type = .continuous
         artistLabel.text = song.artist
         
         playButton.isHidden = true
@@ -217,8 +217,9 @@ class PlaybackViewController: UIViewController {
         let s = songs[playbackInstance.currentSongIndex]
         //print(s.cover!.size)
         //print("\nBOUNDS: \(songImageView.image!.size)")
+        let currentImage = self.songImageView.image
         let albumArt = MPMediaItemArtwork.init(boundsSize: CGSize(width: 480, height: 360), requestHandler: { (size) -> UIImage in
-            return self.songImageView.image ?? #imageLiteral(resourceName: "WhiteMusic")//self.albumCover
+            return currentImage ?? #imageLiteral(resourceName: "WhiteMusic")//self.albumCover
         })
         let songInfo: [String: Any]? = [
             MPMediaItemPropertyTitle: s.name,
@@ -227,16 +228,16 @@ class PlaybackViewController: UIViewController {
             MPMediaItemPropertyPlaybackDuration: dura,
             MPNowPlayingInfoPropertyElapsedPlaybackTime: timePlayed
         ]
-        MPNowPlayingInfoCenter.default().nowPlayingInfo = songInfo
-        MPRemoteCommandCenter.shared().nextTrackCommand.isEnabled = nextButton.isEnabled
-        MPRemoteCommandCenter.shared().previousTrackCommand.isEnabled = previousButton.isEnabled
-        //MPRemoteCommandCenter.shared().nextTrackCommand.addTarget(self, action: #selector(nothing))
-        MPRemoteCommandCenter.shared().nextTrackCommand.addTarget(self, action: #selector(skipSong))
-        MPRemoteCommandCenter.shared().previousTrackCommand.addTarget(self, action: #selector(previous))
-        MPRemoteCommandCenter.shared().playCommand.addTarget(self, action: #selector(play))
-        MPRemoteCommandCenter.shared().pauseCommand.addTarget(self, action: #selector(pause))
-        
-        //print("INFO: \(s.name)")
+        DispatchQueue.main.async {
+            MPNowPlayingInfoCenter.default().nowPlayingInfo = songInfo
+            MPRemoteCommandCenter.shared().nextTrackCommand.isEnabled = self.nextButton.isEnabled
+            MPRemoteCommandCenter.shared().previousTrackCommand.isEnabled = self.previousButton.isEnabled
+            //MPRemoteCommandCenter.shared().nextTrackCommand.addTarget(self, action: #selector(nothing))
+            MPRemoteCommandCenter.shared().nextTrackCommand.addTarget(self, action: #selector(self.skipSong))
+            MPRemoteCommandCenter.shared().previousTrackCommand.addTarget(self, action: #selector(self.previous))
+            MPRemoteCommandCenter.shared().playCommand.addTarget(self, action: #selector(self.play))
+            MPRemoteCommandCenter.shared().pauseCommand.addTarget(self, action: #selector(self.pause))
+        }
     }
     
     func nothing() {
@@ -290,7 +291,7 @@ class PlaybackViewController: UIViewController {
                     //                    }
                     //If the error was something else, I'm currently not handling this properly. It would likely be a network error so it looks like I just stop trying to load songs
                 }
-                print("error")
+                print("XCD error \(error)")
             } else {
                 //If the url was loaded successfully, grab the streamURL we want (by default an array of streams corresponding to different formats is downloaded
                 //Audio only is video.streamURLs[140] but causes delay in notification
@@ -450,17 +451,22 @@ class PlaybackViewController: UIViewController {
         playButton.isHidden = !playButton.isHidden
     }
     
-    @objc func play() {
+    @objc func play() -> MPRemoteCommandHandlerStatus {
         isPlaying = true
         //        ytPlayer.playVideo()
         self.player.play()
+        if(self.player.rate != 0 && self.player.error == nil) {
+            return MPRemoteCommandHandlerStatus.success
+        }else {
+            return MPRemoteCommandHandlerStatus.commandFailed
+        }
     }
     
-    @objc func pause() {
+    @objc func pause() -> MPRemoteCommandHandlerStatus{
         isPlaying = false
         //        ytPlayer.pauseVideo()
         self.player.pause()
-        
+        return MPRemoteCommandHandlerStatus.success
     }
     
     @objc func seekTo(_ seconds: Float, seekAhead: Bool) {
@@ -497,7 +503,7 @@ class PlaybackViewController: UIViewController {
         //}
     }
     
-    @objc func skipSong() {
+    @objc func skipSong() -> MPRemoteCommandHandlerStatus{
         if let waitTimer = waitTimer {
             waitTimer.invalidate()
         }
@@ -511,6 +517,11 @@ class PlaybackViewController: UIViewController {
             //            print(playerItems.count)
             setUpView()
             checkQueue()
+        }
+        if player.isPlaying {
+            return MPRemoteCommandHandlerStatus.success
+        } else {
+            return MPRemoteCommandHandlerStatus.commandFailed
         }
     }
     
@@ -539,13 +550,19 @@ class PlaybackViewController: UIViewController {
         previous()
     }
     
-    @objc func previous() {
+    @objc func previous() -> MPRemoteCommandHandlerStatus{
         currentSongIndex-=1
         playerItems[currentSongIndex-firstIndex].seek(to: CMTimeMakeWithSeconds(Float64(0), preferredTimescale: playerItems[currentSongIndex-firstIndex].currentTime().timescale))
         player.replaceCurrentItem(with: playerItems[currentSongIndex-firstIndex])
         playerItems[currentSongIndex-firstIndex+1].seek(to: CMTimeMakeWithSeconds(Float64(0), preferredTimescale: playerItems[currentSongIndex-firstIndex+1].currentTime().timescale))
         player.insert(playerItems[currentSongIndex-firstIndex+1], after: player.currentItem)
         setUpView()
+        
+        if player.isPlaying {
+            return MPRemoteCommandHandlerStatus.success
+        } else {
+            return MPRemoteCommandHandlerStatus.commandFailed
+        }
     }
     
     override func remoteControlReceived(with event: UIEvent?) {
@@ -618,5 +635,11 @@ extension CMTime {
         } else {
             return String(format: "%02i:%02i", minutes, seconds)
         }
+    }
+}
+
+extension AVPlayer {
+    var isPlaying: Bool {
+        return rate != 0 && error == nil
     }
 }

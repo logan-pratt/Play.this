@@ -54,20 +54,13 @@ class SearchViewController: UIViewController {
         
         let searchUrl = "https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&q=\(song)&type=video&videoCategoryId=10&key=\(apikey)"
         
-        Alamofire.request(searchUrl).responseJSON { (data) -> Void in
-            if((data.result.value) != nil) {
-                var json = JSON(data.result.value!)
+        AF.request(searchUrl).responseJSON { (data) -> Void in
+            switch data.result {
+            case .success(let value):
+                var json = JSON(value)
                 //print("JSON: \(json)")
                 for i in 0..<20 {
-                    
-                    //if let songArtist = json["items", i, "snippet", "channelTitle"].string {
-                    //                    if songArtist.lowercaseString.rangeOfString("vevo") == nil &&
-                    //                        songArtist.lowercaseString.rangeOfString("records") == nil &&
-                    //                        songArtist.lowercaseString.rangeOfString("nethermight") == nil {
-                    //                        if let songDescription = json["items", i, "snippet", "description"].string {
-                    //                            if songDescription.lowercaseString.rangeOfString("wmg") == nil &&
-                    //                                songDescription.lowercaseString.rangeOfString("umg") == nil &&
-                    //                                songDescription.lowercaseString.rangeOfString("sme") == nil {
+                
                     if let songTitle = json["items", i, "snippet", "title"].string {
                         if songTitle.range(of: " - ") != nil {
                             self.songTitles.append(songTitle.components(separatedBy: " - ")[1])
@@ -87,16 +80,10 @@ class SearchViewController: UIViewController {
                         self.songIds.append(songId)
                         
                     }
-                    
-                    //songArtists.append(songArtist)
-                    //                            }
-                    //                        }
-                    //                    }
-                    //}
-                    
-                    
                 }
                 self.tableView.reloadData()
+            case .failure(let error):
+                print(error)
             }
         }
         //let data = try? NSURLConnection.sendSynchronousRequest(request, returning: nil)

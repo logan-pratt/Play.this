@@ -46,14 +46,17 @@ class SearchTableViewCell: UITableViewCell {
             songCover.kf.setImage(with: checkedUrl)
         }
         let detailsUrl = "https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=\(songId)&key=\(apikey)"
-        Alamofire.request(detailsUrl).responseJSON { (data) -> Void in
-            if((data.result.value) != nil) {
-                var json = JSON(data.result.value!)
+        AF.request(detailsUrl).responseJSON { (data) -> Void in
+            switch data.result{
+            case .success(let value):
+                var json = JSON(value)
                 //print(json)
                 if let duration = json["items", 0, "contentDetails", "duration"].string {
                     self.song = Song(group: code, name: songTitle, artist: songArtist, coverURL: imageUrl, id: songId, key:"", duration: duration)
                             self.durationLabel.text = self.song?.duration
                 }
+            case .failure(let error):
+                print(error)
             }
         }
         songTitleLabel.text = songTitle

@@ -16,7 +16,7 @@ import Firebase
 //import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     
 //    let playback = PlaybackViewController.sharedInstance
     var window: UIWindow?
@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         //Parse.setApplicationId("ZFcq1SiHvUzDSqgPlhHG7lO5pxe9YWJDLcNZYsdn", clientKey: "7xgtE3mz33ABlEtuCwJLvMt3wdExoG9QHMnDvEYp")
         FirebaseApp.configure()
-        /*2020
+        
 //
 //        Fabric.with([Crashlytics()])
         
@@ -39,7 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // For iOS 10 display notification (sent via APNS)
             UNUserNotificationCenter.current().delegate = self
             // For iOS 10 data message (sent via FCM)
-            Messaging.messaging().delegate = self
+            //Messaging.messaging().delegate = self
             
         } else {
             let settings: UIUserNotificationSettings =
@@ -52,7 +52,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var error: NSError?
         var success: Bool
         do {
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
             success = true
         } catch let error1 as NSError {
             error = error1
@@ -74,7 +74,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            return MPRemoteCommandHandlerStatus.Success
 //        }
  
-        2020*/
         return true
     }
     
@@ -131,7 +130,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
 }
-
 /*2020
 @available(iOS 10, *)
 

@@ -1,5 +1,5 @@
 PODS:
-  - Alamofire (4.9.1)
+  - Alamofire (5.1.0)
   - Firebase/Core (6.22.0):
     - Firebase/CoreOnly
     - FirebaseAnalytics (= 6.4.1)
@@ -66,11 +66,11 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (6.5.2):
     - GoogleUtilities/Logger
-  - Kingfisher (5.2.0)
+  - Kingfisher (5.13.4):
+    - Kingfisher/Core (= 5.13.4)
+  - Kingfisher/Core (5.13.4)
   - leveldb-library (1.22)
-  - MarqueeLabel (3.1.1):
-    - MarqueeLabel/ObjC (= 3.1.1)
-  - MarqueeLabel/ObjC (3.1.1)
+  - MarqueeLabel (4.0.2)
   - nanopb (0.3.9011):
     - nanopb/decode (= 0.3.9011)
     - nanopb/encode (= 0.3.9011)
@@ -80,27 +80,27 @@ PODS:
     - NVActivityIndicatorView/Presenter (= 4.8.0)
   - NVActivityIndicatorView/Presenter (4.8.0)
   - PromisesObjC (1.2.8)
-  - Realm (4.3.2):
-    - Realm/Headers (= 4.3.2)
-  - Realm/Headers (4.3.2)
-  - RealmSwift (4.3.2):
-    - Realm (= 4.3.2)
-  - SwiftyJSON (3.1.4)
+  - Realm (4.4.1):
+    - Realm/Headers (= 4.4.1)
+  - Realm/Headers (4.4.1)
+  - RealmSwift (4.4.1):
+    - Realm (= 4.4.1)
+  - SwiftyJSON (5.0.0)
   - XCDYouTubeKit (2.12.0)
 
 DEPENDENCIES:
-  - Alamofire (~> 4.9.1)
+  - Alamofire
   - Firebase/Core
   - Firebase/Database
-  - Kingfisher (~> 5.2.0)
+  - Kingfisher
   - MarqueeLabel
   - NVActivityIndicatorView
-  - RealmSwift (~> 4.3.0)
+  - RealmSwift
   - SwiftyJSON
   - XCDYouTubeKit
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
     - Alamofire
     - Firebase
     - FirebaseAnalytics
@@ -126,7 +126,7 @@ SPEC REPOS:
     - XCDYouTubeKit
 
 SPEC CHECKSUMS:
-  Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
+  Alamofire: 9d5c5f602928e512395b30950c5984eca840093c
   Firebase: 32f9520684e87c7af3f0704f7f88042626d6b536
   FirebaseAnalytics: 83f822fd0d33a46f49f89b8c3ab16ab4d89df08a
   FirebaseAuthInterop: a0f37ae05833af156e72028f648d313f7e7592e9
@@ -139,17 +139,17 @@ SPEC CHECKSUMS:
   GoogleDataTransport: 6ffa4dd0b6d547f8d27b91bd92fa9e197a3f5f1f
   GoogleDataTransportCCTSupport: 2d7e609f8c5af1a33d7d59053e6f8cba59365df5
   GoogleUtilities: ad0f3b691c67909d03a3327cc205222ab8f42e0e
-  Kingfisher: 07067cfacf371117330dceb4b4b8f5c4b691ab42
+  Kingfisher: d2279a7abece3c7f25a80cd2b7f363ca5cf3f44c
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
-  MarqueeLabel: 17c5148b6f7144498eff5e0d286bd2e7e866f972
+  MarqueeLabel: f762aa681ae201f66c1d511858b171f75d83013a
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   NVActivityIndicatorView: d24b7ebcf80af5dcd994adb650e2b6c93379270f
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
-  Realm: 5e92902e2875dff4bb0fd02f67bb737c3d5db2bc
-  RealmSwift: 9a360fc7bae04fc2e308a34fbd899d5faa2d6b22
-  SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
+  Realm: 4eb04d7487bd43c0581256f40b424eafb711deff
+  RealmSwift: 3eb8924ff7100df5928c7602f71d0fec51e7c9c5
+  SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
   XCDYouTubeKit: cdad9e696f991aac2739c5b25586c81f1301ba30
 
-PODFILE CHECKSUM: 15fe17ce02b3785ac5a51bba8a459a85c59c8cbb
+PODFILE CHECKSUM: 19fe413cf39609ef12ec74c259447ef17f26b622
 
-COCOAPODS: 1.7.5
+COCOAPODS: 1.9.1
