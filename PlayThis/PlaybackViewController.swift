@@ -53,10 +53,14 @@ class PlaybackViewController: UIViewController {
     var firstIndex = 0
     var currentSongIndex = 0 {
         didSet{
-            print("CURRENT: \(currentSongIndex)")
-            song = songs[currentSongIndex]
-            print("SONG \(song.name)")
-            PlaybackHelper.sharedInstance.currentSongIndex = self.currentSongIndex
+            print("Current index: \(currentSongIndex)")
+            if currentSongIndex < songs.count {
+                song = songs[currentSongIndex]
+                print("SONG \(song.name)")
+                PlaybackHelper.sharedInstance.currentSongIndex = self.currentSongIndex
+            } else {
+                currentSongIndex -= 1
+            }
         }
     }
     var loadeditems = 0
