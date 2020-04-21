@@ -75,8 +75,23 @@ public enum Source {
     public var url: URL? {
         switch self {
         case .network(let resource): return resource.downloadURL
-        // `ImageDataProvider` does not provide a URL. All it cares is how to get the data back.
-        case .provider(_): return nil
+        case .provider(let provider): return provider.contentURL
         }
+    }
+}
+
+extension Source {
+    var asResource: Resource? {
+        guard case .network(let resource) = self else {
+            return nil
+        }
+        return resource
+    }
+
+    var asProvider: ImageDataProvider? {
+        guard case .provider(let provider) = self else {
+            return nil
+        }
+        return provider
     }
 }

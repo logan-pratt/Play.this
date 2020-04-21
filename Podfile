@@ -5,7 +5,7 @@ use_frameworks!
 target 'Playlist' do
     pod 'SwiftyJSON'
     pod 'MarqueeLabel'
-    pod 'Alamofire', '~> 4.9.1'
+    pod 'Alamofire'
     #pod 'Fabric'
     #pod 'Crashlytics'
     pod 'XCDYouTubeKit'
@@ -13,8 +13,8 @@ target 'Playlist' do
     pod 'Firebase/Database'
     #pod 'Firebase/Messaging'
     #pod 'Firebase/DynamicLinks'
-    pod 'RealmSwift', '~> 4.3.0'
-    pod 'Kingfisher', '~> 5.2.0'
+    pod 'RealmSwift'
+    pod 'Kingfisher'
     pod 'NVActivityIndicatorView'
 end
 
