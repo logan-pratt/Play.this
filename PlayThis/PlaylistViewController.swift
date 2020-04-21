@@ -77,11 +77,9 @@ class PlaylistViewController: UIViewController {
 //            likedSongs.append(r.stringValue)
 //        }
         
-        print("get liked")
         
         if let likedData = UserDefaults.standard.object(forKey: groupCode) as? NSData {
             likedSongs = (NSKeyedUnarchiver.unarchiveObject(with: likedData as Data) as? [String])!
-            print(likedSongs)
         }
         
         setUpTableView(true)
@@ -172,17 +170,6 @@ class PlaylistViewController: UIViewController {
             let cell: UITableViewCell = i
             cell.transform = CGAffineTransform(translationX: 0, y: tableHeight)
         }
-        
-        //        var index = 0
-        //
-        //        for eachCell in cells {
-        //            let cell: UITableViewCell = eachCell
-        //            UIView.animate(withDuration: 1.5, delay: 0.05 * Double(index), usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: [], animations: {
-        //                cell.transform = CGAffineTransform(translationX: 0, y: 0);
-        //                }, completion: nil)
-        //
-        //            index += 1
-        //        }
     }
     
 }
@@ -207,12 +194,6 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
             let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
             playbackViewController = storyBoard.instantiateViewController(withIdentifier: "playback") as! PlaybackViewController
             print((indexPath as NSIndexPath).row)
-            //            print(songCovers[(indexPath as NSIndexPath).row])
-            //            playbackViewController.imageUrl = songs[(indexPath as NSIndexPath).row].coverURL
-            //            playbackViewController.songArtist = songs[(indexPath as NSIndexPath).row].artist
-            //            playbackViewController.songTitle = songs[(indexPath as NSIndexPath).row].name
-            //            playbackViewController.songId = songs[(indexPath as NSIndexPath).row].id
-            //HERE
             playbackViewController.currentSongIndex = (indexPath as NSIndexPath).row
         } else {
             playbackViewController.currentSongIndex = (indexPath as NSIndexPath).row
@@ -229,27 +210,6 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
         if editingStyle == .delete {
             let song = self.songsInstance.songs[indexPath.row]
             song.ref?.removeValue()
-            //            let songObjId = songObjIds[(indexPath as NSIndexPath).row]
-            //            songTitles.remove(at: (indexPath as NSIndexPath).row)
-            //            songArtists.remove(at: (indexPath as NSIndexPath).row)
-            //            songCovers.remove(at: (indexPath as NSIndexPath).row)
-            //            songIds.remove(at: (indexPath as NSIndexPath).row)
-            //            songObjIds.remove(at: (indexPath as NSIndexPath).row)
-            //tableView.reloadData()
-            //            DispatchQueue.main.async {
-            //                let query = PFQuery(className: "Song")
-            //                query.getObjectInBackground(withId: songObjId) {
-            //                    (song: PFObject?, error: Error?) -> Void in
-            //                    if error == nil {
-            //                        song!.deleteInBackground {
-            //                            (success: Bool, error: Error?) -> Void in
-            //                            //self.setUpTableView(false)
-            //                        }
-            //                    } else {
-            //                        print(error!)
-            //                    }
-            //                }
-            //            }
         }
     }
     

@@ -59,11 +59,12 @@ class PlaybackViewController: UIViewController {
                 print("SONG \(song.name)")
                 PlaybackHelper.sharedInstance.currentSongIndex = self.currentSongIndex
             } else {
+                print("CS \(currentSongIndex)")
                 currentSongIndex -= 1
             }
         }
     }
-    var loadeditems = 0
+    var loadedItems = 0
     var isPlaying = true
     
     var playlist: [String]!
@@ -89,7 +90,7 @@ class PlaybackViewController: UIViewController {
         player.pause()
         player.removeAllItems()
         playlist = []
-        createPlayThis(song.id)
+        createPlaylist(song.id)
         self.play()
         firstIndex=currentSongIndex
         setUpView()
@@ -117,6 +118,17 @@ class PlaybackViewController: UIViewController {
             songImageView.kf.setImage(with: checkedUrl)
         }
  
+        //toggleSkipPrevious()
+        previousButton.isEnabled = false
+        nextButton.isEnabled = false
+        
+        //        periodicTimeObserver = player.addPeriodicTimeObserverForInterval(CMTimeMake(1, 1), queue: dispatch_get_main_queue()) { cmTime in
+        //            self.timeObserverFired(cmTime)
+        //        }
+        playerStartedTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(PlaybackViewController.checkIfPlayerReady), userInfo: nil, repeats: true)
+    }
+    
+    func toggleSkipPrevious() {
         if playlist.first == song.id {
             previousButton.isEnabled = false
         } else {
@@ -127,11 +139,6 @@ class PlaybackViewController: UIViewController {
         } else {
             nextButton.isEnabled = true
         }
-        //        periodicTimeObserver = player.addPeriodicTimeObserverForInterval(CMTimeMake(1, 1), queue: dispatch_get_main_queue()) { cmTime in
-        //            self.timeObserverFired(cmTime)
-        //        }
-        
-        playerStartedTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(PlaybackViewController.checkIfPlayerReady), userInfo: nil, repeats: true)
     }
     
     @objc func checkIfPlayerReady() {
@@ -156,6 +163,7 @@ class PlaybackViewController: UIViewController {
                 endTimeLabel.text = secondsToText(timeLeft)
                 timeSlider.isEnabled = true
                 pauseButton.isEnabled = true
+                toggleSkipPrevious()
                 if Double(timeLeft) <= 0.5 {
                     //currentSongIndex+=1
                     /*if currentSongIndex <= playlist.count + 1 {
@@ -168,13 +176,13 @@ class PlaybackViewController: UIViewController {
     }
  
  
-    func createPlayThis(_ startingSong:String) {
+    func createPlaylist(_ startingSong:String) {
         //print(currentSongIndex)
         
         //Since this is also called when the playlist is finished playing, reset all playlist variables
         self.player.pause()
         self.player.removeAllItems()
-        self.loadeditems = 0
+        self.loadedItems = 0
         self.timePlayed = 0
         if let timer = timer {
             timer.invalidate()
@@ -187,40 +195,14 @@ class PlaybackViewController: UIViewController {
             //print(playlist)
         }
         
-        //        if var song = startingSong {
-        //            self.playlist = [song] //If we've been passed in a starting song, set it as the first item in playlist (you probably won't need this)
-        //        } else {
-        //            self.playlist = [] //Otherwise start from scratch
-        //            self.playButton.hidden = false
-        //        }
-        
-        //I pull items from my database based on which songs you haven't listened to. newInboxSongs is essentially "unread" items, I put them at the start of the playlist
-        //        let newInboxSongs = realm.objects(InboxSong).filter("listen == false AND mute == false AND recipient == %@", User.user.phoneNumber).sorted("date", ascending: false)
-        //        self.playlist = reduce(newInboxSongs, self.playlist) { $0 +
-        //            ( !contains($0, playlistSongFromInboxSong($1))
-        //                ? [playlistSongFromInboxSong($1)] : [] ) }
-        
-        //Then I randomize the remaining songs in my inbox
-        //        let oldInboxSongs = realm.objects(InboxSong).filter("listen == true AND mute == false").sorted("date", ascending: false)
-        //        let oldSongs = reduce(oldInboxSongs, []) { $0 +
-        //            (!contains(self.playlist, playlistSongFromInboxSong($1)) &&
-        //                !contains($0, playlistSongFromInboxSong($1))
-        //                ? [playlistSongFromInboxSong($1)] : [] ) }
-        
-        //Add them together to get the final playlist. You should replace all this with your own playlist
-        //        self.songs.songIds = self.songs.songIds + self.shuffle(oldSongs)
-        
         //If the playlist is longer than 0 songs, load the first item
         if self.playlist.count > 0 {
-            self.getStreamUrl(self.playlist[loadeditems])
-            //Also update the UI elements with the current song
+            self.getStreamUrl(self.playlist[loadedItems])
         }
     }
     
     func setNowPlaying(_ dura: Float, timePlayed: Float) {
         let s = songs[playbackInstance.currentSongIndex]
-        //print(s.cover!.size)
-        //print("\nBOUNDS: \(songImageView.image!.size)")
         let currentImage = self.songImageView.image
         let albumArt = MPMediaItemArtwork.init(boundsSize: CGSize(width: 480, height: 360), requestHandler: { (size) -> UIImage in
             return currentImage ?? #imageLiteral(resourceName: "WhiteMusic")//self.albumCover
@@ -269,7 +251,7 @@ class PlaybackViewController: UIViewController {
         }
         
         XCDYouTubeClient.default().getVideoWithIdentifier(yt_id) { (video: XCDYouTubeVideo?, error: Error?) in
-            if self.loadeditems >= self.playlist.count {
+            if self.loadedItems >= self.playlist.count {
                 return //If you start creating a new playlist before the first playlist was finished loading the URLs, you run into race conditions, this if helps kill the original playlist loading
             }
             if error != nil {
@@ -303,28 +285,26 @@ class PlaybackViewController: UIViewController {
                 if let url = video?.streamURLs[NSNumber(value: 140)]! as NSURL! {
                     UserDefaults.standard.set(url.absoluteString, forKey: video!.identifier)
                     UserDefaults.standard.set(Int(video!.duration), forKey: video!.identifier+".duration")
-                    if self.playlist[self.loadeditems] == video!.identifier {
-                        print(self.playlist[self.loadeditems])
-                        print(video!.identifier)
+                    if self.playlist[self.loadedItems] == video!.identifier {
+                        print("\n \(self.playlist)")
+                        print(self.playlist[self.loadedItems])
+                        print("\(video!.identifier) \n")
                         self.createPlayerItem(url as URL, duration: Int(video!.duration))
                         return //Since every thing else needs to get next streamUrl
                     } else {
-                        //The video identifier may not correspond because we created a new playlist in the middle of loading the first (you probably don't need to worry about this)
-                        print("out of sync, likely playlist changed")
+                        print("out of sync")
                     }
                 }
             }
-            //
-            //            if let url = video!.streamURLs[NSNumber(value:XCDYouTubeVideoQuality.small240.rawValue)]) {
-            //
-            //            }
         }
         
         //If it wasn't cached, or cache was expired, download the url from XCDYoutubeClient
-        //HERE
-        /*XCDYouTubeClient.default().getVideoWithIdentifier(yt_id, completionHandler: { video, error in
-         if self.loadeditems >= self.playlist.count {
-         return //If you start creating a new playlist before the first playlist was finished loading the URLs, you run into race conditions, this if helps kill the original playlist loading
+        //HERE 2020
+        /*
+        XCDYouTubeClient.default().getVideoWithIdentifier(yt_id, completionHandler: { video, error in
+        //create new playlist
+        if self.loadeditems >= self.playlist.count {
+            return
          }
          if error != nil {
          // print(error)
@@ -366,7 +346,7 @@ class PlaybackViewController: UIViewController {
             }
             }
         })//here
- */
+        */
     }
  
     //Create player item creates the AVPlayerItem for each song
@@ -389,15 +369,15 @@ class PlaybackViewController: UIViewController {
         //            self.setNowPlaying() //Covers case where deleted song happened to be chosen first
         //        }
         //Increment loaded items
-        self.loadeditems+=1
+        self.loadedItems+=1
         //If the song was played but URL hadn't been loaded yet, I disable some of the UI buttons and show "..." in place of the play button. This simply reverts that
-        if self.loadeditems-1 == self.currentSongIndex && !self.playButton.isEnabled {
+        if self.loadedItems-1 == self.currentSongIndex && !self.playButton.isEnabled {
             self.playButton.isEnabled = true
         }
         
         //If not all songs have been loaded yet, load the next song!
-        if self.loadeditems < self.playlist.count {
-            self.getStreamUrl(self.playlist[self.loadeditems])
+        if self.loadedItems < self.playlist.count {
+            self.getStreamUrl(self.playlist[self.loadedItems])
         }
     }
     
@@ -493,7 +473,9 @@ class PlaybackViewController: UIViewController {
     @IBAction func sliderChanged(_ sender: UISlider) {
         if timer.isValid {
             currentTimeLabel.text = secondsToText(sender.value)
-            player.seek(to: CMTimeMakeWithSeconds(Float64(sender.value), preferredTimescale: player.currentItem!.currentTime().timescale))
+            if let currentItem = player.currentItem {
+                player.seek(to: CMTimeMakeWithSeconds(Float64(sender.value), preferredTimescale: currentItem.currentTime().timescale))
+            }
         }
     }
  
@@ -508,33 +490,28 @@ class PlaybackViewController: UIViewController {
     }
     
     @objc func skipSong() -> MPRemoteCommandHandlerStatus{
+        if !nextButton.isEnabled {
+            return MPRemoteCommandHandlerStatus.commandFailed
+        }
+        
         if let waitTimer = waitTimer {
             waitTimer.invalidate()
         }
         currentSongIndex+=1
-        //print("\n Playing: \(player.currentItem) \n")
+        
         if currentSongIndex < songs.count && currentSongIndex >= 0 {
-            //            print("first: \(currentSongIndex-firstIndex)")
-            //            print(playerItems[1])
-            
-            //            print("LOADED \(loadeditems)")
-            //            print(playerItems.count)
             setUpView()
             checkQueue()
         }
-        if player.isPlaying {
-            return MPRemoteCommandHandlerStatus.success
-        } else {
-            return MPRemoteCommandHandlerStatus.commandFailed
-        }
+        return MPRemoteCommandHandlerStatus.success
     }
     
     
     @objc func checkQueue() {
-        if loadeditems >= currentSongIndex {
+        if loadedItems >= currentSongIndex - firstIndex {
             if let _ = player.currentItem {
                 if let _ = playerItems.index(of: player.currentItem!) {
-                    for _ in 0..<(currentSongIndex - playerItems.index(of: player.currentItem!)!) {
+                    for _ in 0..<(currentSongIndex - playerItems.index(of: player.currentItem!)! - firstIndex) {
                         player.advanceToNextItem()
                     }
                     play()
@@ -546,6 +523,7 @@ class PlaybackViewController: UIViewController {
             pause()
             pauseButton.isHidden = true
             loadingView.startAnimating()
+            print("pause and load \(loadedItems) \(currentSongIndex)")
             waitTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(PlaybackViewController.checkQueue), userInfo: nil, repeats: false)
         }
     }
@@ -555,6 +533,10 @@ class PlaybackViewController: UIViewController {
     }
     
     @objc func previous() -> MPRemoteCommandHandlerStatus{
+        if !previousButton.isEnabled {
+            return MPRemoteCommandHandlerStatus.commandFailed
+        }
+        
         currentSongIndex-=1
         playerItems[currentSongIndex-firstIndex].seek(to: CMTimeMakeWithSeconds(Float64(0), preferredTimescale: playerItems[currentSongIndex-firstIndex].currentTime().timescale))
         player.replaceCurrentItem(with: playerItems[currentSongIndex-firstIndex])
@@ -562,11 +544,7 @@ class PlaybackViewController: UIViewController {
         player.insert(playerItems[currentSongIndex-firstIndex+1], after: player.currentItem)
         setUpView()
         
-        if player.isPlaying {
-            return MPRemoteCommandHandlerStatus.success
-        } else {
-            return MPRemoteCommandHandlerStatus.commandFailed
-        }
+        return MPRemoteCommandHandlerStatus.success
     }
     
     override func remoteControlReceived(with event: UIEvent?) {
