@@ -132,8 +132,12 @@ class CreateGroupViewController: UIViewController {
         if let keyboardFrame = ((notification as NSNotification).userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as AnyObject).cgRectValue {
 //            createGroupButton.setTitleColor(UIColor(red:0.11, green:0.58, blue:0.96, alpha:1.0), for: UIControlState())
             clearTextButton(button: createGroupButton, title: "Create Group")
+            print("key \(keyboardFrame.height)")
             createButtonConstraint.constant = keyboardFrame.height
-            topLabelConstraint.constant = 0
+            if keyboardFrame.height > 300 {
+                createButtonConstraint.constant -= 35
+            }
+            topLabelConstraint.constant = 20
         }
     }
     
