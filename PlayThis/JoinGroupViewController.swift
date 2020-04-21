@@ -158,7 +158,7 @@ class JoinGroupViewController: UIViewController {
             if snapshot.hasChild(enteredCode) {
                 self.group = Group(name: snapshot.childSnapshot(forPath: "\(enteredCode)/name").value as! String, key: enteredCode)
                 let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-                let playlistViewController = storyBoard.instantiateViewController(withIdentifier: "playlist") as! PlayThisViewController
+                let playlistViewController = storyBoard.instantiateViewController(withIdentifier: "playlist") as! PlaylistViewController
                 playlistViewController.groupName = self.group.name
                 playlistViewController.groupCode = self.group.key
                 SongsHelper.sharedInstance.groupCode = self.group.key

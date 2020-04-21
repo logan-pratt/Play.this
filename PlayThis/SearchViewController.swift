@@ -63,13 +63,13 @@ class SearchViewController: UIViewController {
                 
                     if let songTitle = json["items", i, "snippet", "title"].string {
                         if songTitle.range(of: " - ") != nil {
-                            self.songTitles.append(songTitle.components(separatedBy: " - ")[1])
-                            self.songArtists.append(songTitle.components(separatedBy: " - ")[0])
+                            self.songTitles.append(songTitle.replacingOccurrences(of: "&amp;", with: "&").components(separatedBy: " - ")[1])
+                            self.songArtists.append(songTitle.replacingOccurrences(of: "&amp;", with: "&").components(separatedBy: " - ")[0])
                         } else {
-                            self.songTitles.append(songTitle)
+                            self.songTitles.append(songTitle.replacingOccurrences(of: "&amp;", with: "&"))
                             
                             if let songArtist = json["items", 0, "snippet", "channelTitle"].string {
-                                self.songArtists.append(songArtist)
+                                self.songArtists.append(songArtist.replacingOccurrences(of: "&amp;", with: "&"))
                             }
                         }
                     }

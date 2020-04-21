@@ -1,5 +1,5 @@
 //
-//  PlayThisViewController.swift
+//  PlaylistViewController.swift
 //  PlayThis
 //
 //  Created by Logan Pratt on 7/13/15.
@@ -20,7 +20,7 @@ import RealmSwift
 
 //import DropDownMenuKit
 
-class PlayThisViewController: UIViewController {
+class PlaylistViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var playlistNavBar: UINavigationBar!
@@ -42,27 +42,6 @@ class PlayThisViewController: UIViewController {
     var firstRun = true
     var groupName = ""
     var groupCode = ""
-    //    var songIds: [String] = [] {
-    //        didSet {
-    //            songsInstance.songIds = songIds
-    //        }
-    //    }
-    //    var songTitles: [String] = [] {
-    //        didSet {
-    //            songsInstance.songTitles = songTitles
-    //        }
-    //    }
-    //    var songCovers: [String] = [] {
-    //        didSet {
-    //            songsInstance.songCovers = songCovers
-    //        }
-    //    }
-    //    var songArtists: [String] = [] {
-    //        didSet {
-    //            songsInstance.songArtists = songArtists
-    //        }
-    //    }
-    
     var songObjIds: [String] = []
     var tableNum = 0
     var playbackViewController: PlaybackViewController!
@@ -78,9 +57,10 @@ class PlayThisViewController: UIViewController {
         tableView.delegate = self
         playlistNavBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         playlistNavBar.shadowImage = UIImage()
-        
-        
         playlistNavBarItem.title = groupName
+        if #available(iOS 13.0, *) {
+            isModalInPresentation = false
+        }
         
         nothingHereLabel.isHidden = true
         //        activityIndicatorView.center = view.center
@@ -168,7 +148,7 @@ class PlayThisViewController: UIViewController {
         self.present(searchViewController, animated: true, completion: nil)
     }
     
-    @IBAction func unwindToPlayThis(_ segue:UIStoryboardSegue) {
+    @IBAction func unwindToPlaylist(_ segue:UIStoryboardSegue) {
         setUpTableView(false)
     }
     
@@ -209,7 +189,7 @@ class PlayThisViewController: UIViewController {
     
 }
 
-extension PlayThisViewController: UITableViewDataSource, UITableViewDelegate {
+extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SongCell", for: indexPath) as! SongTableViewCell

@@ -159,7 +159,7 @@ class CreateGroupViewController: UIViewController {
         
         groupRef.setValue(group.toAnyObject())
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-        let playlistViewController = storyBoard.instantiateViewController(withIdentifier: "playlist") as! PlayThisViewController
+        let playlistViewController = storyBoard.instantiateViewController(withIdentifier: "playlist") as! PlaylistViewController
         playlistViewController.groupName = group.name
         playlistViewController.groupCode = group.key
         self.present(playlistViewController, animated: true, completion: nil)

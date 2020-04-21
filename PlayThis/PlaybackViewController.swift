@@ -609,9 +609,9 @@ class PlaybackViewController: UIViewController {
         //        }
     }
     
-    @objc func toPlayThis() {
+    @objc func toPlaylist() {
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-        let playlistViewController = storyBoard.instantiateViewController(withIdentifier: "playlist") as! PlayThisViewController
+        let playlistViewController = storyBoard.instantiateViewController(withIdentifier: "playlist") as! PlaylistViewController
         self.present(playlistViewController, animated: true, completion: nil)
     }
     
