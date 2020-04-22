@@ -8,8 +8,7 @@
 
 import UIKit
 import SwiftyJSON
-//import Parse
-/*import Crashlytics*/
+import Firebase
 import Alamofire
 
 class SearchViewController: UIViewController {
@@ -35,7 +34,7 @@ class SearchViewController: UIViewController {
         navBar.shadowImage = UIImage()
         searchBar.setBackgroundImage(UIImage(), for: UIBarPosition.any, barMetrics: UIBarMetrics.default)
         searchBar.becomeFirstResponder()
-        
+        searchBar.searchTextField.textColor = .white
     }
     
     override func didReceiveMemoryWarning() {
@@ -44,8 +43,11 @@ class SearchViewController: UIViewController {
     }
     
     func searchSongs(_ song: String) {
-        //I think from crashlytics
-        //Answers.logSearch(withQuery: song, customAttributes: [:])
+        Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
+            AnalyticsParameterItemID: "id-\(song)",
+        AnalyticsParameterItemName: "search",
+        AnalyticsParameterContentType: song
+        ])
         print("search \(song)")
         songTitles = []
         songArtists = []
@@ -63,13 +65,13 @@ class SearchViewController: UIViewController {
                 
                     if let songTitle = json["items", i, "snippet", "title"].string {
                         if songTitle.range(of: " - ") != nil {
-                            self.songTitles.append(songTitle.replacingOccurrences(of: "&amp;", with: "&").components(separatedBy: " - ")[1])
-                            self.songArtists.append(songTitle.replacingOccurrences(of: "&amp;", with: "&").components(separatedBy: " - ")[0])
+                            self.songTitles.append(songTitle.normalized.components(separatedBy: " - ")[1])
+                            self.songArtists.append(songTitle.normalized.components(separatedBy: " - ")[0])
                         } else {
-                            self.songTitles.append(songTitle.replacingOccurrences(of: "&amp;", with: "&"))
+                            self.songTitles.append(songTitle.normalized)
                             
                             if let songArtist = json["items", 0, "snippet", "channelTitle"].string {
-                                self.songArtists.append(songArtist.replacingOccurrences(of: "&amp;", with: "&"))
+                                self.songArtists.append(songArtist.normalized)
                             }
                         }
                     }
@@ -127,5 +129,11 @@ extension SearchViewController: UISearchBarDelegate {
         songSearch = songSearch.replacingOccurrences(of: " ", with: "+", options: [], range: nil)
         searchBar.endEditing(true)
         searchSongs(songSearch)
+    }
+}
+
+extension String {
+    var normalized: String {
+        return self.replacingOccurrences(of: "&amp;", with: "&").replacingOccurrences(of: "&quot;", with: "\"").replacingOccurrences(of: "&#39;", with: "\'")
     }
 }

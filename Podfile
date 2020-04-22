@@ -11,6 +11,7 @@ target 'PlayThis' do
     pod 'XCDYouTubeKit'
     pod 'Firebase/Core'
     pod 'Firebase/Database'
+    pod 'Firebase/Analytics'
     #pod 'Firebase/Messaging'
     #pod 'Firebase/DynamicLinks'
     pod 'RealmSwift'

@@ -1,5 +1,7 @@
 PODS:
   - Alamofire (5.1.0)
+  - Firebase/Analytics (6.22.0):
+    - Firebase/Core
   - Firebase/Core (6.22.0):
     - Firebase/CoreOnly
     - FirebaseAnalytics (= 6.4.1)
@@ -90,6 +92,7 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire
+  - Firebase/Analytics
   - Firebase/Core
   - Firebase/Database
   - Kingfisher
@@ -150,6 +153,6 @@ SPEC CHECKSUMS:
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
   XCDYouTubeKit: cdad9e696f991aac2739c5b25586c81f1301ba30
 
-PODFILE CHECKSUM: e962eb7fb418dac769647fc0c5530756a1bbd2ed
+PODFILE CHECKSUM: 0c86a92c36dd030272775d6b0fb911d9517c9198
 
 COCOAPODS: 1.9.1

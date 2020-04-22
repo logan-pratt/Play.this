@@ -178,6 +178,11 @@ class JoinGroupViewController: UIViewController {
                                                 "Group Name": self.group.name,
                                                 "Group Key": self.group.key
                     ])*/
+                Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
+                    AnalyticsParameterItemID: "id-\(self.group.key)",
+                    AnalyticsParameterItemName: "join",
+                    AnalyticsParameterContentType: self.group.name
+                ])
                 
                 self.present(playlistViewController, animated: true, completion: nil)
             } else {
@@ -187,38 +192,6 @@ class JoinGroupViewController: UIViewController {
         })
         
         print(enteredCode)
-        //END REAL CODE*/
-        
-        //        let query = PFQuery(className: "Group")
-        //        query.whereKey("groupCode", equalTo: enteredCode)
-        //        query.findObjectsInBackground { (groups: [PFObject]?, error: Error?) in
-        //            if error == nil {
-        //                if let groups = groups as? [PFObject] {
-        //                    for group in groups {
-        //                        groupCode = group["groupCode"] as! String
-        //                        groupName = group["groupName"] as! String
-        //                        groupId = group.objectId!
-        //                    }
-        //                }
-        //            } else {
-        //                // Log details of the failure
-        //                print("Error: \(error!) \(error!.userInfo)")
-        //            }
-        //
-        //            if groupCode != "" {
-        //                let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-        //                let playlistViewController = storyBoard.instantiateViewController(withIdentifier: "playlist") as! PlayThisViewController
-        //                playlistViewController.groupName = groupName
-        //                playlistViewController.groupCode = groupCode
-        //                self.present(playlistViewController, animated: true, completion: nil)
-        //            } else {
-        //                SweetAlert().showAlert("Incorrect code", subTitle: "Please enter the group code again.", style: AlertStyle.error)
-        //                self.clearCode()
-        //            }
-        //        }HERE
-        //        } else {
-        //            SweetAlert().showAlert("No connection", subTitle: "Please check your internet connection and try again.", style: AlertStyle.Error)
-        //        }
         
     }
     

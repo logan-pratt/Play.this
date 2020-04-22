@@ -19,7 +19,7 @@ import MarqueeLabel
 class PlaybackViewController: UIViewController {
     
     @IBOutlet weak var songImageView: UIImageView!
-    @IBOutlet weak var songLabel: MarqueeLabel!
+    @IBOutlet weak var songLabel: UILabel!
     @IBOutlet weak var artistLabel: UILabel!
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var pauseButton: UIButton!
