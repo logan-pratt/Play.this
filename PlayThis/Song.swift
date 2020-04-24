@@ -110,7 +110,7 @@ extension String {
         var duration = ""
         for component in components {
             duration = duration.characters.count > 0 ? duration + ":" : duration
-            if component.characters.count < 2 {
+            if component.count < 2 {
                 duration += "0" + component
                 continue
             }
@@ -118,7 +118,7 @@ extension String {
         }
         
         if duration.components(separatedBy: ":").last?.characters.count == 1 {
-            if(duration.characters.last == "0") {
+            if(duration.last == "0") {
                 duration += "0"
             }
         }

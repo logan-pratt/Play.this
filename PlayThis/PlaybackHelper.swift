@@ -14,6 +14,7 @@ class PlaybackHelper: NSObject {
    
     @objc static let sharedInstance = PlaybackHelper()
     @objc let songs = SongsHelper.sharedInstance
+    @objc var storedPVC: PlaybackViewController!
     @objc var player = AVQueuePlayer()
     
     @objc var songId = ""

@@ -30,7 +30,7 @@ class SearchTableViewCell: UITableViewCell {
     let songs = SongsHelper.sharedInstance
     var ref = Database.database().reference()
     var song: Song? = nil
-    let apikey = "AIzaSyCwyQdce6OAUCXH_AEGSlkMIsG60e8BoRc"
+    let apikey = "AIzaSyD1-VaGgcjv_AcIcuXTTgNRvzvQ02jWLXU"
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -49,8 +49,8 @@ class SearchTableViewCell: UITableViewCell {
         AF.request(detailsUrl).responseJSON { (data) -> Void in
             switch data.result{
             case .success(let value):
-                var json = JSON(value)
-                //print(json)
+                let json = JSON(value)
+                print(json)
                 if let duration = json["items", 0, "contentDetails", "duration"].string {
                     self.song = Song(group: code, name: songTitle, artist: songArtist, coverURL: imageUrl, id: songId, key:"", duration: duration)
                             self.durationLabel.text = self.song?.duration

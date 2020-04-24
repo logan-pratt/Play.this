@@ -98,7 +98,7 @@ class JoinGroupViewController: UIViewController {
     }
     
     @IBAction func previousCode(_ sender: Any) {
-        for (i, c) in previousCodes[previousCount].characters.enumerated() {
+        for (i, c) in previousCodes[previousCount].enumerated() {
             textFields[i].text = c.description
         }
         joinButton.isEnabled = true
@@ -120,7 +120,7 @@ class JoinGroupViewController: UIViewController {
         
         for textField in textFields {
             textField.resignFirstResponder()
-            if textField.text!.characters.count == 0 {
+            if textField.text!.count == 0 {
                 allFieldsFull = false
             }
         }
@@ -212,11 +212,11 @@ extension JoinGroupViewController: UITextFieldDelegate {
         var shouldProcess = false
         var shouldMoveToNextField = false
         
-        let insertStringLength = string.characters.count
+        let insertStringLength = string.count
         if insertStringLength == 0 {
             shouldProcess = true
         } else {
-            if textField.text!.characters.count == 0 {
+            if textField.text!.count == 0 {
                 shouldProcess = true
             }
         }
@@ -224,7 +224,7 @@ extension JoinGroupViewController: UITextFieldDelegate {
         if shouldProcess {
             var newString = textField.text
             
-            if newString!.characters.count == 0 {
+            if newString!.count == 0 {
                 newString = "\(string)"
                 shouldMoveToNextField = true
             } else {

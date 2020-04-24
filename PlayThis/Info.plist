@@ -37,8 +37,6 @@
 	<string>public.app-category.music</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>UIApplicationExitsOnSuspend</key>
-	<false/>
 	<key>UIBack</key>
 	<string></string>
 	<key>UIBackgroundModes</key>

@@ -58,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
             UIApplication.shared.beginReceivingRemoteControlEvents()
         } else {
-            NSLog("Failed to set audio session category.  Error: \(error)")
+            NSLog("Failed to set audio session category.  Error: \(String(describing: error))")
         }
         
 //        let rcc = MPRemoteCommandCenter.sharedCommandCenter()

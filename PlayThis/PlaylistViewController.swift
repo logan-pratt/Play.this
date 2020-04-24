@@ -35,6 +35,7 @@ class PlaylistViewController: UIViewController {
     
     
     let songsInstance = SongsHelper.sharedInstance
+    let playbackInstance = PlaybackHelper.sharedInstance
     let ref = Database.database().reference(withPath: "songs")
     var defaults = UserDefaults.standard
     let realm = try! Realm()
@@ -87,9 +88,9 @@ class PlaylistViewController: UIViewController {
         //        recognizer.direction = .Down
         //        self.view.addGestureRecognizer(recognizer)
  
-//        if playbackViewController.player.isPlaying {
-//            nowPlayingButton.isEnabled = true
-//        }
+        if !playbackInstance.player.items().isEmpty {
+            nowPlayingButton.isEnabled = true
+        }
     }
     
     @IBAction func copyGroupCode(_ sender: AnyObject) {
@@ -149,8 +150,11 @@ class PlaylistViewController: UIViewController {
     }
     
     @IBAction func showNowPlaying(_ sender: AnyObject) {
-        
-        self.present(playbackViewController, animated: true, completion: nil)
+        if let _ = playbackViewController {
+            self.present(playbackViewController, animated: true, completion: nil)
+        } else {
+            self.present(playbackInstance.storedPVC, animated: true, completion: nil)
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -199,6 +203,7 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
             playbackViewController.currentSongIndex = (indexPath as NSIndexPath).row
             playbackViewController.skipSong()
         }
+        playbackInstance.storedPVC = playbackViewController
         self.present(playbackViewController, animated: true, completion: nil)
     }
     

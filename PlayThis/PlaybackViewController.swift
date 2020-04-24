@@ -19,7 +19,7 @@ import MarqueeLabel
 class PlaybackViewController: UIViewController {
     
     @IBOutlet weak var songImageView: UIImageView!
-    @IBOutlet weak var songLabel: UILabel!
+    @IBOutlet weak var songLabel: MarqueeLabel!
     @IBOutlet weak var artistLabel: UILabel!
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var pauseButton: UIButton!
@@ -282,11 +282,11 @@ class PlaybackViewController: UIViewController {
                 //If the url was loaded successfully, grab the streamURL we want (by default an array of streams corresponding to different formats is downloaded
                 //Audio only is video.streamURLs[140] but causes delay in notification
                 //print("vid: \(video)")
-                if let url = video?.streamURLs[NSNumber(value: 140)]! as NSURL! {
+                if let url = (video?.streamURLs[NSNumber(value: 140)]!)! as NSURL! {
                     UserDefaults.standard.set(url.absoluteString, forKey: video!.identifier)
                     UserDefaults.standard.set(Int(video!.duration), forKey: video!.identifier+".duration")
                     if self.playlist[self.loadedItems] == video!.identifier {
-                        print("\n \(self.playlist)")
+                        print("\n \(String(describing: self.playlist))")
                         print(self.playlist[self.loadedItems])
                         print("\(video!.identifier) \n")
                         self.createPlayerItem(url as URL, duration: Int(video!.duration))

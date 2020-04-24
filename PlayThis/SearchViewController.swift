@@ -34,7 +34,9 @@ class SearchViewController: UIViewController {
         navBar.shadowImage = UIImage()
         searchBar.setBackgroundImage(UIImage(), for: UIBarPosition.any, barMetrics: UIBarMetrics.default)
         searchBar.becomeFirstResponder()
-        searchBar.searchTextField.textColor = .white
+        if #available(iOS 13.0, *) {
+            searchBar.searchTextField.textColor = .white
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -59,7 +61,7 @@ class SearchViewController: UIViewController {
         AF.request(searchUrl).responseJSON { (data) -> Void in
             switch data.result {
             case .success(let value):
-                var json = JSON(value)
+                let json = JSON(value)
                 print("JSON: \(json)")
                 for i in 0..<20 {
                 
