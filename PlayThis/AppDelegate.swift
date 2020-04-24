@@ -23,6 +23,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         FirebaseApp.configure()
         
+        let ref = Database.database().reference(withPath: "API_KEY")
+        ref.observe(.value, with: { snapshot in
+            SongsHelper.sharedInstance.apikey = snapshot.value as! String
+        })
+        
         if #available(iOS 10.0, *) {
             let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
             UNUserNotificationCenter.current().requestAuthorization(

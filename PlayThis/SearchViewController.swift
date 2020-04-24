@@ -56,13 +56,13 @@ class SearchViewController: UIViewController {
         songCovers = []
         songIds = []
         
-        let searchUrl = "https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&q=\(song)&type=video&videoCategoryId=10&key=\(apikey)"
+        let searchUrl = "https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&q=\(song)&type=video&videoCategoryId=10&key=\(SongsHelper.sharedInstance.apikey)"
         
         AF.request(searchUrl).responseJSON { (data) -> Void in
             switch data.result {
             case .success(let value):
                 let json = JSON(value)
-                print("JSON: \(json)")
+                //print("JSON: \(json)")
                 for i in 0..<20 {
                 
                     if let songTitle = json["items", i, "snippet", "title"].string {

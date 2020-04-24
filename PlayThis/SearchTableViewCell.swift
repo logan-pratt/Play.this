@@ -45,12 +45,12 @@ class SearchTableViewCell: UITableViewCell {
         if let checkedUrl = URL(string: imageUrl) {
             songCover.kf.setImage(with: checkedUrl)
         }
-        let detailsUrl = "https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=\(songId)&key=\(apikey)"
+        let detailsUrl = "https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=\(songId)&key=\(SongsHelper.sharedInstance.apikey)"
         AF.request(detailsUrl).responseJSON { (data) -> Void in
             switch data.result{
             case .success(let value):
                 let json = JSON(value)
-                print(json)
+                //print(json)
                 if let duration = json["items", 0, "contentDetails", "duration"].string {
                     self.song = Song(group: code, name: songTitle, artist: songArtist, coverURL: imageUrl, id: songId, key:"", duration: duration)
                             self.durationLabel.text = self.song?.duration

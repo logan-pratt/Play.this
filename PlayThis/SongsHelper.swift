@@ -24,6 +24,7 @@ class SongsHelper: NSObject {
     @objc let defaults = UserDefaults.standard
     
     let realm = try! Realm()
+    var apikey = ""
     
     var groupCode: String = ""
     var currentSongIndex = 0
