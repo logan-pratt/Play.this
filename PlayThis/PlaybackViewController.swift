@@ -189,7 +189,9 @@ class PlaybackViewController: UIViewController {
                         skipSong()
                     } else {
                         print("last")
+                        pause()
                         endOfPlaylist = true
+                        
                     }
                 }
             }
@@ -458,17 +460,21 @@ class PlaybackViewController: UIViewController {
     }
     
     @IBAction func playVideo(_ sender: AnyObject) {
-        play()
-        togglePausePlayButton()
-        //timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(PlaybackViewController.updateProgress), userInfo: nil, repeats: true)
-        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true, block: { (timerValue) in
-            if !self.endOfPlaylist {
-                self.updateProgress()  // call the selector function here
-            } else {
-                timerValue.invalidate()
-            }
-        })
-        //        timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: "updateProgress", userInfo: nil, repeats: true)
+        if !timer.isValid {
+            play()
+            togglePausePlayButton()
+            //timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(PlaybackViewController.updateProgress), userInfo: nil, repeats: true)
+            timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true, block: { (timerValue) in
+                if !self.endOfPlaylist {
+                    self.updateProgress()  // call the selector function here
+                } else {
+                    print("inv")
+                    timerValue.invalidate()
+                    self.invalidateTimers()
+                }
+            })
+            //        timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: "updateProgress", userInfo: nil, repeats: true)
+        }
     }
     
     func togglePausePlayButton() {
