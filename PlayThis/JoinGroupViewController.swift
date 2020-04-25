@@ -52,7 +52,17 @@ class JoinGroupViewController: UIViewController {
             previousButton.isHidden = false
             //}
         }
-        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if let _ = PlaybackHelper.sharedInstance.storedPVC {
+            //PlaybackHelper.sharedInstance 
+            PlaybackHelper.sharedInstance.storedPVC.dismiss(animated: false, completion: nil)
+            if let _ = PlaybackHelper.sharedInstance.storedPVC.timer {
+                PlaybackHelper.sharedInstance.storedPVC.timer.invalidate()
+            }
+        }
     }
     
     @objc func clearTextButton(button: UIButton, title: NSString) {
@@ -184,6 +194,7 @@ class JoinGroupViewController: UIViewController {
                     AnalyticsParameterContentType: self.group.name
                 ])
                 
+                playlistViewController.modalPresentationStyle = .fullScreen
                 self.present(playlistViewController, animated: true, completion: nil)
             } else {
                 _ = SweetAlert().showAlert("Incorrect code", subTitle: "Please enter the group code again.", style: AlertStyle.error)

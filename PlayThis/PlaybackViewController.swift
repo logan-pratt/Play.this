@@ -58,11 +58,12 @@ class PlaybackViewController: UIViewController {
             if currentSongIndex < songs.count {
                 song = songs[currentSongIndex]
                 print("SONG \(song.name)")
-                PlaybackHelper.sharedInstance.currentSongIndex = self.currentSongIndex
+                
             } else {
                 print("CS \(currentSongIndex)")
                 currentSongIndex -= 1
             }
+            PlaybackHelper.sharedInstance.currentSongIndex = self.currentSongIndex
         }
     }
     var loadedItems = 0
@@ -92,6 +93,7 @@ class PlaybackViewController: UIViewController {
         player.removeAllItems()
         playlist = []
         createPlaylist(song.id)
+        print("song name: \(song.name)")
         self.play()
         firstIndex=currentSongIndex
         setUpView()
@@ -110,13 +112,12 @@ class PlaybackViewController: UIViewController {
         //songLabel.type = .continuous
         artistLabel.text = song.artist
         
-        print("11")
         playButton.isHidden = true
         pauseButton.isHidden = true
         pauseButton.isEnabled = false
         pauseButton.isHidden = true
         loadingView.startAnimating()
-        print("22")
+        
         if let checkedUrl = URL(string: song.coverURL) {
 //            downloadImage(checkedUrl)
             songImageView.kf.setImage(with: checkedUrl)
@@ -222,6 +223,8 @@ class PlaybackViewController: UIViewController {
     }
     
     func setNowPlaying(_ dura: Float, timePlayed: Float) {
+//        print("songs \(songs.map({$0.name}))")
+//        print(playbackInstance.currentSongIndex)
         let s = songs[playbackInstance.currentSongIndex]
         let currentImage = self.songImageView.image
         let albumArt = MPMediaItemArtwork.init(boundsSize: CGSize(width: 480, height: 360), requestHandler: { (size) -> UIImage in
@@ -266,13 +269,22 @@ class PlaybackViewController: UIViewController {
             if expirationInt! > currentTime { //If it's cached and not expired, no need to download, just createPlayerItem
                 let duration = (UserDefaults.standard.object(forKey: yt_id+".duration") as? Int ?? 0)
                 self.createPlayerItem(URL(string: urlString)!, duration: duration)
+                print("cached \(urlString)")
                 return //No need to download stuffs
             }
         }
         
         XCDYouTubeClient.default().getVideoWithIdentifier(yt_id) { (video: XCDYouTubeVideo?, error: Error?) in
+            print("LI \(self.loadedItems) \(self.playlist.count)")
+            if let storedPVC = self.playbackInstance.storedPVC {
+                if storedPVC != self {
+                    self.invalidateTimers()
+                    self.dismiss(animated: false, completion: nil)
+                    return
+                }
+            }
             if self.loadedItems >= self.playlist.count {
-                return //If you start creating a new playlist before the first playlist was finished loading the URLs, you run into race conditions, this if helps kill the original playlist loading
+                return //kill the original playlist loading
             }
             if error != nil {
                 // print(error)
@@ -306,10 +318,12 @@ class PlaybackViewController: UIViewController {
                     UserDefaults.standard.set(url.absoluteString, forKey: video!.identifier)
                     UserDefaults.standard.set(Int(video!.duration), forKey: video!.identifier+".duration")
                     if self.playlist[self.loadedItems] == video!.identifier {
-                        print("\n \(String(describing: self.playlist))")
-                        print(self.playlist[self.loadedItems])
-                        print("\(video!.identifier) \n")
+//                        print("\n \(String(describing: self.playlist))")
+//                        print(self.playlist[self.loadedItems])
+//                        print("\(video!.identifier) \n")
                         self.createPlayerItem(url as URL, duration: Int(video!.duration))
+                        //print("create item url \(url.absoluteString)")
+                        print("\(self.loadedItems) \(self.playlist)")
                         return //Since every thing else needs to get next streamUrl
                     } else {
                         print("out of sync")
@@ -574,6 +588,18 @@ class PlaybackViewController: UIViewController {
         
         
         return MPRemoteCommandHandlerStatus.success
+    }
+    
+    public func invalidateTimers() {
+        if let _ = timer {
+            timer.invalidate()
+        }
+        if let _ = waitTimer {
+            waitTimer.invalidate()
+        }
+        if let _ = playerStartedTimer {
+            playerStartedTimer.invalidate()
+        }
     }
     
     override func remoteControlReceived(with event: UIEvent?) {
