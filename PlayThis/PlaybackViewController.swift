@@ -45,6 +45,7 @@ class PlaybackViewController: UIViewController {
     var player = PlaybackHelper.sharedInstance.player
     var playerItems: [AVPlayerItem] = []
     var song = SongsHelper.sharedInstance.songs[0]
+    var endOfPlaylist = false
     var songId = ""
     var imageUrl = ""
     var songTitle = ""
@@ -145,7 +146,17 @@ class PlaybackViewController: UIViewController {
         if player.status.rawValue == 1 {
             //timeSlider.isEnabled = true
             playerStartedTimer.invalidate()
-            timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
+//            timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
+            if !player.isPlaying {
+                player.play()
+            }
+            timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true, block: { (timerValue) in
+                if !self.endOfPlaylist {
+                    self.updateProgress()  // call the selector function here
+                } else {
+                    timerValue.invalidate()
+                }
+            })
         }
     }
     
@@ -165,11 +176,13 @@ class PlaybackViewController: UIViewController {
                 pauseButton.isEnabled = true
                 toggleSkipPrevious()
                 if Double(timeLeft) <= 0.5 {
-                    //currentSongIndex+=1
-                    /*if currentSongIndex <= playlist.count + 1 {
-                     self.player.advanceToNextItem()
-                     }*/
-                    skipSong()
+                    if player.currentItem != player.items().last {
+                        print("next")
+                        skipSong()
+                    } else {
+                        print("last")
+                        endOfPlaylist = true
+                    }
                 }
             }
         }
@@ -426,7 +439,14 @@ class PlaybackViewController: UIViewController {
     @IBAction func playVideo(_ sender: AnyObject) {
         play()
         togglePausePlayButton()
-        timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(PlaybackViewController.updateProgress), userInfo: nil, repeats: true)
+        //timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(PlaybackViewController.updateProgress), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true, block: { (timerValue) in
+            if !self.endOfPlaylist {
+                self.updateProgress()  // call the selector function here
+            } else {
+                timerValue.invalidate()
+            }
+        })
         //        timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: "updateProgress", userInfo: nil, repeats: true)
     }
     
@@ -473,8 +493,8 @@ class PlaybackViewController: UIViewController {
     @IBAction func sliderChanged(_ sender: UISlider) {
         if timer.isValid {
             currentTimeLabel.text = secondsToText(sender.value)
-            if let currentItem = player.currentItem {
-                player.seek(to: CMTimeMakeWithSeconds(Float64(sender.value), preferredTimescale: currentItem.currentTime().timescale))
+            if let _ = player.currentItem {
+                player.seek(to: CMTimeMakeWithSeconds(Float64(sender.value), preferredTimescale: player.currentItem!.currentTime().timescale))
             }
         }
     }
@@ -537,12 +557,14 @@ class PlaybackViewController: UIViewController {
             return MPRemoteCommandHandlerStatus.commandFailed
         }
         
+        endOfPlaylist = false
         currentSongIndex-=1
         playerItems[currentSongIndex-firstIndex].seek(to: CMTimeMakeWithSeconds(Float64(0), preferredTimescale: playerItems[currentSongIndex-firstIndex].currentTime().timescale))
         player.replaceCurrentItem(with: playerItems[currentSongIndex-firstIndex])
         playerItems[currentSongIndex-firstIndex+1].seek(to: CMTimeMakeWithSeconds(Float64(0), preferredTimescale: playerItems[currentSongIndex-firstIndex+1].currentTime().timescale))
         player.insert(playerItems[currentSongIndex-firstIndex+1], after: player.currentItem)
         setUpView()
+        
         
         return MPRemoteCommandHandlerStatus.success
     }
