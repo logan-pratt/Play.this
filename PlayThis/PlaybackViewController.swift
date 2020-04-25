@@ -58,11 +58,12 @@ class PlaybackViewController: UIViewController {
             if currentSongIndex < songs.count {
                 song = songs[currentSongIndex]
                 print("SONG \(song.name)")
-                PlaybackHelper.sharedInstance.currentSongIndex = self.currentSongIndex
+                
             } else {
                 print("CS \(currentSongIndex)")
                 currentSongIndex -= 1
             }
+            PlaybackHelper.sharedInstance.currentSongIndex = self.currentSongIndex
         }
     }
     var loadedItems = 0
@@ -92,6 +93,7 @@ class PlaybackViewController: UIViewController {
         player.removeAllItems()
         playlist = []
         createPlaylist(song.id)
+        print("song name: \(song.name)")
         self.play()
         firstIndex=currentSongIndex
         setUpView()
@@ -111,8 +113,10 @@ class PlaybackViewController: UIViewController {
         artistLabel.text = song.artist
         
         playButton.isHidden = true
-        pauseButton.isHidden = false
+        pauseButton.isHidden = true
         pauseButton.isEnabled = false
+        pauseButton.isHidden = true
+        loadingView.startAnimating()
         
         if let checkedUrl = URL(string: song.coverURL) {
 //            downloadImage(checkedUrl)
@@ -165,7 +169,7 @@ class PlaybackViewController: UIViewController {
             //print("Current item: \(player.currentItem?.duration)")
             let timePlayed = Float(self.player.currentTime().value) / Float(self.player.currentTime().timescale)
             var timeLeft = Float(self.player.currentItem!.duration.value) / Float(self.player.currentItem!.duration.timescale) / 2
-            if timePlayed > 1 {
+            if timePlayed >= 0.5 {
                 timeSlider.value = Float(timePlayed)
                 timeSlider.maximumValue = timeLeft
                 setNowPlaying(timeLeft, timePlayed: timePlayed)
@@ -174,14 +178,20 @@ class PlaybackViewController: UIViewController {
                 endTimeLabel.text = secondsToText(timeLeft)
                 timeSlider.isEnabled = true
                 pauseButton.isEnabled = true
+                pauseButton.isHidden = false
                 toggleSkipPrevious()
+                if loadingView.isAnimating {
+                    loadingView.stopAnimating()
+                }
                 if Double(timeLeft) <= 0.5 {
                     if player.currentItem != player.items().last {
                         print("next")
                         skipSong()
                     } else {
                         print("last")
+                        pause()
                         endOfPlaylist = true
+                        
                     }
                 }
             }
@@ -215,6 +225,8 @@ class PlaybackViewController: UIViewController {
     }
     
     func setNowPlaying(_ dura: Float, timePlayed: Float) {
+//        print("songs \(songs.map({$0.name}))")
+//        print(playbackInstance.currentSongIndex)
         let s = songs[playbackInstance.currentSongIndex]
         let currentImage = self.songImageView.image
         let albumArt = MPMediaItemArtwork.init(boundsSize: CGSize(width: 480, height: 360), requestHandler: { (size) -> UIImage in
@@ -259,13 +271,22 @@ class PlaybackViewController: UIViewController {
             if expirationInt! > currentTime { //If it's cached and not expired, no need to download, just createPlayerItem
                 let duration = (UserDefaults.standard.object(forKey: yt_id+".duration") as? Int ?? 0)
                 self.createPlayerItem(URL(string: urlString)!, duration: duration)
+                print("cached \(urlString)")
                 return //No need to download stuffs
             }
         }
         
         XCDYouTubeClient.default().getVideoWithIdentifier(yt_id) { (video: XCDYouTubeVideo?, error: Error?) in
+            print("LI \(self.loadedItems) \(self.playlist.count)")
+            if let storedPVC = self.playbackInstance.storedPVC {
+                if storedPVC != self {
+                    self.invalidateTimers()
+                    self.dismiss(animated: false, completion: nil)
+                    return
+                }
+            }
             if self.loadedItems >= self.playlist.count {
-                return //If you start creating a new playlist before the first playlist was finished loading the URLs, you run into race conditions, this if helps kill the original playlist loading
+                return //kill the original playlist loading
             }
             if error != nil {
                 // print(error)
@@ -299,10 +320,12 @@ class PlaybackViewController: UIViewController {
                     UserDefaults.standard.set(url.absoluteString, forKey: video!.identifier)
                     UserDefaults.standard.set(Int(video!.duration), forKey: video!.identifier+".duration")
                     if self.playlist[self.loadedItems] == video!.identifier {
-                        print("\n \(String(describing: self.playlist))")
-                        print(self.playlist[self.loadedItems])
-                        print("\(video!.identifier) \n")
+//                        print("\n \(String(describing: self.playlist))")
+//                        print(self.playlist[self.loadedItems])
+//                        print("\(video!.identifier) \n")
                         self.createPlayerItem(url as URL, duration: Int(video!.duration))
+                        //print("create item url \(url.absoluteString)")
+                        print("\(self.loadedItems) \(self.playlist)")
                         return //Since every thing else needs to get next streamUrl
                     } else {
                         print("out of sync")
@@ -437,17 +460,21 @@ class PlaybackViewController: UIViewController {
     }
     
     @IBAction func playVideo(_ sender: AnyObject) {
-        play()
-        togglePausePlayButton()
-        //timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(PlaybackViewController.updateProgress), userInfo: nil, repeats: true)
-        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true, block: { (timerValue) in
-            if !self.endOfPlaylist {
-                self.updateProgress()  // call the selector function here
-            } else {
-                timerValue.invalidate()
-            }
-        })
-        //        timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: "updateProgress", userInfo: nil, repeats: true)
+        if !timer.isValid {
+            play()
+            togglePausePlayButton()
+            //timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(PlaybackViewController.updateProgress), userInfo: nil, repeats: true)
+            timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true, block: { (timerValue) in
+                if !self.endOfPlaylist {
+                    self.updateProgress()  // call the selector function here
+                } else {
+                    print("inv")
+                    timerValue.invalidate()
+                    self.invalidateTimers()
+                }
+            })
+            //        timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: "updateProgress", userInfo: nil, repeats: true)
+        }
     }
     
     func togglePausePlayButton() {
@@ -567,6 +594,18 @@ class PlaybackViewController: UIViewController {
         
         
         return MPRemoteCommandHandlerStatus.success
+    }
+    
+    public func invalidateTimers() {
+        if let _ = timer {
+            timer.invalidate()
+        }
+        if let _ = waitTimer {
+            waitTimer.invalidate()
+        }
+        if let _ = playerStartedTimer {
+            playerStartedTimer.invalidate()
+        }
     }
     
     override func remoteControlReceived(with event: UIEvent?) {

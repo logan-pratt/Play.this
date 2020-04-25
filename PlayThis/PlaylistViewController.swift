@@ -15,8 +15,8 @@ import SwiftyJSON
 
 import Firebase
 import FirebaseDatabase
-import Realm
-import RealmSwift
+//import Realm
+//import RealmSwift
 
 //import DropDownMenuKit
 
@@ -35,10 +35,10 @@ class PlaylistViewController: UIViewController {
     
     
     let songsInstance = SongsHelper.sharedInstance
-    let playbackInstance = PlaybackHelper.sharedInstance
+    var playbackInstance = PlaybackHelper.sharedInstance
     let ref = Database.database().reference(withPath: "songs")
     var defaults = UserDefaults.standard
-    let realm = try! Realm()
+    //let realm = try! Realm()
     var likedSongs: [String] = []
     var firstRun = true
     var groupName = ""
@@ -176,6 +176,22 @@ class PlaylistViewController: UIViewController {
         }
     }
     
+    @IBAction func leaveGroup(_ sender: Any) {
+        resetPlayback()
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    private func resetPlayback() {
+        playbackInstance.player.removeAllItems()
+        if let pvc = playbackInstance.storedPVC {
+            pvc.invalidateTimers()
+            pvc.dismiss(animated: false, completion: nil)
+            playbackInstance.storedPVC = nil
+        }
+        PlaybackHelper.sharedInstance = playbackInstance
+        //songsInstance
+    }
+    
 }
 
 extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
@@ -194,15 +210,27 @@ extension PlaylistViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         nowPlayingButton.isEnabled = true
-        if playbackViewController == nil || playbackViewController.songId != songsInstance.songs[(indexPath as NSIndexPath).row].id {
-            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-            playbackViewController = storyBoard.instantiateViewController(withIdentifier: "playback") as! PlaybackViewController
-            print((indexPath as NSIndexPath).row)
-            playbackViewController.currentSongIndex = (indexPath as NSIndexPath).row
-        } else {
-            playbackViewController.currentSongIndex = (indexPath as NSIndexPath).row
-            playbackViewController.skipSong()
+        
+        if let _ = playbackViewController {
+            playbackViewController.dismiss(animated: false, completion: nil)
+            resetPlayback()
         }
+        
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        playbackViewController = storyBoard.instantiateViewController(withIdentifier: "playback") as! PlaybackViewController
+        playbackViewController.currentSongIndex = (indexPath as NSIndexPath).row
+        
+//        if playbackViewController == nil || playbackViewController.songId != songsInstance.songs[(indexPath as NSIndexPath).row].id {
+//            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+//            playbackViewController = storyBoard.instantiateViewController(withIdentifier: "playback") as! PlaybackViewController
+//            print((indexPath as NSIndexPath).row)
+//            playbackViewController.currentSongIndex = (indexPath as NSIndexPath).row
+//        } else {
+//            playbackViewController.currentSongIndex = (indexPath as NSIndexPath).row
+//            playbackViewController.skipSong()
+//        }
+        
+        
         playbackInstance.storedPVC = playbackViewController
         self.present(playbackViewController, animated: true, completion: nil)
     }

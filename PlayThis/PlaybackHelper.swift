@@ -12,7 +12,7 @@ import AVFoundation
 
 class PlaybackHelper: NSObject {
    
-    @objc static let sharedInstance = PlaybackHelper()
+    @objc static var sharedInstance = PlaybackHelper()
     @objc let songs = SongsHelper.sharedInstance
     @objc var storedPVC: PlaybackViewController!
     @objc var player = AVQueuePlayer()
@@ -32,6 +32,9 @@ class PlaybackHelper: NSObject {
     
     override init() {
         super.init()
-        
     }
+    
+//    public func reset() {
+//        PlaybackHelper.sharedInstance
+//    }
 }
