@@ -110,10 +110,13 @@ class PlaybackViewController: UIViewController {
         //songLabel.type = .continuous
         artistLabel.text = song.artist
         
+        print("11")
         playButton.isHidden = true
-        pauseButton.isHidden = false
+        pauseButton.isHidden = true
         pauseButton.isEnabled = false
-        
+        pauseButton.isHidden = true
+        loadingView.startAnimating()
+        print("22")
         if let checkedUrl = URL(string: song.coverURL) {
 //            downloadImage(checkedUrl)
             songImageView.kf.setImage(with: checkedUrl)
@@ -165,7 +168,7 @@ class PlaybackViewController: UIViewController {
             //print("Current item: \(player.currentItem?.duration)")
             let timePlayed = Float(self.player.currentTime().value) / Float(self.player.currentTime().timescale)
             var timeLeft = Float(self.player.currentItem!.duration.value) / Float(self.player.currentItem!.duration.timescale) / 2
-            if timePlayed > 1 {
+            if timePlayed >= 0.5 {
                 timeSlider.value = Float(timePlayed)
                 timeSlider.maximumValue = timeLeft
                 setNowPlaying(timeLeft, timePlayed: timePlayed)
@@ -174,7 +177,11 @@ class PlaybackViewController: UIViewController {
                 endTimeLabel.text = secondsToText(timeLeft)
                 timeSlider.isEnabled = true
                 pauseButton.isEnabled = true
+                pauseButton.isHidden = false
                 toggleSkipPrevious()
+                if loadingView.isAnimating {
+                    loadingView.stopAnimating()
+                }
                 if Double(timeLeft) <= 0.5 {
                     if player.currentItem != player.items().last {
                         print("next")
