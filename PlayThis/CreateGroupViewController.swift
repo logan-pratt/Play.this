@@ -19,6 +19,7 @@ class CreateGroupViewController: UIViewController {
     @IBOutlet weak var createButtonConstraint: NSLayoutConstraint!
     @IBOutlet var topLabelConstraint: NSLayoutConstraint!
 
+    var joinGroupVC: JoinGroupViewController?
     var ref = Database.database().reference(withPath: "groups")
     var groupCode = ""
     var codeAlreadyExists = false
@@ -96,9 +97,7 @@ class CreateGroupViewController: UIViewController {
     
     @objc func keyboardWillShow(_ notification: Notification) {
         if let keyboardFrame = ((notification as NSNotification).userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as AnyObject).cgRectValue {
-//            createGroupButton.setTitleColor(UIColor(red:0.11, green:0.58, blue:0.96, alpha:1.0), for: UIControlState())
             clearTextButton(button: createGroupButton, title: "Create Group")
-            print("key \(keyboardFrame.height)")
             createButtonConstraint.constant = keyboardFrame.height
             if keyboardFrame.height > 300 {
                 createButtonConstraint.constant -= 35
@@ -108,7 +107,6 @@ class CreateGroupViewController: UIViewController {
     }
     
     @objc func keyboardWillHide(_ notification: Notification) {
-//        createGroupButton.setTitleColor(UIColor(red:0.09, green:0.33, blue:0.93, alpha:1.0), for: UIControlState())
         clearTextButton(button: createGroupButton, title: "Create Group")
         createButtonConstraint.constant = 0
         topLabelConstraint.constant = 44
@@ -126,25 +124,14 @@ class CreateGroupViewController: UIViewController {
     @IBAction func createGroup(_ sender: AnyObject) {
         let group = Group(name: groupNameField.text!, key: groupCode)
         let groupRef = self.ref.child(groupCode)
-        
         groupRef.setValue(group.toAnyObject())
-        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-        let playlistViewController = storyBoard.instantiateViewController(withIdentifier: "playlist") as! PlaylistViewController
-        playlistViewController.groupName = group.name
-        playlistViewController.groupCode = group.key
-        self.present(playlistViewController, animated: true, completion: nil)
-
-//        let newGroup = PFObject(className: "Group")
-//        newGroup["groupCode"] = groupCode
-//        newGroup["groupName"] = groupName
-//        //groupId = newGroup.objectId!
-//        newGroup.saveInBackground { (success: Bool, error: Error?) -> Void in
-//            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-//            let playlistViewController = storyBoard.instantiateViewController(withIdentifier: "playlist") as! PlayThisViewController
-//            playlistViewController.groupName = self.groupName
-//            playlistViewController.groupCode = self.groupCode
-//            self.present(playlistViewController, animated: true, completion: nil)
-//        }
+        
+        for i in 0...5 {
+            joinGroupVC?.textFields[i].text = group.key.stringAt(i)
+        }
+        joinGroupVC?.joinButton.isEnabled = true
+        joinGroupVC?.joinButton.sendActions(for: .touchUpInside)
+        self.dismiss(animated: true, completion: nil)
     }
     
     override func didReceiveMemoryWarning() {
@@ -180,4 +167,10 @@ fileprivate func convertFromNSAttributedStringKey(_ input: NSAttributedString.Ke
 fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [String: Any]?) -> [NSAttributedString.Key: Any]? {
 	guard let input = input else { return nil }
 	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
+}
+
+extension String {
+    func stringAt(_ i: Int) -> String {
+        return String(Array(self)[i])
+    }
 }

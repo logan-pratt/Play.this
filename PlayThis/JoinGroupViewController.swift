@@ -22,7 +22,6 @@ class JoinGroupViewController: UIViewController {
     @IBOutlet weak var joinButton: UIButton!
     @IBOutlet var previousButton: UIButton!
     
-    
     var textFields: Array<UITextField>!
     var ref: DatabaseReference!
     var group: Group!
@@ -51,7 +50,6 @@ class JoinGroupViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if let _ = PlaybackHelper.sharedInstance.storedPVC {
-            //PlaybackHelper.sharedInstance 
             PlaybackHelper.sharedInstance.storedPVC.dismiss(animated: false, completion: nil)
             if let _ = PlaybackHelper.sharedInstance.storedPVC.timer {
                 PlaybackHelper.sharedInstance.storedPVC.timer.invalidate()
@@ -106,8 +104,6 @@ class JoinGroupViewController: UIViewController {
             textFields[i].text = c.description
         }
         joinButton.isEnabled = true
-        print("PC \(previousCount)")
-        print("CC \(previousCodes.count)")
         if previousCount > 0 {
             previousCount -= 1
         } else {
@@ -140,19 +136,7 @@ class JoinGroupViewController: UIViewController {
     }
     
     @IBAction func joinGroup(_ sender: AnyObject) {
-        // if IJReachability.isConnectedToNetwork() {
         var enteredCode = ""
-        //        var groupCode = ""
-        //        var groupName = ""
-        //        var groupId = ""
-        /*Testing code
-         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-         let playlistViewController = storyBoard.instantiateViewController(withIdentifier: "playlist") as! PlayThisViewController
-         playlistViewController.groupName = "Tester"
-         playlistViewController.groupCode = "555555"
-         present(playlistViewController, animated: true, completion: nil)
-         */
-        ///*REAL CODE
         for textField in textFields {
             enteredCode += textField.text!
         }
@@ -176,12 +160,6 @@ class JoinGroupViewController: UIViewController {
                 self.defaults.synchronize()
                 self.previousButton.isHidden = false
                 
-                //Crashlytics
-                /*Answers.logCustomEvent(withName: "Join Group",
-                                               customAttributes: [
-                                                "Group Name": self.group.name,
-                                                "Group Key": self.group.key
-                    ])*/
                 Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
                     AnalyticsParameterItemID: "id-\(self.group.key)",
                     AnalyticsParameterItemName: "join",
@@ -195,10 +173,15 @@ class JoinGroupViewController: UIViewController {
                 self.clearCode()
             }
         })
-        
-        print(enteredCode)
-        
     }
+    
+    @IBAction func createGroup(_ sender: Any) {
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        let createGroupVC = storyBoard.instantiateViewController(withIdentifier: "createGroup") as! CreateGroupViewController
+        createGroupVC.joinGroupVC = self
+        self.present(createGroupVC, animated: true, completion: nil)
+    }
+    
     
     /*
      // MARK: - Navigation////////////////
@@ -236,11 +219,9 @@ extension JoinGroupViewController: UITextFieldDelegate {
                 if insertStringLength > 0 {
                     newString = (textField.text! as NSString).replacingCharacters(in: range, with: string)
                 } else {
-                    //                    newString?.deleteCharactersInRange(range)
                     newString = ""
                 }
             }
-            //print(newString)
             textField.text = newString!
             
             if shouldMoveToNextField {
@@ -256,15 +237,6 @@ extension JoinGroupViewController: UITextFieldDelegate {
         return false
     }
 }
-
-//extension String {
-//    mutating func deleteCharactersInRange(_ range: NSRange) {
-//        let startIndex = self.index(self.startIndex, offsetBy: range.location)
-//        let length = range.length
-//        self.removeSubrange(Range<String.Index>(start: startIndex, end:startIndex.advancedBy(n: length)))
-////        self.removeSubrange((startIndex ..< String.CharacterView corresponding to `startIndex`.index(startIndex, offsetBy: length)))
-//    }
-//}
 
 // Helper function inserted by Swift 4.2 migrator.
 fileprivate func convertFromNSAttributedStringKey(_ input: NSAttributedString.Key) -> String {
