@@ -130,7 +130,7 @@ class PlaybackViewController: UIViewController {
         //        periodicTimeObserver = player.addPeriodicTimeObserverForInterval(CMTimeMake(1, 1), queue: dispatch_get_main_queue()) { cmTime in
         //            self.timeObserverFired(cmTime)
         //        }
-        playerStartedTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(PlaybackViewController.checkIfPlayerReady), userInfo: nil, repeats: true)
+        playerStartedTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(PlaybackViewController.checkIfPlayerReady), userInfo: nil, repeats: true)
     }
     
     func toggleSkipPrevious() {
@@ -154,13 +154,14 @@ class PlaybackViewController: UIViewController {
             if !player.isPlaying {
                 player.play()
             }
-            timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true, block: { (timerValue) in
-                if !self.endOfPlaylist {
-                    self.updateProgress()  // call the selector function here
-                } else {
-                    timerValue.invalidate()
-                }
-            })
+//            timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true, block: { (timerValue) in
+//                if !self.endOfPlaylist {
+//                    self.updateProgress()  // call the selector function here
+//                } else {
+//                    timerValue.invalidate()
+//                }
+//            })
+            newPlayerTimer(interval: 0.5)
         }
     }
     
@@ -169,7 +170,7 @@ class PlaybackViewController: UIViewController {
             //print("Current item: \(player.currentItem?.duration)")
             let timePlayed = Float(self.player.currentTime().value) / Float(self.player.currentTime().timescale)
             var timeLeft = Float(self.player.currentItem!.duration.value) / Float(self.player.currentItem!.duration.timescale) / 2
-            if timePlayed >= 0.5 {
+            if timePlayed >= 0.1 {
                 timeSlider.value = Float(timePlayed)
                 timeSlider.maximumValue = timeLeft
                 setNowPlaying(timeLeft, timePlayed: timePlayed)
@@ -178,7 +179,8 @@ class PlaybackViewController: UIViewController {
                 endTimeLabel.text = secondsToText(timeLeft)
                 timeSlider.isEnabled = true
                 pauseButton.isEnabled = true
-                pauseButton.isHidden = false
+                pauseButton.isHidden = !player.isPlaying
+                playButton.isHidden = player.isPlaying
                 toggleSkipPrevious()
                 if loadingView.isAnimating {
                     loadingView.stopAnimating()
@@ -194,6 +196,9 @@ class PlaybackViewController: UIViewController {
                         
                     }
                 }
+            } else {
+                loadingView.startAnimating()
+                pauseButton.isHidden = true
             }
         }
     }
@@ -207,7 +212,7 @@ class PlaybackViewController: UIViewController {
         self.player.removeAllItems()
         self.loadedItems = 0
         self.timePlayed = 0
-        if let timer = timer {
+        if let _ = timer {
             timer.invalidate()
         }
         
@@ -464,17 +469,30 @@ class PlaybackViewController: UIViewController {
             play()
             togglePausePlayButton()
             //timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(PlaybackViewController.updateProgress), userInfo: nil, repeats: true)
-            timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true, block: { (timerValue) in
-                if !self.endOfPlaylist {
-                    self.updateProgress()  // call the selector function here
-                } else {
-                    print("inv")
-                    timerValue.invalidate()
-                    self.invalidateTimers()
-                }
-            })
+//            timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true, block: { (timerValue) in
+//                if !self.endOfPlaylist {
+//                    self.updateProgress()  // call the selector function here
+//                } else {
+//                    print("inv")
+//                    timerValue.invalidate()
+//                    self.invalidateTimers()
+//                }
+//            })
+            newPlayerTimer(interval: 0.5)
             //        timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: "updateProgress", userInfo: nil, repeats: true)
         }
+    }
+    
+    func newPlayerTimer(interval: TimeInterval) {
+        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true, block: { (timerValue) in
+            if !self.endOfPlaylist {
+                self.updateProgress()  // call the selector function here
+            } else {
+                print("inv")
+                timerValue.invalidate()
+                self.invalidateTimers()
+            }
+        })
     }
     
     func togglePausePlayButton() {
