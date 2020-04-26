@@ -3,19 +3,13 @@
 //  PlayThis
 //
 //  Created by Logan Pratt on 7/13/15.
-//  Copyright (c) 2015 Logan Pratt. All rights reserved.
+//  Copyright (c) 2020 Logan Pratt. All rights reserved.
 //
 
 import UIKit
-//import Parse
-
 import FirebaseDatabase
 import Firebase
 import Kingfisher
- 
-//import Spring
-import NVActivityIndicatorView
-//import RJImageLoader
 
 class SongTableViewCell: UITableViewCell {
     
@@ -25,9 +19,6 @@ class SongTableViewCell: UITableViewCell {
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var likesLabel: UILabel!
     @IBOutlet weak var durationLabel: UILabel!
-    
-    //    let activityIndicatorView = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 100, height: 100), type: .BallTrianglePath)
-    
     
     var songObjId = ""
     var groupCode = ""
@@ -47,7 +38,6 @@ class SongTableViewCell: UITableViewCell {
         self.song = song
         if let checkedUrl = URL(string: song.coverURL) {
             albumCover.kf.setImage(with: checkedUrl)
-            //downloadImage(checkedUrl)
         }
 
         songTitleLabel.text = song.name
@@ -66,9 +56,6 @@ class SongTableViewCell: UITableViewCell {
         } else {
             likeButton.isSelected = false
         }
-        //print(song.likes)
-        // updateLikes()
-        
     }
     
     

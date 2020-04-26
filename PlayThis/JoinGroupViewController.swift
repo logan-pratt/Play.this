@@ -3,17 +3,12 @@
 //  PlayThis
 //
 //  Created by Logan Pratt on 7/13/15.
-//  Copyright (c) 2015 Logan Pratt. All rights reserved.
+//  Copyright (c) 2020 Logan Pratt. All rights reserved.
 //
 
 import UIKit
-//import Parse
-//import IJReachability
-//import Crashlytics
 import Firebase
 import FirebaseDatabase
-import Realm
-import RealmSwift
 
 
 class JoinGroupViewController: UIViewController {

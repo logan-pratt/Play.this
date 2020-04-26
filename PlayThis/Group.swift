@@ -3,7 +3,7 @@
 //  PlayThis
 //
 //  Created by Logan Pratt on 1/22/17.
-//  Copyright © 2017 Logan Pratt. All rights reserved.
+//  Copyright © 2020 Logan Pratt. All rights reserved.
 //
 
 import Foundation
@@ -16,7 +16,6 @@ struct Group {
     let name: String
     let ref: DatabaseReference?
     var songs: [String]
-    //let code: String
     
     init() {
         key = ""
@@ -28,7 +27,6 @@ struct Group {
     init(name: String, key: String) {
         self.key = key
         self.name = name
-        //self.code = code
         self.ref = nil
         self.songs = []
     }
@@ -38,7 +36,6 @@ struct Group {
         print(key)
         let snapshotValue = snapshot.value as! [String: AnyObject]
         name = snapshotValue["name"] as! String
-        //code = snapshotValue["code"] as! String
         songs = snapshotValue["songs"] as! [String]
         ref = snapshot.ref
     }

@@ -3,7 +3,7 @@
 //  PlayThis
 //
 //  Created by Logan Pratt on 7/24/15.
-//  Copyright (c) 2015 Logan Pratt. All rights reserved.
+//  Copyright (c) 2020 Logan Pratt. All rights reserved.
 //
 
 import UIKit
@@ -33,8 +33,4 @@ class PlaybackHelper: NSObject {
     override init() {
         super.init()
     }
-    
-//    public func reset() {
-//        PlaybackHelper.sharedInstance
-//    }
 }

@@ -3,22 +3,17 @@
 //  PlayThis
 //
 //  Created by Logan Pratt on 7/13/15.
-//  Copyright (c) 2015 Logan Pratt. All rights reserved.
+//  Copyright (c) 2020 Logan Pratt. All rights reserved.
 //
 
 import UIKit
 import AVFoundation
-//import Fabric
-//import Crashlytics
 import MediaPlayer
 import Firebase
-//import FirebaseMessaging
-//import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     
-//    let playback = PlaybackViewController.sharedInstance
     var window: UIWindow?
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         FirebaseApp.configure()

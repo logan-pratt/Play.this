@@ -3,15 +3,13 @@
 //  PlayThis
 //
 //  Created by Logan Pratt on 7/14/15.
-//  Copyright (c) 2015 Logan Pratt. All rights reserved.
+//  Copyright (c) 2020 Logan Pratt. All rights reserved.
 //
 
 import UIKit
 import AVFoundation
 import AVKit
-import AVKit
 import MediaPlayer
-//import Crashlytics
 import XCDYouTubeKit
 import NVActivityIndicatorView
 import MarqueeLabel
@@ -97,9 +95,6 @@ class PlaybackViewController: UIViewController {
         self.play()
         firstIndex=currentSongIndex
         setUpView()
-        
-        //        loadVideo(songId)
-        //        self.createPlayThis(PlaylistSong(yt_id: yt_id, title: title, artist: artist, item: nil))
     }
     
     @objc func setUpView() {
@@ -109,7 +104,6 @@ class PlaybackViewController: UIViewController {
         timeSlider.isEnabled = false
         
         songLabel.text = song.name
-        //songLabel.type = .continuous
         artistLabel.text = song.artist
         
         playButton.isHidden = true
@@ -119,17 +113,12 @@ class PlaybackViewController: UIViewController {
         loadingView.startAnimating()
         
         if let checkedUrl = URL(string: song.coverURL) {
-//            downloadImage(checkedUrl)
             songImageView.kf.setImage(with: checkedUrl)
         }
  
-        //toggleSkipPrevious()
         previousButton.isEnabled = false
         nextButton.isEnabled = false
         
-        //        periodicTimeObserver = player.addPeriodicTimeObserverForInterval(CMTimeMake(1, 1), queue: dispatch_get_main_queue()) { cmTime in
-        //            self.timeObserverFired(cmTime)
-        //        }
         playerStartedTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(PlaybackViewController.checkIfPlayerReady), userInfo: nil, repeats: true)
     }
     
@@ -148,26 +137,18 @@ class PlaybackViewController: UIViewController {
     
     @objc func checkIfPlayerReady() {
         if player.status.rawValue == 1 {
-            //timeSlider.isEnabled = true
             playerStartedTimer.invalidate()
-//            timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
+            
             if !player.isPlaying {
                 player.play()
             }
-//            timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true, block: { (timerValue) in
-//                if !self.endOfPlaylist {
-//                    self.updateProgress()  // call the selector function here
-//                } else {
-//                    timerValue.invalidate()
-//                }
-//            })
+            
             newPlayerTimer(interval: 0.5)
         }
     }
     
     @objc func updateProgress() {
         if player.currentItem != nil {
-            //print("Current item: \(player.currentItem?.duration)")
             let timePlayed = Float(self.player.currentTime().value) / Float(self.player.currentTime().timescale)
             var timeLeft = Float(self.player.currentItem!.duration.value) / Float(self.player.currentItem!.duration.timescale) / 2
             if timePlayed >= 0.1 {
@@ -205,8 +186,6 @@ class PlaybackViewController: UIViewController {
  
  
     func createPlaylist(_ startingSong:String) {
-        //print(currentSongIndex)
-        
         //Since this is also called when the playlist is finished playing, reset all playlist variables
         self.player.pause()
         self.player.removeAllItems()
@@ -220,7 +199,6 @@ class PlaybackViewController: UIViewController {
         
         for _ in 0..<currentSongIndex {
             playlist.remove(at: 0)
-            //print(playlist)
         }
         
         //If the playlist is longer than 0 songs, load the first item
@@ -230,8 +208,6 @@ class PlaybackViewController: UIViewController {
     }
     
     func setNowPlaying(_ dura: Float, timePlayed: Float) {
-//        print("songs \(songs.map({$0.name}))")
-//        print(playbackInstance.currentSongIndex)
         let s = songs[playbackInstance.currentSongIndex]
         let currentImage = self.songImageView.image
         let albumArt = MPMediaItemArtwork.init(boundsSize: CGSize(width: 480, height: 360), requestHandler: { (size) -> UIImage in
@@ -248,7 +224,6 @@ class PlaybackViewController: UIViewController {
             MPNowPlayingInfoCenter.default().nowPlayingInfo = songInfo
             MPRemoteCommandCenter.shared().nextTrackCommand.isEnabled = self.nextButton.isEnabled
             MPRemoteCommandCenter.shared().previousTrackCommand.isEnabled = self.previousButton.isEnabled
-            //MPRemoteCommandCenter.shared().nextTrackCommand.addTarget(self, action: #selector(nothing))
             MPRemoteCommandCenter.shared().nextTrackCommand.addTarget(self, action: #selector(self.skipSong))
             MPRemoteCommandCenter.shared().previousTrackCommand.addTarget(self, action: #selector(self.previous))
             MPRemoteCommandCenter.shared().playCommand.addTarget(self, action: #selector(self.play))

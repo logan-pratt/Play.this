@@ -3,7 +3,7 @@
 //  PlayThis
 //
 //  Created by Logan Pratt on 7/13/15.
-//  Copyright (c) 2015 Logan Pratt. All rights reserved.
+//  Copyright (c) 2020 Logan Pratt. All rights reserved.
 //
 
 import UIKit
@@ -26,7 +26,6 @@ class PlaylistViewController: UIViewController {
     var playbackInstance = PlaybackHelper.sharedInstance
     let ref = Database.database().reference(withPath: "songs")
     var defaults = UserDefaults.standard
-    //let realm = try! Realm()
     var likedSongs: [String] = []
     var firstRun = true
     var groupName = ""
@@ -34,11 +33,8 @@ class PlaylistViewController: UIViewController {
     var songObjIds: [String] = []
     var tableNum = 0
     var playbackViewController: PlaybackViewController!
-    
     var attr: [String : AnyObject]? = [NSAttributedString.Key.foregroundColor.rawValue:UIColor.white, NSAttributedString.Key.font.rawValue:UIFont(name: "Avenir-Light", size: 12.0)!]
  
-   
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -146,7 +142,6 @@ class PlaylistViewController: UIViewController {
             playbackInstance.storedPVC = nil
         }
         PlaybackHelper.sharedInstance = playbackInstance
-        //songsInstance
     }
     
 }

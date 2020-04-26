@@ -3,12 +3,10 @@
 //  PlayThis
 //
 //  Created by Logan Pratt on 7/17/15.
-//  Copyright (c) 2015 Logan Pratt. All rights reserved.
+//  Copyright (c) 2020 Logan Pratt. All rights reserved.
 //
 
 import UIKit
-//import Parse
-
 import Firebase
 import FirebaseDatabase
 import Alamofire
@@ -50,7 +48,6 @@ class SearchTableViewCell: UITableViewCell {
             switch data.result{
             case .success(let value):
                 let json = JSON(value)
-                //print(json)
                 if let duration = json["items", 0, "contentDetails", "duration"].string {
                     self.song = Song(group: code, name: songTitle, artist: songArtist, coverURL: imageUrl, id: songId, key:"", duration: duration)
                             self.durationLabel.text = self.song?.duration
@@ -84,10 +81,8 @@ class SearchTableViewCell: UITableViewCell {
     
  
     @objc func downloadImage(_ url:URL){
-//        println("Started downloading \"\(url.lastPathComponent!.stringByDeletingPathExtension)\".")
         getDataFromUrl(url) { data in
             DispatchQueue.main.async {
-//                println("Finished downloading \"\(url.lastPathComponent!.stringByDeletingPathExtension)\".")
                 self.songCover.image = UIImage(data: data!)
             }
         
@@ -103,35 +98,6 @@ class SearchTableViewCell: UITableViewCell {
 
         let songRef = self.ref.child("songs")
         songRef.childByAutoId().setValue(song?.toAnyObject())
-
-       // songRef.setValue(song?.toAnyObject())
-        
-        //groupRef.setValue(group.toAnyObject())
-       // var group: Group;// = Group()
-        //let groupRef = self.ref.child("groups").child(groupCode)
-        //groupRef.value(forKeyPath: "")
-        //groupRef.updateChildValues(["songs": groupRef.value])
-//        let query = PFQuery(className: "Group")
-//        query.whereKey("groupCode", equalTo: groupCode)
-//        query.findObjectsInBackground {(groups: [AnyObject]?, error: Error?) -> Void in
-//            
-//            if error == nil {
-//                if let groups = groups as? [PFObject] {
-//                    for group in groups {
-//                        let newSong = PFObject(className: "Song")
-//                        newSong["songId"] = self.songId
-//                        newSong["group"] = group
-//                        newSong["likes"] = 0
-//                        newSong.saveInBackground()
-//                    }
-//                }
-//            } else {
-//                // Log details of the failure
-//                print("Error: \(error!) \(error!._userInfo)")
-//            }
-//        }HERE
- 
- 
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {

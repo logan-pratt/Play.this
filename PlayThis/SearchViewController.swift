@@ -3,7 +3,7 @@
 //  PlayThis
 //
 //  Created by Logan Pratt on 7/17/15.
-//  Copyright (c) 2015 Logan Pratt. All rights reserved.
+//  Copyright (c) 2020 Logan Pratt. All rights reserved.
 //
 
 import UIKit
@@ -62,7 +62,6 @@ class SearchViewController: UIViewController {
             switch data.result {
             case .success(let value):
                 let json = JSON(value)
-                //print("JSON: \(json)")
                 for i in 0..<20 {
                 
                     if let songTitle = json["items", i, "snippet", "title"].string {
@@ -90,8 +89,6 @@ class SearchViewController: UIViewController {
                 print(error)
             }
         }
-        //let data = try? NSURLConnection.sendSynchronousRequest(request, returning: nil)
- 
     }
     
     override func viewWillDisappear(_ animated: Bool) {

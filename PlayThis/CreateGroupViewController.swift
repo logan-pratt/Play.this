@@ -3,12 +3,10 @@
 //  PlayThis
 //
 //  Created by Logan Pratt on 7/16/15.
-//  Copyright (c) 2015 Logan Pratt. All rights reserved.
+//  Copyright (c) 2020 Logan Pratt. All rights reserved.
 //
 
 import UIKit
-//import Parse
-
 import Firebase
 import FirebaseDatabase
 
@@ -20,27 +18,20 @@ class CreateGroupViewController: UIViewController {
     @IBOutlet weak var createGroupButton: UIButton!
     @IBOutlet weak var createButtonConstraint: NSLayoutConstraint!
     @IBOutlet var topLabelConstraint: NSLayoutConstraint!
-    //@IBOutlet weak var navBar: UINavigationBar!
 
     var ref = Database.database().reference(withPath: "groups")
     var groupCode = ""
-    //var groupId = ""
     var codeAlreadyExists = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-//        navBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
-//        navBar.shadowImage = UIImage()
-
 
         groupNameField.text = ""
         groupNameField.becomeFirstResponder()
         
         groupCode = generateCode()
         groupCodeView.text = groupCode
-//        
+        
         let recognizer: UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipeRight))
         recognizer.direction = .right
         self.view.addGestureRecognizer(recognizer)
@@ -49,10 +40,6 @@ class CreateGroupViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(CreateGroupViewController.keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         clearTextButton(button: createGroupButton, title: "Create Group")
-        
-//        ref.observe(.value, with: { snapshot in
-//            //print(snapshot.value ?? "")
-//        })
     }
     
     
@@ -104,27 +91,6 @@ class CreateGroupViewController: UIViewController {
             }
         })
         return randCode
-//        let query = PFQuery(className: "Group")
-//        query.whereKey("groupCode", equalTo: randCode)
-//        query.findObjectsInBackground {(codes: [AnyObject]?, error: Error?) -> Void in
-//            
-//            if error == nil {
-//                if let codes = codes as? [PFObject] {
-//                    for code in codes {
-//                        if code != "" {
-//                            self.codeAlreadyExists = true
-//                            print("Code exists")
-//                        }
-//                    }
-//                }
-//            }
-//            
-//            if self.codeAlreadyExists {
-//                self.groupCode = self.generateCode()
-//            }
-//        }HERE
-//        return randCode
- 
     }
     
     

@@ -3,13 +3,12 @@
 //  PlayThis
 //
 //  Created by Logan Pratt on 1/22/17.
-//  Copyright © 2017 Logan Pratt. All rights reserved.
+//  Copyright © 2020 Logan Pratt. All rights reserved.
 //
 
 import Foundation
 import Firebase
 import FirebaseDatabase
-//import RealmSwift
 
 class Song {
 
@@ -34,7 +33,6 @@ class Song {
         self.group = group
         self.id = id
         self.duration = duration.youtubeDuration
-        //downloadImage(URL(string:coverURL)!)
     }
     
     init(snapshot: DataSnapshot) {
@@ -49,8 +47,6 @@ class Song {
         group = snapshotValue["group"] as! String
         id = snapshotValue["id"] as! String
         duration = (snapshotValue["duration"] as! String).youtubeDuration
-        //downloadImage(URL(string:coverURL)!)
-       // print("done")
     }
     
     func getDataFromUrl(_ urL:URL, completion: @escaping ((_ data: Data?) -> Void)) {
@@ -59,14 +55,9 @@ class Song {
             }.resume()
     }
     
-    func downloadImage(_ url:URL){// -> UIImage{
-        //        println("Started downloading \"\(url.lastPathComponent!.stringByDeletingPathExtension)\".")
-        //var image = UIImage()
-        print("QWERTY")
+    func downloadImage(_ url:URL) {
         getDataFromUrl(url) { data in
-            //url.lastPathComponent.stringbydele
             DispatchQueue.main.async {
-                                //print("Finished downloading \"\(url.lastPathComponent)\".")
                 if let data = data {
                     self.cover = UIImage(data: data)
                 } else {
@@ -74,7 +65,6 @@ class Song {
                 }
             }
         }
-        //return image
     }
     
     func toAnyObject() -> Any {
@@ -122,7 +112,6 @@ extension String {
                 duration += "0"
             }
         }
-        //print(duration)
         
         return duration
     }
