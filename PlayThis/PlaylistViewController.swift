@@ -7,18 +7,9 @@
 //
 
 import UIKit
-//import Parse
 import SwiftyJSON
-//import Spring
-//import IJReachability
-//import RJImageLoader
-
 import Firebase
 import FirebaseDatabase
-//import Realm
-//import RealmSwift
-
-//import DropDownMenuKit
 
 class PlaylistViewController: UIViewController {
     
@@ -30,9 +21,6 @@ class PlaylistViewController: UIViewController {
     @IBOutlet weak var groupCodeLabel: UILabel!
     @IBOutlet weak var copyGroupCodeButton: UIButton!
     @objc var refreshControl = UIRefreshControl()
-    //var titleView: DropDownTitleView!
-    //    var activityIndicatorView = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40), type: .ballTrianglePath)
-    
     
     let songsInstance = SongsHelper.sharedInstance
     var playbackInstance = PlaybackHelper.sharedInstance
@@ -61,32 +49,15 @@ class PlaylistViewController: UIViewController {
         playlistNavBarItem.title = groupName
         
         nothingHereLabel.isHidden = true
-        //        activityIndicatorView.center = view.center
-        
-        //        self.view.addSubview(activityIndicatorView)
-        //        activityIndicatorView.startAnimation()
         
         groupCodeLabel.text = "Group code: \(groupCode)"
- 
-        
-//        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes:attr)
-//        refreshControl.tintColor = UIColor.white
-//        refreshControl.addTarget(self, action: #selector(PlayThisViewController.setUpTableView(_:)), for: UIControlEvents.valueChanged)
-//        tableView?.addSubview(refreshControl)
-        
-//        for r in realm.objects(RealmString.self) {
-//            likedSongs.append(r.stringValue)
-//        }
-        
+//        groupCodeLabel.text = "123456"
         
         if let likedData = UserDefaults.standard.object(forKey: groupCode) as? NSData {
             likedSongs = (NSKeyedUnarchiver.unarchiveObject(with: likedData as Data) as? [String])!
         }
         
         setUpTableView(true)
-        //        let recognizer: UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "swipeDown:")
-        //        recognizer.direction = .Down
-        //        self.view.addGestureRecognizer(recognizer)
  
         if !playbackInstance.player.items().isEmpty {
             nowPlayingButton.isEnabled = true
@@ -100,13 +71,6 @@ class PlaylistViewController: UIViewController {
     }
     
     @objc func setUpTableView(_ animated: Bool) {
-        //if IJReachability.isConnectedToNetwork() {
-        //        songTitles = []
-        //        songArtists = []
-        //        songCovers = []
-        //        songIds = []
-        //        songObjIds = []
-        
         copyGroupCodeButton.isEnabled = true
         copyGroupCodeButton.setTitle("Copy", for: UIControl.State())
         
@@ -124,15 +88,8 @@ class PlaylistViewController: UIViewController {
                 }
             }
             self.firstRun = false
-            // print(self.songsInstance.likedSongs)
-            //FINDS DUPLICATES
-            //            if(Array(Set(self.songsInstance.songs.map({$0.likes}).filter({ (i: Int) in self.songsInstance.songs.filter({ $0.likes == i }).count > 1}))).count > 0) {
-            //
-            //            }
+            
             self.songsInstance.songs = self.songsInstance.songs.sorted(by: {$0.likes > $1.likes})
-            //            print(self.songsInstance.songs.map({$0.likes}))
-            // 5
-            //self.items = newItems
             
             self.tableView.reloadData()
         })

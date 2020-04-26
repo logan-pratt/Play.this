@@ -38,7 +38,6 @@ class JoinGroupViewController: UIViewController {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        //        print(Realm.Configuration.defaultConfiguration.fileURL?.absoluteString)
         joinButton.isEnabled = false
         
         textFields = [firstField, secondField, thirdField, fourthField, fifthField, sixthField]

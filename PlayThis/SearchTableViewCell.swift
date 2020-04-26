@@ -99,7 +99,7 @@ class SearchTableViewCell: UITableViewCell {
     @IBAction func addSong(_ sender: AnyObject) {
         addSongButton.isHidden = !addSongButton.isHidden
         addedLabel.isHidden = !addedLabel.isHidden
-        titleConstraint.constant = 55
+        titleConstraint.constant = 5
 
         let songRef = self.ref.child("songs")
         songRef.childByAutoId().setValue(song?.toAnyObject())
