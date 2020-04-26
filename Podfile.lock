@@ -82,11 +82,6 @@ PODS:
     - NVActivityIndicatorView/Presenter (= 4.8.0)
   - NVActivityIndicatorView/Presenter (4.8.0)
   - PromisesObjC (1.2.8)
-  - Realm (4.4.1):
-    - Realm/Headers (= 4.4.1)
-  - Realm/Headers (4.4.1)
-  - RealmSwift (4.4.1):
-    - Realm (= 4.4.1)
   - SwiftyJSON (5.0.0)
   - XCDYouTubeKit (2.12.0)
 
@@ -98,7 +93,6 @@ DEPENDENCIES:
   - Kingfisher
   - MarqueeLabel
   - NVActivityIndicatorView
-  - RealmSwift
   - SwiftyJSON
   - XCDYouTubeKit
 
@@ -123,8 +117,6 @@ SPEC REPOS:
     - nanopb
     - NVActivityIndicatorView
     - PromisesObjC
-    - Realm
-    - RealmSwift
     - SwiftyJSON
     - XCDYouTubeKit
 
@@ -148,11 +140,9 @@ SPEC CHECKSUMS:
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   NVActivityIndicatorView: d24b7ebcf80af5dcd994adb650e2b6c93379270f
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
-  Realm: 4eb04d7487bd43c0581256f40b424eafb711deff
-  RealmSwift: 3eb8924ff7100df5928c7602f71d0fec51e7c9c5
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
   XCDYouTubeKit: cdad9e696f991aac2739c5b25586c81f1301ba30
 
-PODFILE CHECKSUM: 0c86a92c36dd030272775d6b0fb911d9517c9198
+PODFILE CHECKSUM: 5d39377f5c16ce549142aa3bcbd6cec9a8c2a68f
 
 COCOAPODS: 1.9.1
