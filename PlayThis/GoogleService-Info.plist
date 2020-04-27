@@ -2,14 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
-	<string>ca-app-pub-3940256099942544/2934735716</string>
-	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
-	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>979293042010-ud3m2vo7qribf69i0tih5vju5hsln72v.apps.googleusercontent.com</string>
+	<string>979293042010-fgosfrec7lg8dbt45jhbumu1cjdje2ul.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.979293042010-ud3m2vo7qribf69i0tih5vju5hsln72v</string>
+	<string>com.googleusercontent.apps.979293042010-fgosfrec7lg8dbt45jhbumu1cjdje2ul</string>
 	<key>API_KEY</key>
 	<string>AIzaSyD1-VaGgcjv_AcIcuXTTgNRvzvQ02jWLXU</string>
 	<key>GCM_SENDER_ID</key>
@@ -23,17 +19,17 @@
 	<key>STORAGE_BUCKET</key>
 	<string>playlist-198c3.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<true/>
+	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<true/>
+	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<false/>
+	<true></true>
 	<key>IS_GCM_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:979293042010:ios:99857eb00ac03d56</string>
+	<string>1:979293042010:ios:d7cda6f9cfaedaac35ef63</string>
 	<key>DATABASE_URL</key>
 	<string>https://playlist-198c3.firebaseio.com</string>
 </dict>
